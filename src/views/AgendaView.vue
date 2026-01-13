@@ -313,49 +313,97 @@ li {
 
 @media (max-width: 750px) {
   .agenda-container {
-  display: flex;
-  gap: 2px;
-  padding: 2px;
-}
-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  body {
     font-size: 15px;
   }
-  
+
+  .left-panel,
   .right-panel {
+    width: 100%; 
     padding: 0.5rem;
-    width:350px;
-    height: fit-content;
+    box-sizing: border-box;
   }
-h2 {
-  font-size: 1rem;
-  color:  #0b2494;
-  font-weight: 400;
-  text-shadow: black;
+
+  h2 {
+    font-size: 0.9rem;
+    color: #0b2494;
+    font-weight: 600;
+    text-shadow: black;
+    margin-bottom: 0.4rem;
+  }
+  input {
+  width: 90%;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  padding: 0.3rem 0.2rem;
+  border: rgb(121, 119, 119) 1px solid;
+  border-width: 0.4px;
 }
-.remove-btn {
+input:focus {
+  outline: none;
+  border: rgb(62, 63, 65) 1px solid;
+}
+button {
+  margin-bottom: 1rem;
+  background: transparent;
+  color: rgb(56, 55, 55);
+  border: rgb(41, 39, 39) 0.2px solid;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
   font-size: 0.5rem;
-  padding: 0.2rem 0.2rem;}
+  cursor: pointer;
+}
+button:hover {
+  background: #ebf3f3;
+  border: rgb(171, 209, 216) 1px solid;
+}
+  .remove-btn {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.3rem;
+  }
+
+ .event-list {
+  margin-top: 1px;
+  list-style: none;
+  padding: 0;
+}
+
+.event-list li {
+  font-size: 0.7rem;
+  padding: 1px 1px;
+  border-bottom: 1px solid #e0dada;
+}
+
+.event-list small {
+  display: block;
+  color: #999;
+}
 
   .fc {
-    padding: 0.4rem;
-     width:350px;
-    border-radius: 14px;
-     height: 800px;
+    width: 100%;
+    border-radius: 12px;
+    height: 700px; 
+    padding: 4px;
   }
 
-  
   .fc-toolbar {
     flex-direction: column;
     gap: 0.5rem;
+    align-items: stretch;
   }
 
   .fc-toolbar-title {
-    font-size: 0.8rem !important;
+    font-size: 0.85rem !important;
     font-weight: 600;
     text-align: center;
   }
 
-  
   .fc .fc-button {
     font-size: 0.75rem !important;
     padding: 0.25rem 0.55rem !important;
@@ -367,33 +415,33 @@ h2 {
     font-size: 0.85rem !important;
   }
 
-  
- 
-.fc .fc-col-header-cell-cushion {
-  font-size: 0.6rem;
-  padding: 4px 0;
-  color: rgb(47, 23, 184);
-  font-weight: 500;
-}
+  .fc .fc-col-header-cell-cushion {
+    font-size: 0.7rem;
+    padding: 3px 0;
+    color: rgb(47, 23, 184);
+    font-weight: 500;
+  }
 
   .fc-daygrid-day-frame {
     padding: 4px;
   }
+
   .fc-daygrid-day-number {
-    font-size: 0.85rem;
-    padding: 4px;
+    font-size: 0.75rem;
     color: rgb(30, 30, 31);
+    padding: 0.1rem 3px !important;
   }
 
   .fc-day-today {
     border-radius: 10px;
   }
 
-  
   .fc-event {
-    font-size: 0.7rem !important;
+    font-size: 0.1rem !important;
     padding: 2px 4px !important;
     border-radius: 6px !important;
+    color: #e2e2ec;
+    text-shadow: black;
   }
 
   .fc-event-title {
@@ -402,18 +450,12 @@ h2 {
     text-overflow: ellipsis;
   }
 
- 
+
   .fc-scrollgrid,
   .fc-theme-standard td,
   .fc-theme-standard th {
     border: none !important;
   }
-  headerToolbar {
-  left: "prev,next";
-  
-  right: "dayGridMonth";
-}
-
 }
 
 </style>
