@@ -311,7 +311,7 @@ li {
   border: none !important;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 750px) {
   .agenda-container {
   display: flex;
   gap: 2px;
@@ -323,7 +323,7 @@ body {
   
   .right-panel {
     padding: 0.5rem;
-    width:60%;
+    width:350px;
     height: fit-content;
   }
 h2 {
@@ -338,7 +338,7 @@ h2 {
 
   .fc {
     padding: 0.4rem;
-     width:60%;
+     width:350px;
     border-radius: 14px;
      height: 800px;
   }
