@@ -6,7 +6,7 @@
 
     <ul>
       <li v-for="event in calendarStore.events" :key="event.id">
-        {{ event.time }} — {{ event.title }}
+        {{ event.date }} —  {{ event.time }}  — {{ event.title }}
       </li>
     </ul>
   </div>

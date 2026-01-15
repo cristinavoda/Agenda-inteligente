@@ -6,6 +6,7 @@
     <ul>
       <li v-for="note in notesStore.notes" :key="note.id">
         {{ note.content }}
+          <button @click="notesStore.removeNote(note.id)">✖️</button>
       </li>
     </ul>
   </div>

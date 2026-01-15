@@ -18,8 +18,9 @@ import PaButton from '../PaButton.vue'
 }
 
 h1 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
+  color: rgb(14, 14, 143);
 }
 
 .pa-float-btn {
@@ -70,5 +71,13 @@ h1 {
   font-weight: 200;
   font-size: 1.rem;
   
+}
+@media (max-width: 750px) {
+ 
+.h1 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
 }
 </style>

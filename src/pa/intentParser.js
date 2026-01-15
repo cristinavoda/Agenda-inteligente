@@ -44,5 +44,25 @@ export function parseIntent(text) {
   if (t.includes('leer notas')) return { intent: 'READ_NOTES' }
   if (t.includes('leer lista') || t.includes('compras')) return { intent: 'READ_SHOPPING_LIST' }
 
+  if (text.includes('borra') && text.includes('nota')) {
+    return { type: 'DELETE_LAST_NOTE' }
+  }
+
+  // 🗑️ BORRAR TAREA
+  if (
+    (text.includes('borra') || text.includes('elimina')) &&
+    text.includes('tarea')
+  ) {
+    return { type: 'DELETE_LAST_TASK' }
+  }
+
+  
+  if (
+    (text.includes('borra') || text.includes('elimina')) &&
+    (text.includes('compra') || text.includes('lista'))
+  ) {
+    return { type: 'DELETE_LAST_SHOPPING' }
+  }
+
   return null
 }

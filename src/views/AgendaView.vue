@@ -13,13 +13,18 @@
         <option value="1440">24 horas</option>
       </select>
       <button class="primary" @click="addEvent">Añadir</button>
-      <button class="secondary" @click="leerAgenda">🔊 Leer agenda</button>
+      <button class="secondary" @click="leerAgenda">Leer agenda</button>
 
       <ul class="event-list">
-        <li v-for="e in calendarStore.events" :key="e.id">
-          {{ e.dateTime }} — {{ e.title }}
-          <button  class="close-button" @click="removeEvent(e.id)">✖️</button>
-        </li>
+       <li v-for="e in calendarStore.events" :key="e.id">
+  {{ new Date(e.start).toLocaleString('es-ES', {
+    dateStyle: 'short',
+    timeStyle: 'short'
+  }) }}
+  — {{ e.title }}
+  <button class="close-button" @click="removeEvent(e.id)">✖️</button>
+</li>
+
       </ul>
     </div>
 
@@ -28,63 +33,74 @@
     </div>
   </div>
 </template>
-
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
 import esLocale from '@fullcalendar/core/locales/es'
 
-import interactionPlugin from '@fullcalendar/interaction'
 import { useCalendarStore } from '../stores/calendarStore'
 import { createReminderFromEvent, saveReminder } from '../reminders/reminderEngine'
 import { speak } from '../pa/speechOutput'
 
 const calendarStore = useCalendarStore()
 const calendar = ref(null)
+
 const title = ref('')
 const newEventDateTime = ref('')
 const newEventReminder = ref('')
+
 const today = new Date().toISOString().slice(0, 10)
 
 const calendarOptions = ref({
-  plugins: [dayGridPlugin,timeGridPlugin, interactionPlugin],
+  plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
   initialView: 'dayGridMonth',
-   locale: esLocale,
+  locale: esLocale,
+  height: 'auto',
   headerToolbar: {
     left: 'prev,next today',
     center: 'title',
     right: 'dayGridMonth,timeGridWeek,timeGridDay'
   },
   initialDate: today,
-  events: []
+ events: (info, successCallback) => {
+    successCallback(calendarStore.events) 
+  }
 })
 
 
 function addEvent() {
   if (!title.value || !newEventDateTime.value) return
-const event = {
-  id: Date.now(),
-  title: title.value,// obligatorio para FullCalendar
-  end: new Date(new Date(newEventDateTime.value).getTime() + 60*60*1000).toISOString(), // 1h por defecto
-  reminder: parseInt(newEventReminder.value || 0)
-}
 
-  
+  const start = new Date(newEventDateTime.value)
+  const end = new Date(start.getTime() + 60 * 60 * 1000) // +1h
+
+  const event = {
+    id: Date.now(),
+    title: title.value,
+    start: start.toISOString(),
+    end: end.toISOString(),
+    reminder: Number(newEventReminder.value || 0)
+  }
 
   calendarStore.addEvent(event)
- 
-  
-  const reminder = createReminderFromEvent(event)
+
+ const reminder = createReminderFromEvent(event)
+
+if (reminder) {
   saveReminder(reminder)
 
-  
   const timeout = reminder.notifyAt - Date.now()
   if (timeout > 0) {
-    setTimeout(() => speak(`Recordatorio: ${reminder.title}`), timeout)
+    setTimeout(() => {
+      speak(`Recordatorio: ${reminder.title}`)
+    }, timeout)
   }
+}
+
 
   title.value = ''
   newEventDateTime.value = ''
@@ -95,40 +111,31 @@ function removeEvent(id) {
   calendarStore.removeEvent(id)
 }
 
-
 function leerAgenda() {
   const text = calendarStore.events
-    .map(e => `${e.dateTime}, ${e.title}`)
+    .map(e => {
+      const time = new Date(e.start).toLocaleString('es-ES', {
+        dateStyle: 'short',
+        timeStyle: 'short'
+      })
+      return `${time}, ${e.title}`
+    })
     .join('. ')
-  speechSynthesis.speak(new SpeechSynthesisUtterance(text || 'No hay eventos'))
+
+  speechSynthesis.speak(
+    new SpeechSynthesisUtterance(text || 'No hay eventos')
+  )
 }
+
+
 watch(
   () => calendarStore.events,
-  (events) => {
-    const api = calendar.value?.getApi()
-    if (!api) return
-
-    api.removeAllEvents()
-
-    events.forEach(e => {
-      api.addEvent({
-        id: e.id,
-        title: e.title,
-        start: e.dateTime
-
-
-
-
-
-
-      })
-    })
+  async () => {
+    await nextTick()
+    calendar.value?.getApi().refetchEvents()
   },
-  { deep: true, immediate: true }
+  { deep: true }
 )
-
-
-
 </script>
 
 
@@ -143,8 +150,8 @@ watch(
 h2 {
   font-size: 1.5rem;
   color:  #232325;
-  font-weight: 400;
-  text-shadow: black;
+  font-weight: 600;
+  text-shadow: rgb(248, 245, 245);
 }
 input {
   width: 90%;
@@ -160,8 +167,9 @@ input:focus {
 }
 .close-button {
   background: transparent;
-  border: rgb(41, 39, 39) 0.2px solid;
-  padding: 0.3rem 0.3rem;
+  border: rgb(219, 213, 213) 0.5px solid;
+  margin-right: 5rem;
+  padding: 0.2rem 0.3rem;
   border-radius: 6px;
   color: #4e4a4a;
   font-size: 0.5rem;
@@ -202,9 +210,10 @@ li {
 
 .left-panel {
   width: 30%;
-   margin-top: 2%;
-   height: fit-content;
+  margin-top: 2%;
+  height: fit-content;
   background: white;
+  
   padding: 1rem;
   border-right: 1px solid #e5e5ea;
   overflow-y: auto;
@@ -240,7 +249,6 @@ li {
   margin-top: 0px;
    width: 100%;
    height: 600px;
-  border-radius: 1px;
   padding: 1rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
@@ -331,10 +339,10 @@ li {
   }
 
   h2 {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #0b2494;
     font-weight: 600;
-    text-shadow: black;
+    text-shadow: 1px 3px rgb(248, 248, 250);
     margin-bottom: 0.4rem;
   }
   input {
@@ -344,6 +352,8 @@ li {
   padding: 0.3rem 0.2rem;
   border: rgb(121, 119, 119) 1px solid;
   border-width: 0.4px;
+  font-size: 1rem;
+  font-weight: 500;
 }
 input:focus {
   outline: none;
@@ -352,11 +362,12 @@ input:focus {
 button {
   margin-bottom: 1rem;
   background: transparent;
-  color: rgb(56, 55, 55);
+  color: rgb(20, 20, 20);
   border: rgb(41, 39, 39) 0.2px solid;
   padding: 0.3rem 0.8rem;
   border-radius: 6px;
-  font-size: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   cursor: pointer;
 }
 button:hover {
@@ -375,7 +386,8 @@ button:hover {
 }
 
 .event-list li {
-  font-size: 0.7rem;
+  font-size: 1.1rem;
+  font-weight: 500;
   padding: 1px 1px;
   border-bottom: 1px solid #e0dada;
 }
@@ -405,18 +417,19 @@ button:hover {
   }
 
   .fc .fc-button {
-    font-size: 0.75rem !important;
+    font-size: 1rem !important;
     padding: 0.25rem 0.55rem !important;
     border-radius: 8px !important;
     color: #0b2494;
   }
 
   .fc .fc-icon {
-    font-size: 0.85rem !important;
+    font-size: 1rem !important;
+    font-weight: 500;
   }
 
   .fc .fc-col-header-cell-cushion {
-    font-size: 0.7rem;
+    font-size: 1rem;
     padding: 3px 0;
     color: rgb(47, 23, 184);
     font-weight: 500;
@@ -428,7 +441,8 @@ button:hover {
 
   .fc-daygrid-day-number {
     font-size: 0.75rem;
-    color: rgb(30, 30, 31);
+    color: rgb(22, 22, 22);
+    font-size: 1rem;
     padding: 0.1rem 3px !important;
   }
 

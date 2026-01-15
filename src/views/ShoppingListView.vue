@@ -6,6 +6,7 @@
     <ul>
       <li v-for="item in shoppingStore.items" :key="item.id">
         {{ item.name }}
+        <button @click="shoppingStore.removeItem(item.id)">✖️</button>
       </li>
     </ul>
   </div>

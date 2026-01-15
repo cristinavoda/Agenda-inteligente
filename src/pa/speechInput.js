@@ -23,7 +23,7 @@ export function initSpeechRecognition(onResult) {
     console.error('🎤 Error reconocimiento:', e)
   }
 
-  return recognition // 🔴 ESTO ES LO QUE FALTABA
+  return recognition 
 }
 
 export function startListening() {
@@ -31,7 +31,7 @@ export function startListening() {
   try {
     recognition.start()
   } catch (e) {
-    // evita InvalidStateError
+    
   }
 }
 

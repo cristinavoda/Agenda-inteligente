@@ -29,8 +29,10 @@ const tabs = [
 .tabs {
   display: flex;
   gap: 12px;
-  padding: 10px 16px;
+  padding: 5px 16px;
   background: white;
+  font-size: 1rem;
+  color: black;
   border-bottom: 1px solid #eee;
 }
 
@@ -39,11 +41,36 @@ const tabs = [
   border: none;
   padding: 6px 10px;
   font-weight: 500;
-  color: #777;
+   font-size: 1rem;
+  color: #363636;
 }
 
+.tabs .active {
+  color: rgb(32, 16, 128);
+  border-bottom: 2px solid rgb(19, 17, 138);
+}
+.tabs button:hover {
+  color: #0a0a0a;
+}
+@media (max-width: 750px) {
+ 
+.tabs button {
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  font-weight: 500;
+   font-size: 1rem;
+  color: #5c5a5a;
+}
 .tabs .active {
   color: black;
   border-bottom: 2px solid black;
 }
+.tabs button:hover {
+  color: #0a0a0a;
+}
+}
+
+
+
 </style>

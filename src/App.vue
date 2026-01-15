@@ -15,19 +15,12 @@
 import { onMounted } from 'vue'
 import { getPendingReminders, markAsFired } from './reminders/reminderEngine'
 import { speak } from './pa/speechOutput'
-import PaButton from './components/PaButton.vue'
 import { ref } from 'vue'
 
 import AppHeader from './components/ui/AppHeader.vue'
 import AppTabs from './components/AppTabs.vue'
-import AgendaView from './views/AgendaView.vue'
-import TasksView from './views/TasksView.vue'
-import ShoppingView from './views/ShoppingListView.vue'
-import NotesView from './views/NotesView.vue'
 
 const activeTab = ref('Agenda')
-
-
 
 function scheduleReminder(reminder) {
   const timeout = reminder.notifyAt - Date.now()
@@ -39,7 +32,7 @@ function scheduleReminder(reminder) {
 
    
     if (Notification.permission === 'granted') {
-      new Notification('⏰ Recordatorio', {
+      new Notification(' Recordatorio', {
         body: reminder.title,
         icon: '/icon.png'
       })
@@ -59,17 +52,17 @@ onMounted(() => {
     })
   }
 
-  
-  getPendingReminders().forEach(reminder => {
-    scheduleReminder(reminder)
-  })
+ getPendingReminders().forEach(reminder => {
+  if (!reminder) return
+  scheduleReminder(reminder)
+})
 
  
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('✅ Service Worker registrado'))
-        .catch(err => console.error('❌ SW error', err))
+        .then(() => console.log(' Service Worker registrado'))
+        .catch(err => console.error(' SW error', err))
     })
   }
   

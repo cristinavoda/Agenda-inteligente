@@ -3,11 +3,12 @@
     <h1>Tareas</h1>
     
 
-    <p>Total tareas: {{ taskStore.tasks.length }}</p>
+    <p>Total tareas: {{ tasksStore.tasks.length }}</p>
 
     <ul>
-      <li v-for="task in taskStore.tasks" :key="task.id">
+      <li v-for="task in tasksStore.tasks" :key="task.id">
         {{ task.time }} — {{ task.title }}
+      <button  class="close-button"  @click="tasksStore.removeTask(task.id)">✖️</button>   
       </li>
     </ul>
   </div>
@@ -15,19 +16,18 @@
 </template>
 <script setup>
 import { onMounted } from 'vue'
-import { useTaskStore } from '../stores/taskStore'
+import { useTasksStore } from '../stores/tasksStore'
 
-const taskStore = useTaskStore()
+const tasksStore = useTasksStore()
 
 onMounted(() => {
-  // Solo añadir ejemplo si el store está vacío
-  if (taskStore.tasks.length === 0) {
-    taskStore.addTask({
+  if (tasksStore.tasks.length === 0) {
+    tasksStore.addTask({
       title: 'Reunión con cliente',
-      date: '2026-01-11', // formato YYYY-MM-DD
+      date: '2026-01-11',
       time: '12:00'
     })
-    taskStore.addTask({
+    tasksStore.addTask({
       title: 'Llamar al banco',
       date: '2026-01-11',
       time: '16:00'
@@ -35,3 +35,19 @@ onMounted(() => {
   }
 })
 </script>
+
+<style>
+button {
+  cursor: pointer;
+}
+.close-button {
+  background: transparent;
+  border: rgb(219, 213, 213) 0.5px solid;
+  margin-right: 5rem;
+  padding: 0.2rem 0.3rem;
+  border-radius: 6px;
+  color: #4e4a4a;
+  font-size: 0.5rem;
+  cursor: pointer;
+}
+</style>
