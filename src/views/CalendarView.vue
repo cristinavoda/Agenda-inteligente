@@ -1,37 +1,62 @@
 <template>
-  <div>
-    <h1>Calendario</h1>
+  <div class="shopping-container">
+    <h2>Lista de la compra</h2>
 
-    <p>Total eventos: {{ calendarStore.events.length }}</p>
+    <!-- Input -->
+    <div class="shop-input">
+      <input
+        v-model="newItem"
+        placeholder="Añadir producto…"
+        @keyup.enter="add"
+      />
+      <button @click="add">+</button>
+    </div>
 
-    <ul>
-      <li v-for="event in calendarStore.events" :key="event.id">
-        {{ event.date }} —  {{ event.time }}  — {{ event.title }}
+    <!-- Lista -->
+    <ul class="shop-list">
+      <li
+        v-for="(item, index) in shoppingStore.items"
+        :key="item.id"
+        :class="{ bought: item.bought }"
+      >
+        <span class="number">{{ index + 1 }}.</span>
+
+        <span
+          class="name"
+          @click="toggle(item.id)"
+        >
+          {{ item.name }}
+        </span>
+
+        <button class="remove" @click="remove(item.id)">✖</button>
       </li>
     </ul>
   </div>
 </template>
-
 <script setup>
-import { useCalendarStore } from '../stores/calendarStore'
+import { ref } from 'vue'
+import { useShoppingStore } from '../stores/shoppingStore'
 
-const calendarStore = useCalendarStore()
+const shoppingStore = useShoppingStore()
+const newItem = ref('')
 
-console.log('STORE:', calendarStore)
-
-if (calendarStore.events.length === 0) {
- calendarStore.addEvent({
-  title: 'Evento de prueba',
-  date: '2026-01-11',
-  time: '15:10'
+function add() {
+  if (!newItem.value.trim()) return
+  shoppingStore.addItem(newItem.value.trim())
+  newItem.value = ''
 }
-)
-calendarStore.addEvent({
-  title: 'Evento de prueba2',
-  date: '2026-01-11',
-  time: '15:20'
-}
-)
 
+function toggle(id) {
+  shoppingStore.toggleItem(id)
+}
+
+function remove(id) {
+  shoppingStore.removeItem(id)
 }
 </script>
+<style scoped>
+.shopping-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 1rem;
+}   </style>    

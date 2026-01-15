@@ -1,30 +1,28 @@
+// src/stores/notesStore.js
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
 
-export const useNotesStore = defineStore('notes', () => {
-  const notes = ref(
-    JSON.parse(localStorage.getItem('notes') || '[]')
-  )
+export const useNotesStore = defineStore('notes', {
+  state: () => ({
+    notes: JSON.parse(localStorage.getItem('notes') || '[]')
+  }),
 
-  function addNote(note) {
-    notes.value.unshift({
-      id: Date.now(),
-      content: note.content,
-      createdAt: new Date().toISOString()
-    })
-  }
-
-  function removeNote(id) {
-    notes.value = notes.value.filter(n => n.id !== id)
-  }
-
-  watch(
-    notes,
-    (val) => {
-      localStorage.setItem('notes', JSON.stringify(val))
+  actions: {
+    addNote(content) {
+      this.notes.unshift({
+        id: Date.now(),
+        content,
+        createdAt: new Date().toISOString()
+      })
+      this.persist()
     },
-    { deep: true }
-  )
 
-  return { notes, addNote, removeNote }
+    removeNote(id) {
+      this.notes = this.notes.filter(n => n.id !== id)
+      this.persist()
+    },
+
+    persist() {
+      localStorage.setItem('notes', JSON.stringify(this.notes))
+    }
+  }
 })
