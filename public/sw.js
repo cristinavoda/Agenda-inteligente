@@ -50,7 +50,7 @@ self.addEventListener('notificationclick', event => {
           client.focus()
           client.postMessage({ type: 'OPEN_AGENDA' })
         } else {
-          clients.openWindow('/agenda')
+          client.openWindow('/agenda')
         }
       })
     )
