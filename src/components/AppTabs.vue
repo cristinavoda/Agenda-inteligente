@@ -46,11 +46,12 @@ const tabs = [
 }
 
 .tabs .active {
-  color: rgb(32, 16, 128);
+  color: darkblue;
   border-bottom: 2px solid rgb(19, 17, 138);
+  font-weight: 600;
 }
 .tabs button:hover {
-  color: #0a0a0a;
+  color: #180764a8;
 }
 @media (max-width: 750px) {
  
@@ -63,7 +64,7 @@ const tabs = [
   color: #5c5a5a;
 }
 .tabs .active {
-  color: black;
+  color: rgb(44, 15, 151);
   border-bottom: 2px solid black;
 }
 .tabs button:hover {

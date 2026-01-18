@@ -1,12 +1,13 @@
-<template>
+no me funciona <template>
    <div class="app">
     <AppHeader />
+     
     <AppTabs v-model="activeTab" />
 
     <main class="content">
       <router-view />
     </main>
-
+<Footer />
 </div>
 </template>
 
@@ -19,45 +20,48 @@ import { ref } from 'vue'
 
 import AppHeader from './components/ui/AppHeader.vue'
 import AppTabs from './components/AppTabs.vue'
+import Footer from './components/Footer.vue'
 
 const activeTab = ref('Agenda')
-
+const scheduled = new Set()
 function scheduleReminder(reminder) {
+  if (scheduled.has(reminder.id)) return
+  scheduled.add(reminder.id)
+
   const timeout = reminder.notifyAt - Date.now()
   if (timeout <= 0) return
 
   setTimeout(() => {
-    
     speak(`Recordatorio: ${reminder.title}`)
 
-   
-    if (Notification.permission === 'granted') {
-      new Notification(' Recordatorio', {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification('⏰ Recordatorio', {
         body: reminder.title,
         icon: '/icon.png'
       })
     }
 
-   
     markAsFired(reminder.id)
   }, timeout)
 }
-
-
-onMounted(() => {
- 
+onMounted(async () => {
   if ('Notification' in window) {
-    Notification.requestPermission().then(permission => {
-      console.log('Permiso de notificaciones:', permission)
-    })
+    const permission = await Notification.requestPermission()
+    console.log('Permiso de notificaciones:', permission)
   }
 
- getPendingReminders().forEach(reminder => {
-  if (!reminder) return
-  scheduleReminder(reminder)
+  // ⏰ Programar los existentes al arrancar
+  getPendingReminders().forEach(scheduleReminder)
+
+  // ⏰ Programar los nuevos
+  window.addEventListener('reminder-added', (e) => {
+    scheduleReminder(e.detail)
+  })
 })
 
- 
+
+
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js')
@@ -66,7 +70,10 @@ onMounted(() => {
     })
   }
   
-})
+
+
+
+
 </script>
 <style>
 .app {

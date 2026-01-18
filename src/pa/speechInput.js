@@ -11,7 +11,7 @@ export function initSpeechRecognition(onResult) {
 
   recognition = new SpeechRecognition()
   recognition.lang = 'es-ES'
-  recognition.continuous = false
+  recognition.continuous = true
   recognition.interimResults = false
 
   recognition.onresult = (event) => {

@@ -93,12 +93,7 @@ function addEvent() {
 if (reminder) {
   saveReminder(reminder)
 
-  const timeout = reminder.notifyAt - Date.now()
-  if (timeout > 0) {
-    setTimeout(() => {
-      speak(`Recordatorio: ${reminder.title}`)
-    }, timeout)
-  }
+
 }
 
 
@@ -167,10 +162,10 @@ input:focus {
 }
 .close-button {
   background: transparent;
-  border: rgb(219, 213, 213) 0.5px solid;
+  border: white;
+  border-bottom: 2px solid black;
   margin-right: 5rem;
   padding: 0.2rem 0.3rem;
-  border-radius: 6px;
   color: #4e4a4a;
   font-size: 0.5rem;
   cursor: pointer;
@@ -179,10 +174,10 @@ button {
   margin-bottom: 1rem;
   background: transparent;
   color: rgb(56, 55, 55);
-  border: rgb(41, 39, 39) 0.2px solid;
+  border: white 0.1px solid;
+  border-bottom: 2px solid rgb(19, 17, 138);
   padding: 0.3rem 0.8rem;
   border-radius: 6px;
-  
   cursor: pointer;
 }
 button:hover {
@@ -213,7 +208,6 @@ li {
   margin-top: 2%;
   height: fit-content;
   background: white;
-  
   padding: 1rem;
   border-right: 1px solid #e5e5ea;
   overflow-y: auto;
@@ -222,17 +216,19 @@ li {
 .event-list {
   margin-top: 16px;
   list-style: none;
-  padding: 0;
+  padding: 0.1rem;
 }
 
 .event-list li {
   padding: 8px 0;
   border-bottom: 1px solid #eee;
+  text-shadow:  #1c1c1e;
 }
 
 .event-list small {
   display: block;
   color: #999;
+   text-shadow:  #1c1c1e;
 }
 
 
@@ -284,6 +280,7 @@ li {
   color: #3a3a3c;
   font-weight: 500;
   font-size: 1rem;
+  text-shadow: #1c1c1e;
 }
 
 .fc-daygrid-day-number {
@@ -294,9 +291,10 @@ li {
 }
 
 .fc-day-today {
-  background: #d4cbd4 !important;
+  background: #e0dce0 !important;
   border-radius: 12px;
   color: rgb(49, 48, 48) !important;
+  font-size: 0.5rem;
 }
 .fc-event {
   background: transparent!important;
@@ -305,6 +303,8 @@ li {
   padding: 3px 6px !important;
   font-size: 1rem;
   font-weight: 500;
+  color: #070707;
+   text-shadow: 1px 2px #1c1c1e;
 }
 
 .fc-event-title {
@@ -363,7 +363,8 @@ button {
   margin-bottom: 1rem;
   background: transparent;
   color: rgb(20, 20, 20);
-  border: rgb(41, 39, 39) 0.2px solid;
+  border: rgb(243, 239, 239) 0.2px solid;
+  border-bottom: 2px solid black;
   padding: 0.3rem 0.8rem;
   border-radius: 6px;
   font-size: 0.8rem;
@@ -448,6 +449,7 @@ button:hover {
 
   .fc-day-today {
     border-radius: 10px;
+    color: #0b2494;
   }
 
   .fc-event {
@@ -455,13 +457,15 @@ button:hover {
     padding: 2px 4px !important;
     border-radius: 6px !important;
     color: #e2e2ec;
-    text-shadow: black;
+   
   }
 
   .fc-event-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #3a3a3c;
+    font-size: 0.7rem;
   }
 
 

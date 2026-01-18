@@ -12,7 +12,7 @@ import PaButton from '../PaButton.vue'
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 18px;
+  padding: 21px 18px;
   border-bottom: 1px solid #eaeaea;
   background: white;
 }

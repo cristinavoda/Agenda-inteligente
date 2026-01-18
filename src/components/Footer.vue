@@ -19,7 +19,7 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: #575555;
   text-shadow: #ffffff solid 2cqmax 1px 2px;
   font-family: 'Poppins', sans-serif;
-  font-size: 1rem;
+  font-size: 0.8rem;
   overflow: hidden;
 }
 

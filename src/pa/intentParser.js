@@ -3,7 +3,6 @@ export function parseIntent(text) {
 
  
   if (t.includes('abrir agenda')) return { intent: 'OPEN_AGENDA' }
-
   if (t.includes('abrir calendario')) return { intent: 'OPEN_CALENDAR' }
   if (t.includes('abrir tareas')) return { intent: 'OPEN_TASKS' }
   if (t.includes('abrir notas')) return { intent: 'OPEN_NOTES' }

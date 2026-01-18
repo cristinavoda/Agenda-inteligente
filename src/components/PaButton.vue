@@ -32,7 +32,7 @@ function togglePA() {
   font-size: 24px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(187, 184, 184, 0.2);
   backdrop-filter: blur(10px);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -64,8 +64,3 @@ function togglePA() {
 }
 
 </style>
-
-
-
-
-

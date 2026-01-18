@@ -9,7 +9,7 @@
         placeholder="Añadir tarea…"
         @keyup.enter="add"
       />
-      <button @click="add">+</button>
+      <button class="btn-add" @click="add">+</button>
     </div>
 
     <!-- Lista numerada -->
@@ -55,13 +55,18 @@ function remove(id) {
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
+  font-size: 1rem;
 }
 
 .task-input input {
   flex: 1;
-  padding: 6px;
+  padding: 4px;
 }
-
+.btn-add {
+  padding: 6px 6px;
+  cursor: pointer;
+  border: #b8b2b2 solid 0.5px;
+}
 .task-list {
   list-style: none;
   padding: 0;

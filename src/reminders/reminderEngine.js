@@ -1,24 +1,25 @@
-// src/reminders/reminderEngine.js
+
 
 const STORAGE_KEY = 'reminders'
 
-// 🔹 cargar recordatorios
+
 function loadReminders() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
 }
 
-// 🔹 guardar recordatorios
+
 function saveReminders(reminders) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(reminders))
 }
 
-// 🔹 crear recordatorio desde un evento
-export function createReminderFromEvent(event) {
-  if (!event.reminder || !event.dateTime) return null
 
-  const notifyAt =
-    new Date(event.dateTime).getTime() -
-    Number(event.reminder) * 60 * 1000
+export function createReminderFromEvent(event) {
+ if (!event.reminder || !event.start) return null
+
+const notifyAt =
+  new Date(event.start).getTime() -
+  Number(event.reminder) * 60 * 1000
+ 
 
   if (notifyAt <= Date.now()) return null
 
@@ -30,7 +31,7 @@ export function createReminderFromEvent(event) {
   }
 }
 
-// 🔹 guardar recordatorio (sin duplicados)
+
 export function saveReminder(reminder) {
   const reminders = loadReminders()
 
@@ -39,9 +40,13 @@ export function saveReminder(reminder) {
 
   reminders.push(reminder)
   saveReminders(reminders)
+
+  window.dispatchEvent(
+    new CustomEvent('reminder-added', { detail: reminder })
+  )
 }
 
-// 🔹 marcar como disparado
+
 export function markAsFired(id) {
   const reminders = loadReminders()
   reminders.forEach(r => {
@@ -50,7 +55,7 @@ export function markAsFired(id) {
   saveReminders(reminders)
 }
 
-// 🔹 obtener pendientes
+
 export function getPendingReminders() {
   return loadReminders().filter(
     r => !r.fired && r.notifyAt > Date.now()

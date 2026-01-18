@@ -13,11 +13,12 @@
 
     <!-- Lista -->
     <ul class="notes-list">
-      <li v-for="note in notesStore.notes" :key="note.id">
+      <li v-for="(note, index) in notesStore.notes" :key="note.index">
+         <span class="number">{{ index + 1 }}.</span>
         <div class="note-content">{{ note.content }}</div>
         <div class="note-footer">
           <small>{{ formatDate(note.createdAt) }}</small>
-          <button @click="remove(note.id)">✖</button>
+          <button @click="remove(note.index)">✖</button>
         </div>
       </li>
     </ul>
@@ -73,7 +74,7 @@ textarea {
 
 .notes-list li {
   padding: 12px 0;
-  border-bottom: 1px solid #e5e5ea;
+  border-bottom: 1px solid #717174;
 }
 
 .note-content {

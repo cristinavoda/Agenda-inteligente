@@ -3,6 +3,7 @@ import { useCalendarStore } from '../stores/calendarStore'
 import { useTasksStore } from '../stores/tasksStore'
 import { useNotesStore } from '../stores/notesStore'
 import { useShoppingStore } from '../stores/shoppingStore'
+import { usePaFeedbackStore } from '../stores/paFeedbackStore'
 import { speak } from './speechOutput'
 
 export function executeIntent(intentObj) {
@@ -37,13 +38,16 @@ export function executeIntent(intentObj) {
     case 'ADD_EVENT': {
       const calendarStore = useCalendarStore()
       calendarStore.addEvent(payload)
+       usePaFeedbackStore().show(
+    `Evento añadido: ${payload.title}`
+  )
       speak(`Evento ${payload.title} añadido a las ${payload.time}`)
       break
     }
 
     case 'ADD_TASK': {
-      const taskStore = useTaskStore()
-      taskStore.addTask(payload)
+      const tasksStore = useTasksStore()
+      tasksStore.addTask(payload)
       speak(`Tarea ${payload.title} añadida`)
       break
     }
@@ -86,28 +90,40 @@ export function executeIntent(intentObj) {
   break
 }
 case 'READ_TASKS': {
-  const taskStore = useTaskStore()
-  const today = new Date().toISOString().slice(0, 10) 
+  const tasksStore = useTasksStore()
+  const today = new Date().toISOString().slice(0, 10)
 
- 
-  const tasksToday = taskStore.tasks
-    .filter(t => t.date === today) // asegúrate de que cada tarea tenga campo `date`
-    .map(t => ({ ...t }))          // Proxy → array plano
+  const todayTasks = tasksStore.tasks.filter(t => t.date === today)
+  const generalTasks = tasksStore.tasks.filter(t => !t.date)
 
-  if (!tasksToday.length) {
-    speak('No tienes tareas para hoy')
+  const allTasks = [...todayTasks, ...generalTasks]
+
+  if (!allTasks.length) {
+    speak('No tienes tareas pendientes')
     break
   }
 
-  // Texto natural: "A las 15:10: Reunir con cliente"
-  const text = tasksToday
-    .map(t => `A las ${t.time}: ${t.title}`)
-    .join('. ')
+  const parts = []
 
-  const plural = tasksToday.length > 1 ? 'tareas' : 'tarea'
-  speak(`Hoy tienes ${tasksToday.length} ${plural}. ${text}`)
+  if (todayTasks.length) {
+    const todayText = todayTasks
+      .map(t => t.time ? `a las ${t.time}, ${t.title}` : t.title)
+      .join('. ')
+    parts.push(`Para hoy tienes ${todayTasks.length} tareas. ${todayText}`)
+  }
+
+  if (generalTasks.length) {
+    const generalText = generalTasks
+      .map(t => t.title)
+      .join('. ')
+    parts.push(` tienes ${generalTasks.length} tareas pendientes. ${generalText}`)
+  }
+
+  // 🔑 UNA sola llamada a speak
+  speak(parts.join('. '))
   break
 }
+
 
 case 'READ_NOTES': {
   const notesStore = useNotesStore()
