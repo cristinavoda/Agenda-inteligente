@@ -13,28 +13,20 @@ export function activatePA() {
 
   recognition = initSpeechRecognition((text) => {
     stopListening()
-
     console.log('🎤 TEXTO:', text)
 
-   const result = parseIntent(text)
+    const result = parseIntent(text)
 
-if (!result || result.intent === 'UNKNOWN') {
-  speak('No he entendido el comando')
-  return
-}
+    if (!result || result.intent === 'UNKNOWN') {
+      speak('No he entendido el comando')
+      return
+    }
 
-executeIntent(result.intent, result.payload)
-
-   
+    executeIntent(result)
   })
 
-  // 🔁 cuando termina, vuelve a escuchar
   recognition.onend = () => {
-    if (paActive.value) {
-      setTimeout(() => {
-        startListening()
-      }, 600) // UX más natural
-    }
+    if (paActive.value) setTimeout(() => startListening(), 600)
   }
 
   speak('Te escucho')

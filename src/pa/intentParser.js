@@ -59,28 +59,27 @@ const numberWords = { uno:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,
   }
 
 // 🔹 TAREAS
- 
-if (
-    (t.includes('borra') || t.includes('borrar') || t.includes('elimina')) &&
-    t.includes('tarea')
-  ) {
-    if (t.includes('todas')) {
-      return { intent: 'DELETE_ALL_TASKS' }
-    }
+ // intentParser.js
+if ((t.includes('borra') || t.includes('borrar') || t.includes('elimina')) && t.includes('tarea')) {
 
-    const match = t.match(/tarea (\d+|uno|dos|tres|cuatro|cinco)/)
-    if (match) {
-      let n = match[1]
-      if (isNaN(n)) n = numberWords[n]
-      else n = parseInt(n, 10)
+  if (t.includes('todas')) return { intent: 'DELETE_ALL_TASKS', payload: null }
 
-      return { intent: 'DELETE_TASK_BY_NUMBER', payload: n }
-    }
+  const numberWords = { uno: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5 }
+  const match = t.match(/tarea (\d+|uno|dos|tres|cuatro|cinco)/)
+  if (match) {
+    let n = match[1]
+    if (isNaN(n)) n = numberWords[n.toLowerCase()]
+    else n = parseInt(n, 10)
 
-    return { intent: 'DELETE_LAST_TASK' }
+    return { intent: 'DELETE_TASK_BY_NUMBER', payload: n }
   }
 
-  return { intent: 'UNKNOWN' }
+  return { intent: 'DELETE_LAST_TASK', payload: null }
+}
+
+return { intent: 'UNKNOWN', payload: null }
+
+
   // 🔹 NOTAS
   if ((t.includes('borra')||t.includes('borrar')||t.includes('elimina')) && t.includes('nota')) {
     if (t.includes('todas')) return { type:'DELETE_ALL_NOTES' }

@@ -10,6 +10,7 @@ export function executeIntent(intentObj) {
   if (!intentObj) return
 
   const { intent, payload } = intentObj
+  console.log('🎯 EXEC INTENT:', intent, payload)
 
   switch (intent) {
     
@@ -167,60 +168,70 @@ case 'READ_NOTES': {
 }
 
 // ✅ TAREAS
-case 'DELETE_LAST_TASK': {
-  const store = useTasksStore()
-  if (!store.tasks.length) { speak('No hay tareas'); return }
-  const last = store.tasks.at(-1)
-  store.removeTask(last.id)
-  speak(`Última tarea eliminada: "${last.title}"`)
-  break
-}
-
-case 'DELETE_ALL_TASKS': {
-  const store = useTasksStore()
-  if (!store.tasks.length) { speak('No hay tareas'); return }
-  store.removeAllTasks()
-  speak('Se han eliminado todas las tareas')
-  break
-}
-
 case 'DELETE_TASK_BY_NUMBER': {
-  const store = useTasksStore()
-  const idx = payload - 1
-  if (!store.tasks[idx]) { speak(`No existe la tarea número ${payload}`); return }
-  const task = store.tasks[idx]
-  store.removeTask(task.id)
-  speak(`Se ha eliminado la tarea "${task.title}"`)
-  break
-}
+      const store = useTasksStore()
+      const idx = payload - 1
+      const task = store.tasks[idx]
+
+      if (!task) {
+        speak('No existe esa tarea')
+        return
+      }
+
+      store.removeTask(task.id)
+      speak(`Tarea ${payload} eliminada`)
+      break
+    }
+
+    case 'DELETE_LAST_TASK': {
+      const store = useTasksStore()
+      const task = store.tasks[0]
+
+      if (!task) {
+        speak('No hay tareas')
+        return
+      }
+
+      store.removeTask(task.id)
+      speak('Última tarea eliminada')
+      break
+    }
+
+    case 'DELETE_ALL_TASKS': {
+      const store = useTasksStore()
+      const count = store.tasks.length
+      store.tasks = []
+      store.persist()
+      speak(`Eliminadas ${count} tareas`)
+      break
+    }
 
 // ✅ NOTAS
-case 'DELETE_LAST_NOTE': {
-  const store = useNotesStore()
-  if (!store.notes.length) { speak('No hay notas'); return }
-  const last = store.notes.at(-1)
-  store.removeNote(last.id)
-  speak(`Última nota eliminada: "${last.content}"`)
-  break
-}
-
-case 'DELETE_ALL_NOTES': {
-  const store = useNotesStore()
-  if (!store.notes.length) { speak('No hay notas'); return }
-  store.removeAllNotes()
-  speak('Se han eliminado todas las notas')
-  break
-}
-
 case 'DELETE_NOTE_BY_NUMBER': {
-  const store = useNotesStore()
-  const idx = payload - 1
-  if (!store.notes[idx]) { speak(`No existe la nota número ${payload}`); return }
-  const note = store.notes[idx]
-  store.removeNote(note.id)
-  speak(`Se ha eliminado la nota "${note.content}"`)
-  break
-}
+      const index = payload - 1
+      const note = notesStore.notes[index]
+
+      if (!note) {
+        speak('No existe esa nota')
+        return
+      }
+
+      notesStore.removeNote(note.id)
+      speak(`Nota ${payload} eliminada`)
+      break
+    }
+
+    case 'DELETE_LAST_NOTE': {
+      const note = notesStore.notes[0]
+      if (!note) {
+        speak('No hay notas')
+        return
+      }
+
+      notesStore.removeNote(note.id)
+      speak('Última nota eliminada')
+      break
+    }
 
 // ✅ ARTÍCULOS
 case 'DELETE_LAST_ITEM': {

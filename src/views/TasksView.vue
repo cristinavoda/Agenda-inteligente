@@ -55,10 +55,6 @@ function formatDate(date) {
   margin: auto;
   padding: 1rem;
 }
-.tasks-container {
-  max-width: 500px;
-  margin: auto;
-}
 
 .task-input {
   display: flex;
@@ -72,7 +68,7 @@ function formatDate(date) {
   padding: 4px;
 }
 .btn-add {
-  padding: 6px 6px;
+  padding: px 6px;
   cursor: pointer;
   border: white solid 0.5px;
   border-bottom: #666 solid 1.5px;
