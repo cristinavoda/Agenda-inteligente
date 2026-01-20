@@ -2,17 +2,17 @@
   <div class="shopping-container">
     <h2>Lista de la compra</h2>
 
-    <!-- Input -->
+   
     <div class="shop-input">
       <input
         v-model="newItem"
         placeholder="Añadir producto…"
-        @keyup.enter="add"
+        @keyup.enter="addItem"
       />
-      <button @click="add">+</button>
+      <button @click="addItem" class="btn-add">+</button>
     </div>
 
-    <!-- Lista -->
+    
     <ul class="shop-list">
       <li
         v-for="(item, index) in shoppingStore.items"
@@ -40,11 +40,12 @@ import { useShoppingStore } from '../stores/shoppingStore'
 const shoppingStore = useShoppingStore()
 const newItem = ref('')
 
-function add() {
+function addItem() {
   if (!newItem.value.trim()) return
   shoppingStore.addItem(newItem.value.trim())
   newItem.value = ''
 }
+
 
 function toggle(id) {
   shoppingStore.toggleItem(id)
@@ -103,16 +104,17 @@ function remove(id) {
   text-decoration: line-through;
   color: #999;
 }
-
 .remove {
   background: transparent;
-  border: none;
+  border: white;
+  border-bottom: #0f0f0f solid 2px;
   cursor: pointer;
   opacity: 0.5;
 }
 
 .remove:hover {
   opacity: 1;
+  background-color: #999;
 }
 
 </style>

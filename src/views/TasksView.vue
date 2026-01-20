@@ -2,23 +2,24 @@
   <div class="tasks-container">
     <h2>Tareas</h2>
 
-    <!-- Input rápido -->
+   
     <div class="task-input">
       <input
         v-model="newTask"
         placeholder="Añadir tarea…"
-        @keyup.enter="add"
+        @keyup.enter="addTask"
       />
       <button class="btn-add" @click="add">+</button>
     </div>
 
-    <!-- Lista numerada -->
+    
     <ul class="task-list">
-      <li v-for="(task, index) in taskStore.tasks" :key="task.id">
-        <span class="number">{{ index + 1 }}.</span>
-        <span class="title">{{ task.title }}</span>
-        <button class="remove" @click="remove(task.id)">✖</button>
-      </li>
+      <li v-for="(task, index) in tasksStore.tasks" :key="task.id">
+  <span class="number">{{ index + 1 }}.</span>
+  <span class="title">{{ task.title }}</span>
+  <button @click="remove(task.id)">✖</button>
+</li>
+
     </ul>
   </div>
 </template>
@@ -27,19 +28,27 @@
 import { ref } from 'vue'
 import { useTasksStore } from '../stores/tasksStore'
 
-const taskStore = useTasksStore()
+const tasksStore = useTasksStore()
 const newTask = ref('')
 
-function add() {
+function addTask() {
   if (!newTask.value.trim()) return
-  taskStore.addTask(newTask.value.trim())
+  tasksStore.addTask(newTask.value.trim())
   newTask.value = ''
 }
 
 function remove(id) {
-  taskStore.removeTask(id)
+  tasksStore.removeTask(id)
+}
+
+function formatDate(date) {
+  return new Date(date).toLocaleString('es-ES', {
+    dateStyle: 'short',
+    timeStyle: 'short'
+  })
 }
 </script>
+
  <style scoped>
 .tasks-container {
   max-width: 600px;
@@ -65,7 +74,8 @@ function remove(id) {
 .btn-add {
   padding: 6px 6px;
   cursor: pointer;
-  border: #b8b2b2 solid 0.5px;
+  border: white solid 0.5px;
+  border-bottom: #666 solid 1.5px;
 }
 .task-list {
   list-style: none;
@@ -91,9 +101,11 @@ function remove(id) {
 
 .remove {
   background: transparent;
-  border: none;
+ border: #d1d1d8;
   cursor: pointer;
   opacity: 0.5;
+  border-bottom: 2px 2px #666;
+
 }
 
 .remove:hover {

@@ -45,26 +45,29 @@ export function executeIntent(intentObj) {
       break
     }
 
-    case 'ADD_TASK': {
-      const tasksStore = useTasksStore()
-      tasksStore.addTask(payload)
-      speak(`Tarea ${payload.title} añadida`)
-      break
-    }
+case 'ADD_TASK': {
+  console.log('Payload recibido:', payload, typeof payload)
+  const tasksStore = useTasksStore()
+  tasksStore.addTask(payload)
+  speak(`Tarea "${payload}" añadida`)
+  break
+}
+
 
     case 'ADD_NOTE': {
       const notesStore = useNotesStore()
       notesStore.addNote(payload)
-      speak(`Nota añadida`)
+      speak(`Nota "${payload}" añadida`)
       break
     }
 
-    case 'ADD_SHOPPING_ITEM': {
-      const shoppingStore = useShoppingStore()
-      shoppingStore.addItem(payload)
-      speak(`Artículo ${payload.name} añadido a la lista`)
-      break
-    }
+ case 'ADD_SHOPPING_ITEM': {
+  const shoppingStore = useShoppingStore()
+  shoppingStore.addItem(payload)
+  speak(`Artículo "${payload}" añadido a la lista`)
+  break
+}
+
 
     
    case 'READ_AGENDA': {
@@ -119,7 +122,7 @@ case 'READ_TASKS': {
     parts.push(` tienes ${generalTasks.length} tareas pendientes. ${generalText}`)
   }
 
-  // 🔑 UNA sola llamada a speak
+  
   speak(parts.join('. '))
   break
 }
@@ -132,11 +135,10 @@ case 'READ_NOTES': {
     break
   }
 
-  // Tomamos solo las 5 notas más recientes
+  
   const recentNotes = notesStore.notes
-    .slice(-10)  // últimas 5
-    .map(n => ({ ...n })) // Proxy → array plano
-
+    .slice(-10)  
+    .map(n => ({ ...n })) 
   const text = recentNotes.map(n => n.content).join('. ')
   const plural = recentNotes.length > 1 ? 'notas' : 'nota'
   speak(`Tienes ${recentNotes.length} ${plural} recientes. ${text}`)
@@ -164,40 +166,90 @@ case 'READ_NOTES': {
   break
 }
 
+// ✅ TAREAS
+case 'DELETE_LAST_TASK': {
+  const store = useTasksStore()
+  if (!store.tasks.length) { speak('No hay tareas'); return }
+  const last = store.tasks.at(-1)
+  store.removeTask(last.id)
+  speak(`Última tarea eliminada: "${last.title}"`)
+  break
+}
+
+case 'DELETE_ALL_TASKS': {
+  const store = useTasksStore()
+  if (!store.tasks.length) { speak('No hay tareas'); return }
+  store.removeAllTasks()
+  speak('Se han eliminado todas las tareas')
+  break
+}
+
+case 'DELETE_TASK_BY_NUMBER': {
+  const store = useTasksStore()
+  const idx = payload - 1
+  if (!store.tasks[idx]) { speak(`No existe la tarea número ${payload}`); return }
+  const task = store.tasks[idx]
+  store.removeTask(task.id)
+  speak(`Se ha eliminado la tarea "${task.title}"`)
+  break
+}
+
+// ✅ NOTAS
 case 'DELETE_LAST_NOTE': {
-      const notesStore = useNotesStore()
-      if (!notesStore.notes.length) {
-        speak('No hay notas para borrar')
-        return
-      }
-      notesStore.removeNote(notesStore.notes[0].id)
-      speak('Última nota eliminada')
-      break
-    }
+  const store = useNotesStore()
+  if (!store.notes.length) { speak('No hay notas'); return }
+  const last = store.notes.at(-1)
+  store.removeNote(last.id)
+  speak(`Última nota eliminada: "${last.content}"`)
+  break
+}
 
-    case 'DELETE_LAST_TASK': {
-      const tasksStore = useTasksStore()
-      if (!tasksStore.tasks.length) {
-        speak('No hay tareas para borrar')
-        return
-      }
-      tasksStore.removeTask(tasksStore.tasks.at(-1).id)
-      speak('Última tarea eliminada')
-      break
-    }
+case 'DELETE_ALL_NOTES': {
+  const store = useNotesStore()
+  if (!store.notes.length) { speak('No hay notas'); return }
+  store.removeAllNotes()
+  speak('Se han eliminado todas las notas')
+  break
+}
 
-    case 'DELETE_LAST_SHOPPING': {
-      const shoppingStore = useShoppingStore()
-      if (!shoppingStore.items.length) {
-        speak('La lista de la compra está vacía')
-        return
-      }
-      shoppingStore.removeItem(shoppingStore.items[0].id)
-      speak('Último producto eliminado')
-      break
-    }
+case 'DELETE_NOTE_BY_NUMBER': {
+  const store = useNotesStore()
+  const idx = payload - 1
+  if (!store.notes[idx]) { speak(`No existe la nota número ${payload}`); return }
+  const note = store.notes[idx]
+  store.removeNote(note.id)
+  speak(`Se ha eliminado la nota "${note.content}"`)
+  break
+}
 
-    default:
-      speak('Intent no reconocido')
+// ✅ ARTÍCULOS
+case 'DELETE_LAST_ITEM': {
+  const store = useShoppingStore()
+  if (!store.items.length) { speak('No hay artículos'); return }
+  const last = store.items.at(-1)
+  store.removeItem(last.id)
+  speak(`Último artículo eliminado: "${last.name}"`)
+  break
+}
+
+case 'DELETE_ALL_ITEMS': {
+  const store = useShoppingStore()
+  if (!store.items.length) { speak('No hay artículos'); return }
+  store.removeAllItems()
+  speak('Se han eliminado todos los artículos')
+  break
+}
+
+case 'DELETE_ITEM_BY_NUMBER': {
+  const store = useShoppingStore()
+  const idx = payload - 1
+  if (!store.items[idx]) { speak(`No existe el artículo número ${payload}`); return }
+  const item = store.items[idx]
+  store.removeItem(item.id)
+  speak(`Se ha eliminado el artículo "${item.name}"`)
+  break
+}
+
+
   }
 }

@@ -2,25 +2,28 @@
   <div class="notes-container">
     <h2>Notas</h2>
 
-    <!-- Input -->
+   
     <textarea
       v-model="newNote"
       placeholder="Escribe una nota…"
-      rows="3"
+      rows="5"
     />
 
     <button @click="addNote">Guardar nota</button>
 
-    <!-- Lista -->
+    
     <ul class="notes-list">
-      <li v-for="(note, index) in notesStore.notes" :key="note.index">
-         <span class="number">{{ index + 1 }}.</span>
-        <div class="note-content">{{ note.content }}</div>
-        <div class="note-footer">
-          <small>{{ formatDate(note.createdAt) }}</small>
-          <button @click="remove(note.index)">✖</button>
-        </div>
-      </li>
+   <li v-for="(note, index) in notesStore.notes" :key="note.id">
+  <span class="number">{{ index + 1 }}.</span>
+
+  <div class="note-content">{{ note.content }}</div>
+
+  <div class="note-footer">
+    <small>{{ formatDate(note.createdAt) }}</small>
+    <button @click="remove(note.id)">✖</button>
+  </div>
+</li>
+  
     </ul>
   </div>
 </template>
@@ -42,20 +45,22 @@ function remove(id) {
 }
 
 function formatDate(date) {
+  if (!date) return ''
   return new Date(date).toLocaleString('es-ES', {
     dateStyle: 'short',
     timeStyle: 'short'
   })
 }
+
 </script>
 <style scoped>
 
 .notes-container {
-  max-width: 600px;
+  max-width: 900px;
   margin: auto;
 }
 .notes-container {
-  max-width: 600px;
+  max-width: 900px;
   margin: auto;
 }
 
@@ -79,22 +84,42 @@ textarea {
 
 .note-content {
   font-size: 1rem;
-  white-space: pre-wrap;
+  
+  justify-content: space-between;
+  display: inline-flex;
+  margin-top: 1px;
+  color: #201f1f;
 }
-
 .note-footer {
   display: flex;
   justify-content: space-between;
+  align-items: center; 
   margin-top: 6px;
   color: #999;
 }
 
 .note-footer button {
   background: transparent;
-  border: none;
+  border: white;
+  border-bottom: #0f0f0f solid 2px;
   cursor: pointer;
+  margin-bottom: 1px;
+  height: fit-content;
 }
 .note-footer button:hover {
   color: #333;
+}
+
+.remove {
+  background: transparent;
+  border: white;
+  border-bottom: #0f0f0f solid 2px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.remove:hover {
+  opacity: 1;
+  background-color: #999;
 }
 </style>

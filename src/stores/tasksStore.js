@@ -1,4 +1,3 @@
-// src/stores/taskStore.js
 import { defineStore } from 'pinia'
 
 export const useTasksStore = defineStore('tasks', {
@@ -8,15 +7,19 @@ export const useTasksStore = defineStore('tasks', {
 
   actions: {
     addTask(title) {
-      this.tasks.push({
-        id: Date.now(),
-        title
-      })
+      this.tasks.unshift({ id: Date.now(), title })
       this.persist()
     },
 
     removeTask(id) {
-      this.tasks = this.tasks.filter(t => t.id !== id)
+      this.$patch(state => {
+        state.tasks = state.tasks.filter(t => t.id !== id)
+      })
+      this.persist()
+    },
+
+    removeAllTasks() {
+      this.$patch(state => { state.tasks = [] })
       this.persist()
     },
 

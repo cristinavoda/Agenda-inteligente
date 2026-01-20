@@ -16,12 +16,16 @@ export function activatePA() {
 
     console.log('🎤 TEXTO:', text)
 
-    const intent = parseIntent(text)
-    if (intent) {
-      executeIntent(intent)
-    } else {
-      speak('No he entendido el comando')
-    }
+   const result = parseIntent(text)
+
+if (!result || result.intent === 'UNKNOWN') {
+  speak('No he entendido el comando')
+  return
+}
+
+executeIntent(result.intent, result.payload)
+
+   
   })
 
   // 🔁 cuando termina, vuelve a escuchar

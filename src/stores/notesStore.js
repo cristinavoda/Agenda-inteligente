@@ -1,4 +1,3 @@
-// src/stores/notesStore.js
 import { defineStore } from 'pinia'
 
 export const useNotesStore = defineStore('notes', {
@@ -7,17 +6,23 @@ export const useNotesStore = defineStore('notes', {
   }),
 
   actions: {
-    addNote(content) {
-      this.notes.unshift({
-        id: Date.now(),
-        content,
-        createdAt: new Date().toISOString()
-      })
+   addNote(content) {
+  this.notes.unshift({
+    id: Date.now(),
+    content,
+    createdAt: Date.now()
+  })
+  this.persist()
+},
+
+
+    removeNote(id) {
+      this.$patch(state => { state.notes = state.notes.filter(n => n.id !== id) })
       this.persist()
     },
 
-    removeNote(id) {
-      this.notes = this.notes.filter(n => n.id !== id)
+    removeAllNotes() {
+      this.$patch(state => { state.notes = [] })
       this.persist()
     },
 

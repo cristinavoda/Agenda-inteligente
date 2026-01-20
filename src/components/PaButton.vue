@@ -5,7 +5,7 @@
   @click="togglePA"
   aria-label="Asistente de voz"
 >
-  🤖
+  <img src="/icons/robot.png" alt="Asistente" />
 </button>
 
 </template>
@@ -32,17 +32,26 @@ function togglePA() {
   font-size: 24px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(187, 184, 184, 0.2);
+  box-shadow: 0 10px 25px rgba(245, 243, 243, 0.952);
   backdrop-filter: blur(10px);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pa-float-btn:hover {
   transform: scale(1.1);
+   box-shadow: 0 15px 30px rgba(68, 53, 204, 0.938);
 }
 
 .pa-float-btn.active {
   animation: halo 1.6s infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.pa-float-btn img {
+  animation: float 3s ease-in-out infinite;
 }
 
 @keyframes halo {
