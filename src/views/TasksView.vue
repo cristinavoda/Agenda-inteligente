@@ -9,7 +9,7 @@
         placeholder="Añadir tarea…"
         @keyup.enter="addTask"
       />
-      <button class="btn-add" @click="add">+</button>
+      <button class="btn-add" @click="addTask">+</button>
     </div>
 
     
@@ -50,6 +50,7 @@ function formatDate(date) {
 </script>
 
  <style scoped>
+
 .tasks-container {
   max-width: 600px;
   margin: auto;
@@ -68,10 +69,10 @@ function formatDate(date) {
   padding: 4px;
 }
 .btn-add {
-  padding: px 6px;
+  padding: 9px 11px;
   cursor: pointer;
   border: white solid 0.5px;
-  border-bottom: #666 solid 1.5px;
+  border-bottom: #181717 solid 2px;
 }
 .task-list {
   list-style: none;

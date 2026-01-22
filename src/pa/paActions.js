@@ -16,6 +16,7 @@ export function executeIntent(intentObj) {
     
     case 'OPEN_AGENDA':
   router.push('/agenda')
+
   speak('Abriendo agenda')
   break
   
@@ -154,13 +155,13 @@ case 'READ_NOTES': {
     break
   }
 
-  // Tomamos los últimos 5 artículos y convertimos a array plano
+  
   const recentItems = shoppingStore.items
     .slice(-25)
-    .map(i => i.name) // aquí solo nombres, ya es string plano
+    .map(i => i.name)
 
-  // Texto natural con pausas
-  const text = recentItems.join('. ') // punto + espacio = pausa clara
+ 
+  const text = recentItems.join('. ')
 
   const plural = recentItems.length > 1 ? 'artículos' : 'artículo'
   speak(`Tienes ${recentItems.length} ${plural} en la lista de la compra. ${text}`)
@@ -209,26 +210,26 @@ case 'DELETE_TASK_BY_NUMBER': {
 // ✅ NOTAS
 case 'DELETE_NOTE_BY_NUMBER': {
       const index = payload - 1
-      const note = notesStore.notes[index]
+      const note = useNotesStore.notes[index]
 
       if (!note) {
         speak('No existe esa nota')
         return
       }
 
-      notesStore.removeNote(note.id)
+      Store.removeNote(note.id)
       speak(`Nota ${payload} eliminada`)
       break
     }
 
     case 'DELETE_LAST_NOTE': {
-      const note = notesStore.notes[0]
+      const note = useNotesStore.notes[0]
       if (!note) {
         speak('No hay notas')
         return
       }
 
-      notesStore.removeNote(note.id)
+      Store.removeNote(note.id)
       speak('Última nota eliminada')
       break
     }
@@ -261,6 +262,20 @@ case 'DELETE_ITEM_BY_NUMBER': {
   break
 }
 
+case 'SET_EVENT_REMINDER': {
+  const calendarStore = useCalendarStore()
+  const { taskTitle, minutes } = payload
+  calendarStore.addEvent(title)
+
+  scheduleReminder({
+    title: 'Recordatorio',
+    body: title,
+    delayMs: minutes * 60 * 1000,
+  })
+
+  speak(`Recordatorio para "${title}" en ${minutes} minutos`)
+  break
+}
 
   }
 }

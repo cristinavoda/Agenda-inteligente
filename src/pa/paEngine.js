@@ -16,12 +16,13 @@ export function activatePA() {
     console.log('🎤 TEXTO:', text)
 
     const result = parseIntent(text)
+    
+if (!result || result.intent === 'UNKNOWN') {
+  console.log('🤷 Comando ignorado:', text)
+  return
+}
 
-    if (!result || result.intent === 'UNKNOWN') {
-      speak('No he entendido el comando')
-      return
-    }
-
+    
     executeIntent(result)
   })
 

@@ -46,6 +46,21 @@ import esLocale from '@fullcalendar/core/locales/es'
 import { useCalendarStore } from '../stores/calendarStore'
 import { createReminderFromEvent, saveReminder } from '../reminders/reminderEngine'
 import { speak } from '../pa/speechOutput'
+import { scheduleReminder } from '../utils/reminders'
+
+// cuando añades una tarea con recordatorio
+function addEventWithReminder(title, minutesLater) {
+  const now = Date.now()
+  const delayMs = minutesLater * 60 * 1000
+
+  calendarStore.addEventWithReminder(title)
+
+  scheduleReminder({
+    title: 'Recordatorio de evento',
+    body: title,
+    delayMs
+  })
+}
 
 const calendarStore = useCalendarStore()
 const calendar = ref(null)
