@@ -34,6 +34,8 @@ const tabs = [
   font-size: 1rem;
   color: black;
   border-bottom: 1px solid #eee;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tabs button {
@@ -56,15 +58,17 @@ const tabs = [
 @media (max-width: 750px) {
  
 .tabs button {
+  margin-left: -12px;
   background: none;
   border: none;
   padding: 6px 10px;
+  gap: 4px;
   font-weight: 500;
    font-size: 1rem;
   color: #5c5a5a;
 }
 .tabs .active {
-  color: rgb(44, 15, 151);
+  color: rgb(53, 52, 58);
   border-bottom: 2px solid black;
 }
 .tabs button:hover {

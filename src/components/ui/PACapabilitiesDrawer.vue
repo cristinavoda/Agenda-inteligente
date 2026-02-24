@@ -83,7 +83,7 @@ const open = ref(false)
 <style scoped>
 .pa-trigger {
   background: transparent;
-  border: 1px solid #ddd;
+  border: 1px 2px solid #149992;
   margin-right: 90px;
   padding: 6px 12px;
   border-radius: 8px;
@@ -173,4 +173,25 @@ const open = ref(false)
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
+
+@media (max-width: 750px) {
+  .drawer {
+    width: 90%;
+  }
+}
+.pa-trigger {
+  background: transparent;
+  border: 1px 2px solid #149992;
+  margin-right: 60px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pa-trigger:hover {
+  background: #f5f5f5;
+}
+
 </style>

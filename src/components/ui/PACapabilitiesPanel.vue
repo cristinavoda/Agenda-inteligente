@@ -44,6 +44,8 @@ const toggle = () => {
 .pa-button {
   background: #f0eeee;
   color: rgb(71, 69, 69);
+  box-shadow: solid 3px 2px 3px rgb(12, 175, 187);
+
   border: none;
   padding: 6px 12px;
   border-radius: 8px;
@@ -59,7 +61,7 @@ const toggle = () => {
   background: white;
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 2px 10px 30px rgba(0,0,0,0.1);
 }
 
 .tech {

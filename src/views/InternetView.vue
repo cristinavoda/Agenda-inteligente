@@ -85,7 +85,7 @@ async function search() {
   }
 }
 
-// 🔥 Leer en voz alta
+
 function readResult(item) {
   const text = `${item.title}. ${cleanSnippet(item.snippet)}`
   const speech = new SpeechSynthesisUtterance(text)
@@ -93,13 +93,13 @@ function readResult(item) {
   window.speechSynthesis.speak(speech)
 }
 
-// 🔥 Añadir a Notas
+
 function addToNotes(item) {
   const content = `${item.title}\n\n${cleanSnippet(item.snippet)}\n\nFuente: ${wikiLink(item.pageid)}`
   notesStore.addNote(content)
 }
 
-// 🔥 Si viene búsqueda del PA
+
 onMounted(() => {
   if (route.query.q) {
     searchQuery.value = route.query.q
@@ -119,10 +119,16 @@ watch(
 </script>
 
 <style scoped>
+.title {
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
 .internet-wrapper {
   max-width: 800px;
   margin: auto;
   padding: 2rem;
+  color: rgb(29, 29, 204);
 }
 
 .title {
@@ -148,10 +154,12 @@ button {
   padding: 0.6rem 1rem;
   border-radius: 10px;
   border: none;
-  background: black;
-  color: white;
+  background: transparent;
+  color: rgb(34, 33, 33);
   cursor: pointer;
   transition: 0.2s;
+  font-size: 1.1rem;
+  border-bottom: 2px solid black;
 }
 
 button:hover {
