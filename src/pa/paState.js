@@ -1,4 +1,4 @@
-// src/pa/paState.js
+
 import { ref } from 'vue'
 
 export const paState = ref('idle')

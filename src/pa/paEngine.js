@@ -3,27 +3,32 @@ import { initSpeechRecognition, startListening, stopListening } from './speechIn
 import { parseIntent } from './intentParser'
 import { executeIntent } from './paActions'
 import { speak } from './speechOutput'
+import { handleAIResponse } from './paAI'
+
+  import { initHotwordListener } from './hotwordListener'
 
 export const paActive = ref(false)
 let recognition = null
 
+
 export function activatePA() {
   if (paActive.value) return
   paActive.value = true
+initHotwordListener
 
-  recognition = initSpeechRecognition((text) => {
+  recognition = initSpeechRecognition(async (text) => {
     stopListening()
-    console.log('🎤 TEXTO:', text)
+    console.log('TEXTO:', text)
 
-    const result = parseIntent(text)
-    
+   const result = parseIntent(text)
+
 if (!result || result.intent === 'UNKNOWN') {
-  console.log('🤷 Comando ignorado:', text)
+  console.log('Intent no reconocido:', text)
+  
   return
 }
 
-    
-    executeIntent(result)
+executeIntent(result)
   })
 
   recognition.onend = () => {

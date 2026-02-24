@@ -1,6 +1,6 @@
 <template>
   <div class="footer ">
-     © {{ new Date().getFullYear() }} Cristina Voda · Lleida, Catalunya · España
+     © {{ new Date().getFullYear() }} Cristina Voda · Lleida - Catalunya · España
     </div>
   
 </template>

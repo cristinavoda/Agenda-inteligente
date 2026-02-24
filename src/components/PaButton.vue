@@ -32,14 +32,14 @@ function togglePA() {
   font-size: 24px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(245, 243, 243, 0.952);
+  box-shadow: 0 10px 25px rgba(13, 180, 166, 0.952);
   backdrop-filter: blur(10px);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pa-float-btn:hover {
   transform: scale(1.1);
-   box-shadow: 0 15px 30px rgba(68, 53, 204, 0.938);
+   box-shadow: 0 15px 30px rgba(12, 125, 177, 0.938);
 }
 
 .pa-float-btn.active {
@@ -57,18 +57,18 @@ function togglePA() {
 @keyframes halo {
   0% {
     box-shadow:
-      0 0 0 0 rgba(59, 130, 246, 0.6),
-      0 10px 25px rgba(0,0,0,0.25);
+      0 0 0 0 bluecyan,
+      0 10px 25px darkcyan;
   }
   70% {
     box-shadow:
-      0 0 0 22px rgba(59, 130, 246, 0),
-      0 10px 25px rgba(0,0,0,0.25);
+      0 0 0 22px rgba(25, 104, 233, 0.959),
+      0 10px 25px rgba(15, 106, 129, 0.945);
   }
   100% {
     box-shadow:
-      0 0 0 0 rgba(59, 130, 246, 0),
-      0 10px 25px rgba(0,0,0,0.25);
+      0 0 0 0 rgba(59, 218, 246, 0.863),
+      0 10px 25px rgba(7, 170, 219, 0.884);
   }
 }
 

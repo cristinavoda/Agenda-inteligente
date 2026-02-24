@@ -1,4 +1,4 @@
-no me funciona <template>
+<template>
    <div class="app">
     <AppHeader />
      
@@ -24,6 +24,7 @@ import Footer from './components/Footer.vue'
 
 const activeTab = ref('Agenda')
 const scheduled = new Set()
+
 function scheduleReminder(reminder) {
   if (scheduled.has(reminder.id)) return
   scheduled.add(reminder.id)
@@ -50,10 +51,10 @@ onMounted(async () => {
     console.log('Permiso de notificaciones:', permission)
   }
 
-  // ⏰ Programar los existentes al arrancar
+ 
   getPendingReminders().forEach(scheduleReminder)
 
-  // ⏰ Programar los nuevos
+ 
   window.addEventListener('reminder-added', (e) => {
     scheduleReminder(e.detail)
   })
@@ -74,7 +75,11 @@ onMounted(async () => {
 
 
 
+
 </script>
+
+
+
 <style>
 .app {
   height: 100vh;

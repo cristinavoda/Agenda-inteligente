@@ -1,11 +1,49 @@
 <template>
   <header class="header">
     <h1>Agenda Inteligente</h1>
+
  <PaButton />
+
+    <div class="right">
+      <PACapabilitiesDrawer />
+    </div>
+ <!--
+<div class="ai-panel">
+  <input
+    v-model="message"
+    @keyup.enter="send"
+    placeholder="Pregúntame algo..."
+  />
+  <button @click="send">IA</button>
+</div>
+
+<div v-if="aiStore.loading" class="ai-response loading">
+  Pensando...
+</div>
+
+<div v-if="aiStore.lastResponse" class="ai-response">
+  {{ aiStore.lastResponse }}
+</div>
+-->
   </header>
 </template>
+
+
 <script setup>
+
 import PaButton from '../PaButton.vue'
+import { ref } from 'vue'
+import { useAIStore } from '../../stores/aiStore'  
+import PACapabilitiesDrawer from '../ui/PACapabilitiesDrawer.vue'
+const aiStore = useAIStore()
+
+const message = ref('')
+
+function send() {
+  if (!message.value.trim()) return
+  aiStore.sendMessage(message.value)
+  message.value = ''
+}
 </script>
 <style scoped>
 .header {
@@ -35,7 +73,7 @@ h1 {
   font-size: 28px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 15px rgba(11, 155, 180, 0.877);
   transition: transform 0.2s;
 }
 
@@ -49,13 +87,13 @@ h1 {
 
 @keyframes halo {
   0% {
-    box-shadow: 0 0 0 0 rgba(34, 13, 150, 0.7);
+    box-shadow: 0 0 0 0 rgba(6, 223, 114, 0.7);
   }
   70% {
-    box-shadow: 0 0 0 20px rgba(76, 175, 80, 0);
+    box-shadow: 0 0 0 20px rgba(13, 57, 179, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    box-shadow: 0 0 0 0 rgba(27, 14, 202, 0.979);
   }
 }
 

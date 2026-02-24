@@ -48,7 +48,7 @@ import { createReminderFromEvent, saveReminder } from '../reminders/reminderEngi
 import { speak } from '../pa/speechOutput'
 import { scheduleReminder } from '../utils/reminders'
 
-// cuando añades una tarea con recordatorio
+
 function addEventWithReminder(title, minutesLater) {
   const now = Date.now()
   const delayMs = minutesLater * 60 * 1000

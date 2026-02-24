@@ -13,7 +13,13 @@ export function executeIntent(intentObj) {
   console.log('🎯 EXEC INTENT:', intent, payload)
 
   switch (intent) {
-    
+ 
+    case 'STOP_SPEAKING':
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel()
+  }
+  break
+
     case 'OPEN_AGENDA':
   router.push('/agenda')
 
@@ -36,7 +42,11 @@ export function executeIntent(intentObj) {
       router.push('/shopping')
       break
 
-    
+     case 'OPEN_INTERNET':
+  router.push({ path: '/internet', query: { q: payload || '' } })
+  break
+
+
     case 'ADD_EVENT': {
       const calendarStore = useCalendarStore()
       calendarStore.addEvent(payload)
@@ -155,20 +165,23 @@ case 'READ_NOTES': {
     break
   }
 
-  
-  const recentItems = shoppingStore.items
-    .slice(-25)
-    .map(i => i.name)
+  // 🔹 Extraemos todos los nombres
+  const allItems = shoppingStore.items.map(i => i.name)
 
- 
-  const text = recentItems.join('. ')
+  // 🔹 Plural
+  const plural = allItems.length > 1 ? 'artículos' : 'artículo'
+  speak(`Tienes ${allItems.length} ${plural} en la lista de la compra.`)
 
-  const plural = recentItems.length > 1 ? 'artículos' : 'artículo'
-  speak(`Tienes ${recentItems.length} ${plural} en la lista de la compra. ${text}`)
+  // 🔹 Si hay muchos, leemos en chunks de 10 para no saturar
+  const chunkSize = 10
+  for (let i = 0; i < allItems.length; i += chunkSize) {
+    const chunk = allItems.slice(i, i + chunkSize).join('. ')
+    speak(chunk)
+  }
+
   break
 }
 
-// ✅ TAREAS
 case 'DELETE_TASK_BY_NUMBER': {
       const store = useTasksStore()
       const idx = payload - 1
@@ -207,60 +220,82 @@ case 'DELETE_TASK_BY_NUMBER': {
       break
     }
 
-// ✅ NOTAS
+
 case 'DELETE_NOTE_BY_NUMBER': {
-      const index = payload - 1
-      const note = useNotesStore.notes[index]
+  const store = useNotesStore()
+  const idx = payload - 1
+  const note = store.notes[idx]
 
-      if (!note) {
-        speak('No existe esa nota')
-        return
-      }
+  if (!note) {
+    speak('No existe esa nota')
+    return
+  }
 
-      Store.removeNote(note.id)
-      speak(`Nota ${payload} eliminada`)
-      break
-    }
+  store.removeNote(note.id)
+  speak(`Nota ${payload} eliminada`)
+  break
+}
 
-    case 'DELETE_LAST_NOTE': {
-      const note = useNotesStore.notes[0]
-      if (!note) {
-        speak('No hay notas')
-        return
-      }
+case 'DELETE_LAST_NOTE': {
+  const store = useNotesStore()
+  const note = store.notes[0]
 
-      Store.removeNote(note.id)
-      speak('Última nota eliminada')
-      break
-    }
+  if (!note) {
+    speak('No hay notas')
+    return
+  }
 
-// ✅ ARTÍCULOS
-case 'DELETE_LAST_ITEM': {
+  store.removeNote(note.id)
+  speak('Última nota eliminada')
+  break
+}
+
+case 'DELETE_ALL_NOTES': {
+  const store = useNotesStore()
+  store.notes = []
+  store.persist?.()
+  speak('Todas las notas eliminadas')
+  break
+}
+
+
+case 'DELETE_ITEM_BY_NUMBER': {
   const store = useShoppingStore()
-  if (!store.items.length) { speak('No hay artículos'); return }
-  const last = store.items.at(-1)
-  store.removeItem(last.id)
-  speak(`Último artículo eliminado: "${last.name}"`)
+  let idx = payload - 1
+  const item = store.items[idx]
+
+  if (!item) {
+    speak(`No existe el artículo número ${payload}`)
+    return
+  }
+
+ 
+  store.items.splice(idx, 1)
+  localStorage.setItem('shopping', JSON.stringify(store.items))
+
+  speak(`He eliminado ${item.name}`)
   break
 }
 
 case 'DELETE_ALL_ITEMS': {
   const store = useShoppingStore()
-  if (!store.items.length) { speak('No hay artículos'); return }
-  store.removeAllItems()
-  speak('Se han eliminado todos los artículos')
+
+  if (!store.items.length) {
+    speak('La lista ya está vacía')
+    return
+  }
+
+  
+  store.items.splice(0, store.items.length)
+  localStorage.setItem('shopping', JSON.stringify([]))
+
+  speak('He eliminado todos los artículos de la lista')
   break
 }
 
-case 'DELETE_ITEM_BY_NUMBER': {
-  const store = useShoppingStore()
-  const idx = payload - 1
-  if (!store.items[idx]) { speak(`No existe el artículo número ${payload}`); return }
-  const item = store.items[idx]
-  store.removeItem(item.id)
-  speak(`Se ha eliminado el artículo "${item.name}"`)
-  break
-}
+
+
+
 
 case 'SET_EVENT_REMINDER': {
   const calendarStore = useCalendarStore()
@@ -276,6 +311,7 @@ case 'SET_EVENT_REMINDER': {
   speak(`Recordatorio para "${title}" en ${minutes} minutos`)
   break
 }
+
 
   }
 }

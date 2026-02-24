@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export const usePaFeedbackStore = defineStore('paFeedback', {
   state: () => ({
-    messages: [] // { id, text, type }
+    messages: [] 
   }),
 
   actions: {

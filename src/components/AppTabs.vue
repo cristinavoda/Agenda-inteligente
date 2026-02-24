@@ -8,14 +8,14 @@ const tabs = [
   { label: 'Agenda', path: '/agenda' },
   { label: 'Tareas', path: '/tasks' },
   { label: 'Compra', path: '/shopping' },
-  { label: 'Notas', path: '/notes' }
+  { label: 'Notas', path: '/notes' }, 
+  { label: 'Internet', path: '/internet' }
 ]
 </script>
 
 <template>
   <nav class="tabs">
-    <button
-      v-for="tab in tabs"
+    <button v-for="tab in tabs"
       :key="tab.path"
       :class="{ active: route.path === tab.path }"
       @click="router.push(tab.path)"
