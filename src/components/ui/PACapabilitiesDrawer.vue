@@ -1,30 +1,49 @@
 <template>
   <div>
-    <!-- Botón -->
+   
     <button class="pa-trigger" @click="open = true">
-        PA
+        AI
     </button>
 
-    <!-- Overlay -->
+   
     <transition name="fade">
       <div v-if="open" class="overlay" @click="open = false"></div>
     </transition>
 
-    <!-- Drawer -->
+    
     <transition name="slide">
       <aside v-if="open" class="drawer">
         <div class="drawer-header">
-          <h2>Capacidades del PA</h2>
+          <h2>Capacidades del Asistente Inteligente</h2>
           <button class="close" @click="open = false">✕</button>
         </div>
 <div class="section">
        <hr />
-  <h3>Comandos rápidos</h3>
+      <div class="importante"> Activar el Asistente Inteligente.</div> <hr /> Es como tener un asistente personal que entiende tus necesidades y te ayuda a gestionar tu día a día de manera eficiente. Aquí tienes una guía rápida para aprovechar al máximo sus capacidades:abre,leer,añadir,borrar,buscar + (agenda, tareas, notas, lista) + detalles opcionales.
+        
+
+
   <pre>
-Abrir: agenda, calendario, tareas, notas, lista
-Leer: agenda, tareas, notas, lista
-Añadir: evento, tarea, nota, artículo
-Borrar: nota, tarea, artículo
+    Cómo usar el Asistente Inteligente
+Para que el asistente ejecute una acción, debes comenzar el comando con una palabra clave exacta.
+Las palabras reconocidas son:
+
+ABRIR · LEER · AÑADIR · BORRAR · BUSCAR
+
+Después puedes indicar la sección o el contenido.
+    Acción + Sección + Detalles opcionales
+
+</pre>
+<hr />
+
+  <pre>
+    COMANDOS PRINCIPALES
+
+ABRIR: agenda, calendario, tareas, notas, lista
+LEER: agenda, tareas, notas, lista
+AÑADIR: evento, tarea, nota, artículo
+BORRAR: nota, tarea, artículo
+BUSCAR: información, receta, definición
   </pre>
 
 <hr />
@@ -84,7 +103,7 @@ const open = ref(false)
 .pa-trigger {
   background: transparent;
   border: 1px 2px solid #149992;
-  margin-right: 90px;
+  margin-right: 150px;
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -94,6 +113,12 @@ const open = ref(false)
 
 .pa-trigger:hover {
   background: #f5f5f5;
+ 
+}
+.importante {
+  background: #f1f3f1;
+  color: darkblue;
+   font-weight: 800;
 }
 
 .overlay {
@@ -148,9 +173,10 @@ const open = ref(false)
 
 .close {
   background: none;
-  border: none;
+  border: 1px 3px rgb(51, 51, 54);
   font-size: 1rem;
   cursor: pointer;
+  color: darkblue;
 }
 
 
@@ -182,7 +208,7 @@ const open = ref(false)
 .pa-trigger {
   background: transparent;
   border: 1px 2px solid #149992;
-  margin-right: 60px;
+  margin-right: 75px;
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 0.9rem;
