@@ -2,7 +2,7 @@
   <div>
    
     <button class="pa-trigger" @click="open = true">
-        AI
+        i
     </button>
 
    
@@ -102,17 +102,19 @@ const open = ref(false)
 <style scoped>
 .pa-trigger {
   background: transparent;
-  border: 1px 2px solid #149992;
-  margin-right: 150px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border: 1px 2px solid #4b5050;
+  margin-right: 70px;
+  padding: 16px 72px;
+  border: none;
+  border-bottom: 2px solid #4b5050;
+  font-size: 1.5rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .pa-trigger:hover {
-  background: #f5f5f5;
+  background: #7d86d3;
  
 }
 .importante {
@@ -207,7 +209,7 @@ const open = ref(false)
 }
 .pa-trigger {
   background: transparent;
-  border: 1px 2px solid #149992;
+  border: 1px 2px solid #919494;
   margin-right: 75px;
   padding: 6px 12px;
   border-radius: 8px;

@@ -18,6 +18,15 @@ export const useCalendarStore = defineStore('calendar', {
       this.persist()
     },
 
+    // 👇 🔥 AÑADE ESTO
+    updateEvent(updatedEvent) {
+      const index = this.events.findIndex(e => e.id === updatedEvent.id)
+      if (index !== -1) {
+        this.events.splice(index, 1, updatedEvent) // reactivo ✅
+        this.persist() // 🔥 MUY IMPORTANTE (si no, no guarda)
+      }
+    },
+
     persist() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.events))
     }

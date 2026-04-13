@@ -4,9 +4,8 @@
   :class="{ active: paActive }"
   @click="togglePA"
   aria-label="Asistente de voz"
->
-  <img src="/icons/robot.png" alt="Asistente" />
-</button>
+>AI</button>
+
 
 </template>
 
@@ -25,29 +24,30 @@ function togglePA() {
   position: fixed;
   right: 24px;
   bottom: 24px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 12px;
   background: rgba(255,255,255,0.9);
-  font-size: 24px;
+  font-size: 1.5rem;
+  color: rgb(44, 44, 233);
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(13, 180, 166, 0.952);
+  box-shadow: 0 10px 25px rgba(223, 224, 226, 0.952);
   backdrop-filter: blur(10px);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pa-float-btn:hover {
   transform: scale(1.1);
-   box-shadow: 0 15px 30px rgba(12, 125, 177, 0.938);
+   box-shadow: 0 15px 30px rgba(53, 65, 231, 0.938);
 }
 
 .pa-float-btn.active {
-  animation: halo 1.6s infinite;
+  animation: halo 1s infinite;
 }
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%, 10% { transform: translateY(0); }
+  10% { transform: translateY(-6px); }
 }
 
 .pa-float-btn img {
@@ -58,17 +58,17 @@ function togglePA() {
   0% {
     box-shadow:
       0 0 0 0 bluecyan,
-      0 10px 25px darkcyan;
+      0 10px 5px rgb(90, 106, 243);
   }
-  70% {
+  10% {
     box-shadow:
-      0 0 0 22px rgba(25, 104, 233, 0.959),
-      0 10px 25px rgba(15, 106, 129, 0.945);
+      0 0 0 2px rgba(25, 104, 233, 0.959),
+      0 10px 5px rgba(42, 45, 233, 0.945);
   }
-  100% {
+  20% {
     box-shadow:
-      0 0 0 0 rgba(59, 218, 246, 0.863),
-      0 10px 25px rgba(7, 170, 219, 0.884);
+      0 0 0 0 rgba(59, 125, 246, 0.863),
+      0 10px 5px rgba(46, 107, 240, 0.884);
   }
 }
 

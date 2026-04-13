@@ -5,7 +5,7 @@
     </button>
 
     <div v-if="open" class="pa-panel">
-      <h3>📅 Agenda</h3>
+      <h3> Agenda</h3>
       <p>abrir agenda</p>
       <p>añadir evento reunión mañana</p>
       <p>leer agenda</p>
