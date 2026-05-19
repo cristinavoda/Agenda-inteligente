@@ -1,11 +1,11 @@
-// sw.js
+
 self.addEventListener('install', () => {
-  console.log('🧩 SW instalado')
+  console.log(' SW instalado')
   self.skipWaiting()
 })
 
 self.addEventListener('activate', () => {
-  console.log('🚀 SW activo')
+  console.log(' SW activo')
 })
 
 // Escucha mensajes de la app para programar reminders
@@ -16,7 +16,7 @@ self.addEventListener('message', event => {
     if (delay <= 0) return
 
     setTimeout(() => {
-      self.registration.showNotification('⏰ Recordatorio', {
+      self.registration.showNotification(' Recordatorio', {
         body: reminder.title,
         icon: '/icon.png',
         actions: [

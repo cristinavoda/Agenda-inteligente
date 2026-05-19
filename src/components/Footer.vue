@@ -21,6 +21,8 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: 'Poppins', sans-serif;
   font-size: 0.8rem;
   overflow: hidden;
+  margin: 10px auto 0;
+  text-align: center;
 }
 
 

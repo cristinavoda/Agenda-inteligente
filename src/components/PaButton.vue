@@ -22,8 +22,8 @@ function togglePA() {
 <style >
 .pa-float-btn {
   position: fixed;
-  right: 24px;
-  bottom: 24px;
+  right: 44px;
+  margin-top: -15px;
   width: 26px;
   height: 26px;
   border-radius: 12px;
@@ -32,7 +32,7 @@ function togglePA() {
   color: rgb(44, 44, 233);
   border: none;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(223, 224, 226, 0.952);
+  box-shadow: 0 10px 5px rgba(223, 224, 226, 0.952);
   backdrop-filter: blur(10px);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -58,18 +58,22 @@ function togglePA() {
   0% {
     box-shadow:
       0 0 0 0 bluecyan,
-      0 10px 5px rgb(90, 106, 243);
+      0 10px 5px rgb(193, 197, 231);
   }
   10% {
     box-shadow:
-      0 0 0 2px rgba(25, 104, 233, 0.959),
-      0 10px 5px rgba(42, 45, 233, 0.945);
+      0 0 0 2px rgba(195, 212, 240, 0.959),
+      0 10px 5px rgba(233, 233, 247, 0.945);
   }
   20% {
     box-shadow:
-      0 0 0 0 rgba(59, 125, 246, 0.863),
-      0 10px 5px rgba(46, 107, 240, 0.884);
+      0 0 0 0 rgba(199, 214, 241, 0.863),
+      0 10px 5px rgba(231, 233, 238, 0.884);
   }
 }
-
+@media (max-width: 750px) {
+ .pa-float-btn {
+  margin-top: -15px ;
+ } 
+}
 </style>

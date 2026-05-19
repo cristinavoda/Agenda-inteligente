@@ -4,9 +4,7 @@
 
  <PaButton />
 
-    <div class="right">
-      <PACapabilitiesDrawer />
-    </div>
+    
  <!--
 <div class="ai-panel">
   <input
@@ -58,34 +56,29 @@ function send() {
 
 h1 {
   font-size: 20px;
+  text-align: center;
+  font-size: 1.5rem;
   font-weight: 600;
   color: rgb(14, 14, 143);
+  margin: 10px auto 0;
 }
 
 .pa-float-btn {
   position: fixed;
-  top: 20px;
-  right: 45px;
-
-  width: 48px;
-  height: 48px;
-
+  top: 50px;
+  right: 75px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: none;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 1.2rem;
-
-  background: linear-gradient(135deg, #e7eaf0, #6c6eee);
+  background: linear-gradient(135deg, #ffffff, #6c6eee);
   color: white;
-
   cursor: pointer;
-
   box-shadow: 0 8px 25px rgba(59,130,246,0.4);
-
   transition: all 0.25s ease;
 }
 
@@ -152,12 +145,15 @@ h1 {
   font-size: 1rem;
   
 }
+
 @media (max-width: 750px) {
  
 .h1 {
   font-size: 1rem;
   font-weight: 500;
 }
-
+.pa-float-btn {
+  margin-right: -20px;
+}
 }
 </style>

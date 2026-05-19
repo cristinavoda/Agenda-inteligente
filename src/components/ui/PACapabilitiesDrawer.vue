@@ -2,7 +2,7 @@
   <div>
    
     <button class="pa-trigger" @click="open = true">
-        i
+        info
     </button>
 
    
@@ -99,22 +99,22 @@ import { ref } from 'vue'
 const open = ref(false)
 </script>
 
-<style scoped>
+<style >
 .pa-trigger {
   background: transparent;
-  border: 1px 2px solid #4b5050;
-  margin-right: 70px;
+  margin-left: 140px;
   padding: 16px 72px;
   border: none;
-  border-bottom: 2px solid #4b5050;
+  color: #1e2cc1;
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .pa-trigger:hover {
-  background: #7d86d3;
+  background: #6471e4;
+  border: #1e2cc1;
  
 }
 .importante {
@@ -209,8 +209,9 @@ const open = ref(false)
 }
 .pa-trigger {
   background: transparent;
-  border: 1px 2px solid #919494;
-  margin-right: 75px;
+  margin-left: 2px;
+  margin-top: 5px;
+  color: rgb(16, 16, 201);
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 0.9rem;
