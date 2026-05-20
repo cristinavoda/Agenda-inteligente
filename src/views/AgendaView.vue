@@ -131,12 +131,12 @@ const calendarOptions = ref({
     successCallback(calendarStore.events)
   },
 
-  // 👇 DRAG & DROP
+ 
   eventDrop: (info) => {
     handleEventChange(info.event)
   },
 
-  // 👇 RESIZE
+  
   eventResize: (info) => {
     handleEventChange(info.event)
     eventDidMount: (info) => {

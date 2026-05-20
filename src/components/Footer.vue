@@ -34,7 +34,7 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   .footer{
     grid-template-columns: 1fr;
     text-align: center;
-     padding: 0.75rem 1rem;
+     padding: 0.85rem 1rem;
     font-size: 0.75rem;
   }
  
