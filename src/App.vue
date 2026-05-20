@@ -93,4 +93,9 @@ onMounted(async () => {
   padding: 16px;
   background: #fafafa;
 }
+@media (max-width: 750px) {
+  .app {
+    width: 100%;
+  }
+}
 </style>

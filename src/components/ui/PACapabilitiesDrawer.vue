@@ -2,7 +2,7 @@
   <div>
    
     <button class="pa-trigger" @click="open = true">
-        info
+        !
     </button>
 
    

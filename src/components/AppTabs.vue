@@ -9,7 +9,7 @@ const tabs = [
   { label: 'Tareas', path: '/tasks' },
   { label: 'Compra', path: '/shopping' },
   { label: 'Notas', path: '/notes' }, 
-  { label: 'Internet', path: '/internet' },
+  { label: '⌕', path: '/internet' },
    
 ]
 </script>
@@ -64,7 +64,8 @@ const tabs = [
 }
 @media (max-width: 750px) {
  .tabs {
-  gap: 10px;
+  gap: 1px;
+  margin-left: 19px;
  }
 .tabs button {
   
