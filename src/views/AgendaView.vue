@@ -65,7 +65,7 @@
     </div>
   </div>
 
-  <!-- acciones -->
+  
   <div class="actions">
     <button @click="startEdit(e)">🖋️</button>
     <button class="close-button" @click="removeEvent(e.id)">✖️</button>
@@ -123,7 +123,7 @@ const calendarOptions = ref({
   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
   initialView: 'dayGridMonth',
   locale: esLocale,
-  editable: true, // 🔥 CLAVE (drag & resize)
+  editable: true, 
   eventStartEditable: true,
   eventDurationEditable: true,
 
@@ -456,8 +456,9 @@ box-shadow: 1px 2px#a1a0a0;
 
 
 .event-title {
-  color: #111827;
-  font-weight: 600;
+  color: #073494;
+  font-weight: 00;
+  font-family: Robot slab;
 }
 
 .close-button {
@@ -501,20 +502,20 @@ box-shadow: 1px 2px#a1a0a0;
 
 .low {
   opacity: 0.7;
-  
+  color: darkcyan;
 }
 
 
 .medium {
   opacity: 1;
- 
+ color: orange;
 }
 
 
 .high {
   transform: scale(1.03);
   box-shadow: 0 5px 15px rgba(153, 91, 91, 0.2);
- 
+ color: red;
 }
 .high {
   border-left-width: 6px !important;
