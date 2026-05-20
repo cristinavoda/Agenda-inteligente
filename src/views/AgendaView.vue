@@ -22,7 +22,7 @@
 
       <ul class="event-list">
 
-<li v-for="e in calendarStore.events" :key="e.id" :style="{ borderLeft: '2px solid ' + (e.color || '#3b82f6') }"
+<li v-for="e in calendarStore.events" :key="e.id" :style="{ borderLeft: '4px solid ' + (e.backgroundColor || '#3b82f6') }"
   :class="['event-item', e.priority]">
 
   
@@ -52,11 +52,12 @@
   @input="updateEventColorLive(editingId, editedEvent.backgroundColor)"
 />
 
-<select v-model="newEventPriority">
+<select v-model="editedEvent.priority">
   <option value="low">Baja</option>
   <option value="medium">Media</option>
   <option value="high">Alta</option>
 </select>
+
     <input type="datetime-local" v-model="editedEvent.start" />
 
     <div class="edit-buttons">
@@ -128,27 +129,42 @@ const calendarOptions = ref({
   eventDurationEditable: true,
 
   events: (info, successCallback) => {
-    successCallback(calendarStore.events)
-  },
+  successCallback(
+    calendarStore.events.map(e => ({ ...e }))
+  )
+},
+eventDrop: (info) => {
+  calendarStore.updateEvent({
+    id: info.event.id,
+    title: info.event.title,
+    start: info.event.start.toISOString(),
+    end: info.event.end?.toISOString(),
+    priority: info.event.extendedProps.priority
+  })
+},
 
- 
-  eventDrop: (info) => {
-    handleEventChange(info.event)
-  },
+eventResize: (info) => {
+  calendarStore.updateEvent({
+    id: info.event.id,
+    title: info.event.title,
+    start: info.event.start.toISOString(),
+    end: info.event.end?.toISOString(),
+    priority: info.event.extendedProps.priority
+  })
+},
+eventDidMount: (info) => {
+  const p = info.event.extendedProps.priority
 
-  
-  eventResize: (info) => {
-    handleEventChange(info.event)
-    eventDidMount: (info) => {
-  if (info.event.extendedProps.priority === 'high') {
-    info.el.style.border = '2px solid #111'
+  if (p === 'high') {
+    info.el.style.borderLeft = '4px solid #111'
   }
 
-  if (info.event.extendedProps.priority === 'low') {
+  if (p === 'low') {
     info.el.style.opacity = '0.7'
   }
 }
-  }
+ 
+  
 })
 
 
@@ -220,7 +236,9 @@ const editingId = ref(null)
 const editedEvent = ref({
   title: '',
   start: '',
-  reminder: ''
+  reminder: '',
+  backgroundColor: '#3b82f6',
+priority: 'medium'
 })
 const startEdit = (event) => {
   editingId.value = event.id
@@ -234,16 +252,10 @@ const newEventColor = ref('#3b82f6')
 const newEventPriority = ref('medium') 
 
 const saveEdit = () => {
-  const updated = {
+  calendarStore.updateEvent({
     ...editedEvent.value,
     start: new Date(editedEvent.value.start).toISOString()
-  }
-
-  calendarStore.updateEvent(updated)
-
-  const api = calendar.value?.getApi()
-  api?.removeAllEvents()
-  api?.addEventSource(calendarStore.events)
+  })
 
   editingId.value = null
 }
@@ -252,24 +264,34 @@ const saveEdit = () => {
 const cancelEdit = () => {
   editingId.value = null
 }
+
 const updateEventColorLive = (eventId, color) => {
   const api = calendar.value?.getApi()
   const event = api?.getEventById(eventId)
 
   if (event) {
-    event.setProp('backgroundColor', color) // 🔥 cambia en vivo
+    event.setProp('backgroundColor', color)
   }
 
-  // guardar en store
-  const original = calendarStore.events.find(e => e.id === eventId)
+  const original = calendarStore.events.find(
+    e => e.id === eventId
+  )
 
   if (original) {
     calendarStore.updateEvent({
       ...original,
-      backgroundColor: color
+      backgroundColor: color,
+      priority: editedEvent.value.priority
     })
   }
 }
+
+
+
+  
+
+
+
 
 watch(
   () => calendarStore.events,
@@ -279,7 +301,23 @@ watch(
   },
   { deep: true }
 )
+watch(
+  () => editedEvent.value.priority,
+  (priority) => {
 
+    if (priority === 'high') {
+      editedEvent.value.backgroundColor = '#ef4444'
+    }
+
+    if (priority === 'medium') {
+      editedEvent.value.backgroundColor = '#f59e0b'
+    }
+
+    if (priority === 'low') {
+      editedEvent.value.backgroundColor = '#10b981'
+    }
+  }
+)
 
 </script>
 
