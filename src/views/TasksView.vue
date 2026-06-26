@@ -53,9 +53,9 @@
 
     <textarea v-if="editType === 'notes'" v-model="selectedItem.text"></textarea>
 <select v-model="selectedItem.priority">
-  <option value="high">High</option>
-  <option value="medium">Medium</option>
-  <option value="low">Low</option>
+  <option value="urgente">urgente</option>
+  <option value="importante">importante </option>
+  <option value="normal">normal</option>
 </select>
 <div class="buttons-modal">
     <button @click="saveEdit">Save</button>
@@ -167,19 +167,19 @@ function updateTask(task) {
 }
 
 
-.high {
+.urgente{
   background: #ff3b30;
   color: white;
   margin-left: 9px;
 }
 
-.medium {
+.importante {
   background: #ff9500;
   color: white;
   margin-left: 9px;
 }
 
-.low {
+.normal {
   background: #34c759;
   color: white;
   margin-left: 9px;

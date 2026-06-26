@@ -1,4 +1,4 @@
-// hotwordListener.js
+
 import { paActive } from './paEngine'
 import { stopListening } from './speechInput'
 
