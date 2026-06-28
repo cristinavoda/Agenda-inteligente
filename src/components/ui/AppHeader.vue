@@ -59,7 +59,14 @@ h1 {
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
-  color: rgb(14, 14, 143);
+  
+   background: linear-gradient(135deg, #2d0de4, #7a7cf7);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
+
   margin: 10px auto 0;
 }
 

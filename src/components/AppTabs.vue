@@ -24,6 +24,8 @@ const tabs = [
       {{ tab.label }}
     </button>
     <PACapabilitiesDrawer />  
+
+    
   </nav>
 
 
@@ -31,7 +33,7 @@ const tabs = [
 
 </template>
 
-<style scoped>
+<style >
 .tabs {
   display: flex;
   justify-content: center;
@@ -54,14 +56,16 @@ const tabs = [
   color: #363636;
 }
 
-.tabs button.active {
-  color: darkblue;
-  border-bottom: 2px solid rgb(19, 17, 138);
-  font-weight: 600;
-}
 .tabs button:hover {
-  color: #2e1792a8;
+  color: #2e0bcea8;
 }
+.tabs button.active {
+  color: rgb(22, 22, 165) !important;
+   border-bottom: 3px solid transparent;
+  border-image: linear-gradient(90deg, #2563eb, #9333ea, #48ecd1) 1;
+  font-family: Roboto slab;
+}
+
 @media (max-width: 750px) {
  .tabs {
   gap: 1px;
@@ -73,15 +77,16 @@ const tabs = [
   border: none;
   
   font-weight: 500;
-  font-size: 1rem;
-  color: #5c5a5a;
+  font-size: 17px;
+  color: #302e2e;
 }
 .tabs .active {
-  color: rgb(53, 52, 58);
-  border-bottom: 2px solid black;
+  color: rgb(50, 22, 189);
+  border-bottom: 2px solid rgb(23, 11, 190);
+  font-family: Roboto slab;
 }
 .tabs button:hover {
-  color: #0a0a0a;
+  color: #3408d1;
 }
 }
 

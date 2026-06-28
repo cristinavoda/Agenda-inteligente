@@ -23,7 +23,7 @@ function togglePA() {
 .pa-float-btn {
   position: fixed;
   right: 44px;
-  margin-top: -15px;
+  margin-top: -35px;
   width: 26px;
   height: 26px;
   border-radius: 12px;
@@ -73,7 +73,7 @@ function togglePA() {
 }
 @media (max-width: 750px) {
  .pa-float-btn {
-  margin-top: -15px ;
+  margin-top: -10px ;
  } 
 }
 </style>

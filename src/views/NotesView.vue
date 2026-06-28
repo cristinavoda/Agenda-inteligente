@@ -1,6 +1,6 @@
 <template>
   <div class="notes-container">
-    <h2>Notas</h2>
+    <h2 class="title">Notas</h2>
 
    
     <textarea
@@ -9,7 +9,7 @@
       rows="5"
     />
 
-    <button @click="addNote">Guardar nota</button>
+    <button @click="addNote" class="save-btn">Guardar nota</button>
 
     
     <ul class="notes-list">
@@ -39,7 +39,7 @@
   <div class="note-footer">
     <small>{{ formatDate(note.createdAt) }}</small>
     
-    <button @click="remove(note.id)">✖</button>
+    <button @click="remove(note.id)" class="remove">✖</button>
   </div>
 </li>
   
@@ -140,6 +140,43 @@ function updateNote(note) {
   margin: auto;
 }
 
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+    
+   background: linear-gradient(135deg, #220aad, #5d5fbe);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
+}
+
+.save-btn {
+  display: block;
+  margin: 0 auto 16px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  
+   
+   background: linear-gradient(135deg, #2d0de4, #7a7cf7);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.save-btn :hover {
+  background: linear-gradient(135deg, #2d0de4, #7a7cf7);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
 textarea {
   width: 100%;
   padding: 8px;
@@ -155,16 +192,17 @@ textarea {
 
 .notes-list li {
   padding: 12px 0;
-  border-bottom: 1px solid #717174;
+  border-bottom: 1px solid #0d0dbb;
 }
 
 .note-content {
   font-size: 1.3rem;
-  padding: 4px 0;
+  padding: 4px 4px  5px;
   color: #201f1f;
   justify-content: space-between;
   display: inline-flex;
-  margin-top: 1px;
+  margin-top: 3px;
+  margin-left: 7px;
   color: #201f1f;
 }
 .note-footer {
@@ -173,6 +211,7 @@ textarea {
   align-items: center; 
   margin-top: 6px;
   color: #999;
+  margin-left: 17px;
 }
 
 .note-footer button {
@@ -182,23 +221,15 @@ textarea {
   cursor: pointer;
   margin-bottom: 1px;
   height: fit-content;
+  font-size: 16px;
+  color: #888;
+  margin-left: 16px;
 }
+
 .note-footer button:hover {
   color: #333;
 }
 
-.remove {
-  background: transparent;
-  border: white;
-  border-bottom: #0f0f0f solid 2px;
-  cursor: pointer;
-  opacity: 0.5;
-}
-
-.remove:hover {
-  opacity: 1;
-  background-color: #999;
-}
 .urgente{
   background: #ff3b30;
   color: white;
@@ -240,7 +271,9 @@ li.low {
  border: #d1d1d8;
   cursor: pointer;
   opacity: 0.5;
-  border-bottom: 2px 2px #666;
+  color: #333131;
+  border-bottom: 2px 2px #494747;
+  margin-right: 16px;
 
 }
 
@@ -249,24 +282,18 @@ li.low {
 }
 
 
-.edit-btn {
-  margin-right: 40px;
-  padding: 6px;
-  display: inline-block;
-  background: transparent;
-  cursor: pointer;
-  font-weight: 600;
-  border-bottom: 2px 2px #666;
-}
-.note-btn {
-   margin-right: 40px;
 
-  padding: 6px;
-  display: inline-block;
-  background: transparent;
-  cursor: pointer;
-  color: darkcyan;
-  border-bottom: 2px 2px #666;
+.edit-btn,
+.note-btn {
+  background: rgba(0,0,0,0.04);
+  border-radius: 8px;
+  padding: 6px 8px;
+  transition: 0.2s;
+}
+
+.edit-btn:hover,
+.note-btn:hover {
+  background: rgba(0,0,0,0.08);
 }
 .buttons-modal {
   display: flex;
@@ -296,18 +323,30 @@ li.low {
 }
 .note-item {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  position: relative;
+  gap: 10px;
+  
+  margin-bottom: 12px;
+  padding: 14px 4px 14px 16px;
+  border-radius: 14px;
+
+  background: #ffffff;
+  border: 1px solid #eee;
+
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.note-header {
+  display: flex;
   justify-content: space-between;
-  padding: 10px 12px;
-  border-radius: 10px;
-  margin-bottom: 8px;
-  background: #fff;
-  transition: 0.2s;
+  align-items: center;
 }
 
 .note-item:hover {
   transform: scale(1.01);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 20px rgba(11, 8, 187, 0.08);
 }
 .note-item.high {
   border-left: 4px solid #ff3b30;
@@ -322,10 +361,13 @@ li.low {
 }
 .badge {
   font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
   text-transform: uppercase;
+  
   opacity: 0.8;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .high .badge {
@@ -414,6 +456,11 @@ li.low {
   .note-item {
     flex-direction: column;
     align-items: flex-start;
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    padding: 4px 16px;
   }
 
   .number {
@@ -423,7 +470,11 @@ li.low {
   .title {
     width: 100%;
   }
-
+ .note-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
   .note-content {
     font-size: 1rem;
     width: 100%;
@@ -440,6 +491,7 @@ li.low {
   .note-btn {
     margin-right: 0;
     padding: 4px;
+    font-size: 1.2rem;
   }
 
   .badge {

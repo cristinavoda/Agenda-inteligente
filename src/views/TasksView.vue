@@ -1,6 +1,6 @@
 <template>
   <div class="tasks-container">
-    <h2>Tareas</h2>
+    <h2 class="h2">Tareas</h2>
 
    
     <div class="task-input">
@@ -136,7 +136,21 @@ function updateTask(task) {
   margin: auto;
   padding: 1rem;
 }
+.h2 {
+  font-size: 14px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  
+   background: linear-gradient(135deg, #2d0de4, #18067e);
 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
+
+  margin: 10px auto 0;
+}
 .task-input {
   display: flex;
   gap: 8px;
