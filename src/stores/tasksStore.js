@@ -1,48 +1,49 @@
 import { defineStore } from 'pinia'
+
+const STORAGE_KEY = 'tasks'
+
 export const useTasksStore = defineStore('tasks', {
   state: () => ({
-    tasks: [
-      {
-        id: 1,
-        title: "Comprar leche",
-        priority: "high",
-        done: false
-      },
-      {
-        id: 2,
-        title: "Estudiar Vue",
-        priority: "medium",
-        done: false
-      }
-    ]
+    tasks: JSON.parse(localStorage.getItem('tasks') || '[]')
   }),
 
   actions: {
-  
-  addTask(title) {
+
+    addTask(title) {
       this.tasks.unshift({
         id: Date.now(),
         title,
         priority: "low",
-        done: false
+        done: false,
+        editing: false,
+        createdAt: Date.now()
       })
 
       this.persist()
     },
 
-    persist() {
-      localStorage.setItem('tasks', JSON.stringify(this.tasks))
+    updateTask(updated) {
+      const i = this.tasks.findIndex(t => t.id === updated.id)
+
+      if (i !== -1) {
+        this.tasks[i] = {
+          ...this.tasks[i],
+          ...updated
+        }
+        this.persist()
+      }
     },
-  
+
+    toggleDone(id) {
+      const t = this.tasks.find(t => t.id === id)
+      if (t) {
+        t.done = !t.done
+        this.persist()
+      }
+    },
+
     removeTask(id) {
-      this.$patch(state => {
-        state.tasks = state.tasks.filter(t => t.id !== id)
-      })
-      this.persist()
-    },
-
-    removeAllTasks() {
-      this.$patch(state => { state.tasks = [] })
+      this.tasks = this.tasks.filter(t => t.id !== id)
       this.persist()
     },
 

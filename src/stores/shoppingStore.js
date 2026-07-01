@@ -49,6 +49,6 @@ export const useShoppingStore = defineStore('shopping', () => {
     addItem,
     updateShopping,
     removeItem,
-     clearShoppingList 
+    clearShoppingList 
   }
 })

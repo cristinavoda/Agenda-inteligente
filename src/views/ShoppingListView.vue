@@ -21,7 +21,7 @@
 
       <button @click="addItem" class="btn-add">+</button>
     
-<input v-model="userText" placeholder="Menu:...."  class="shop-input" />
+<input v-model="userText" placeholder="Menu semanal:...."  class="shop-input" />
 
 <button @click="handleAI" class="btn-AI">
    Generar lista
@@ -110,7 +110,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useShoppingStore } from '../stores/shoppingStore'
-import { generateShoppingList } from '../utils/shoppingAI'
+import { shoppingAIv2 } from '../utils/shoppingAI'
 
 
 const userText = ref('')
@@ -123,19 +123,29 @@ const isModalOpen = ref(false)
 const selectedItem = ref(null)
 const editType = ref('')
 
+  const result = shoppingAIv2(userText.value)
+
+result.shoppingList.forEach(i => {
+  shoppingStore.addItem({
+    title: i,
+    quantity: "",
+    priority: "low",
+    done: false
+  })
+})
+
 
 function handleAI() {
-  const items = generateShoppingList(userText.value)
-
-  items.forEach(item => {
-    shoppingStore.addItem({
-      title: item,
-      quantity: '',
-      priority: '',
-      done: false
-    })
+  const result = shoppingAIv2(userText.value)
+console.log(result)
+  result.shoppingList.forEach(item => {
+  shoppingStore.addItem({
+    title: item,
+    quantity: '',
+    priority: '',
+    done: false
   })
-
+})
   userText.value = ''
 }
 

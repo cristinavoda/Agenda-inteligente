@@ -17,32 +17,57 @@
     
     <ul class="task-list">
 
-      
-<li v-for="(task, index) in tasksStore.tasks"
+      <li v-for="(task, index) in tasksStore.tasks"
     :key="task.id"
-      :class="['task-item', { done: task.done }]"
-     @dblclick="openEdit(task, 'tasks')">
-
-<span class="badge" :class="task.priority">
-  {{ task.priority }}
+    :class="{ done: task.done }"
+    class="task-item">
+<span class="priority-bar"
+      :class="task.priority"
+      @click="task.showPriority = !task.showPriority">
 </span>
+
+<select v-if="task.showPriority"
+        v-model="task.priority"
+        @change="saveTask(task)"
+        @blur="task.showPriority = false">
+  <option value="low">Low</option>
+  <option value="medium">Medium</option>
+  <option value="high">High</option>
+</select>
+  <!-- DRAG -->
+  <span class="drag">⋮⋮</span>
+
+  <!-- NUMBER -->
   <span class="number">{{ index + 1 }}.</span>
-  
-  <span class="title">{{ task.title }}</span>
-  
-  <span class="edit-btn" @click="openEdit(task, 'tasks')">✎</span>
 
-  <span class="task-btn" @click="task.done = !task.done">
-  ✔
-</span>   
+  <!-- CHECKBOX -->
+  <input type="checkbox" v-model="task.done" />
 
-  <button @click="remove(task.id)">✖</button>
+  <!-- TITLE INLINE -->
+  <span v-if="!task.editing"
+        class="title"
+        @click="task.editing = true">
+    {{ task.title }}
+  </span>
+
+  <input v-else
+         v-model="task.title"
+         @blur="saveTask(task)"
+         @keyup.enter="saveTask(task)" />
+
+  <!-- PRIORITY BAR (minimalista) -->
+
+  <!-- EDIT (opcional si mantienes inline ya casi sobra) -->
+  <span class="edit-btn" @click="task.editing = true">✎</span>
+
+  <!-- DELETE -->
+  <span class="delete" @click="tasksStore.removeTask(task.id)">✖</span>
 
 </li>
-    
+
     </ul>
 
-
+ 
     
      <div v-if="isModalOpen" class="modal-backdrop"@click.self="isModalOpen = false">
   <div class="modal">
@@ -74,14 +99,32 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import { useTasksStore } from '../stores/tasksStore'
+import Sortable from 'sortablejs'
+import { suggestTasks } from '../utils/tasksAI'
+
+onMounted(() => {
+  const el = document.querySelector('.task-list')
+
+  Sortable.create(el, {
+    animation: 150,
+    handle: '.drag',
+
+    onEnd(evt) {
+      const moved = tasksStore.tasks.splice(evt.oldIndex, 1)[0]
+      tasksStore.tasks.splice(evt.newIndex, 0, moved)
+      tasksStore.persist()
+    }
+  })
+})
 
 const tasksStore = useTasksStore()
 const newTask = ref('')
 const isModalOpen = ref(false)
 const selectedItem = ref(null)
 const editType = ref('')
+const userText = ref('')
 
 function openEdit(item, type) {
   selectedItem.value = { ...item }
@@ -106,26 +149,34 @@ function formatDate(date) {
   })
 }
 
-function saveEdit() {
-  if (editType.value === 'tasks') {
-    updateTask(selectedItem.value)
-  }
-
-  if (editType.value === 'shopping') {
-    updateShopping(selectedItem.value)
-  }
-
-  if (editType.value === 'notes') {
-    updateNote(selectedItem.value)
-  }
-console.log('closing modal')
-  isModalOpen.value = false
+function saveEdit(task) {
+  task.editing = false
+  tasksStore.updateTask(task)
 }
+
+
+function saveTask(task) {
+  task.editing = false
+  task.showPriority = false
+  tasksStore.updateTask(task)
+}
+
 function updateTask(task) {
   const index = tasksStore.tasks.findIndex(t => t.id === task.id)
   if (index !== -1) {
     tasksStore.tasks[index] = task
   }
+}
+
+function handleAI() {
+
+  const suggestions = suggestTasks(userText.value)
+
+  suggestions.forEach(task => {
+    tasksStore.addTask(task.title)
+  })
+
+  userText.value = ''
 }
 </script>
 
@@ -181,8 +232,30 @@ function updateTask(task) {
 }
 
 
+
+
+.priority-bar {
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+.priority-bar.urgente {
+  background: #d30a0a;
+}
+
+.priority-bar.medio{
+  background: #f59e0b;
+}
+
+.priority-bar.normal {
+  background: #10b981;
+}
 .urgente{
-  background: #ff3b30;
+  background: #b31108;
   color: white;
   margin-left: 9px;
 }
@@ -205,6 +278,39 @@ li.medium {
 
 li.low {
   border-left: 4px solid #34c759;
+}
+.priority-bar {
+  width: 4px;
+  height: 18px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+
+.priority-bar.high {
+  background: #ef4444;
+}
+
+.priority-bar.medium {
+  background: #f59e0b;
+}
+
+.priority-bar.low {
+  background: #10b981;
+}
+
+
+.priority-bar.urgente {
+  background: #be0606;
+}
+
+.priority-bar.importante {
+  background: #f59e0b;
+}
+
+.priority-bar.normal {
+  background: #10b981;
 }
 .number {
   width: 24px;
@@ -291,38 +397,28 @@ li.low {
   transform: scale(1.01);
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-.task-item.high {
-  border-left: 4px solid #ff3b30;
+
+
+
+.priority-bar {
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
 }
 
-.task-item.medium {
-  border-left: 4px solid #ff9500;
+.priority-bar.urgente {
+  background: #9e0909;
 }
 
-.task-item.low {
-  border-left: 4px solid #34c759;
-}
-.badge {
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 12px;
-  text-transform: uppercase;
-  opacity: 0.8;
+.priority-bar.medio{
+  background: #f59e0b;
 }
 
-.high .badge {
-  background: #ff3b30;
-  color: white;
-}
-
-.medium .badge {
-  background: #ff9500;
-  color: white;
-}
-
-.low .badge {
-  background: #34c759;
-  color: white;
+.priority-bar.normal {
+  background: #10b981;
 }
 .task-item.done {
   margin-right: 100px;
@@ -352,7 +448,7 @@ li.low {
   color: #aaa;
   opacity: 0.6;
 }
-.task-item.done .badge {
+.task-item.done .bar {
   opacity: 0.4;
   filter: grayscale(100%);
 }
@@ -360,4 +456,105 @@ li.low {
   filter: blur(0.3px);
   transition: 0.2s;
 }
+.task-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+}
+
+.done {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.bar {
+  width: 4px;
+  height: 18px;
+  border-radius: 2px;
+}
+
+.bar.urgente { background: #af0303; }
+.bar.medium { background: #cf8a12; }
+.bar.low { background: #10b981; }
+
+.drag {
+  cursor: grab;
+  opacity: 0.4;
+}
+
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: 8px;
+}
+
+/* DRAG */
+.drag {
+  cursor: grab;
+  opacity: 0.4;
+}
+
+/* NUMBER */
+.number {
+  width: 22px;
+  color: #999;
+  font-size: 12px;
+}
+
+/* TITLE */
+.title {
+  flex: 1;
+}
+
+/* DONE */
+.task-item.done {
+  opacity: 0.5;
+}
+
+.task-item.done .title {
+  text-decoration: line-through;
+  color: #999;
+}
+
+/* PRIORITY BAR (MUY LIMPIO) */
+.priority-bar {
+  width: 4px;
+  height: 18px;
+  border-radius: 2px;
+}
+
+.priority-bar.high { background: #ef4444; }
+.priority-bar.medium { background: #f59e0b; }
+.priority-bar.low { background: #10b981; }
+
+/* DELETE */
+.delete {
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+.delete:hover {
+  opacity: 1;
+}
+.task-item .delete,
+.task-item .edit-btn {
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.task-item:hover .delete,
+.task-item:hover .edit-btn {
+  opacity: 1;
+}
+.task-item {
+  border-left: 3px solid transparent;
+}
+
+.task-item.high { border-left-color: #ef4444; }
+.task-item.medium { border-left-color: #f59e0b; }
+.task-item.low { border-left-color: #10b981; }
 </style>
