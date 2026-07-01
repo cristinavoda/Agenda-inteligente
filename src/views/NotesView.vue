@@ -5,6 +5,7 @@
    
     <textarea
       v-model="newNote"
+      class="note-input"
       placeholder="Escribe una nota…"
       rows="5"
     />
@@ -153,7 +154,16 @@ function updateNote(note) {
 
   background-clip: text;
 }
-
+.note-input {
+  width: 100%;
+  padding: 8px;
+  resize: vertical;
+  margin-bottom: 8px;
+  font-size: 1.3rem;
+  color: #161515;
+  border-radius: 4px;
+  border: 1px solid #eeeaea;
+}
 .save-btn {
   display: block;
   margin: 0 auto 16px;
@@ -272,8 +282,7 @@ li.low {
   cursor: pointer;
   opacity: 0.5;
   color: #333131;
-  border-bottom: 2px 2px #494747;
-  margin-right: 16px;
+   margin-right: 16px;
 
 }
 

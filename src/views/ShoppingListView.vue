@@ -123,21 +123,13 @@ const isModalOpen = ref(false)
 const selectedItem = ref(null)
 const editType = ref('')
 
-  const result = shoppingAIv2(userText.value)
-
-result.shoppingList.forEach(i => {
-  shoppingStore.addItem({
-    title: i,
-    quantity: "",
-    priority: "low",
-    done: false
-  })
-})
+ 
 
 
 function handleAI() {
   const result = shoppingAIv2(userText.value)
 console.log(result)
+ if (!result || !result.shoppingList) return
   result.shoppingList.forEach(item => {
   shoppingStore.addItem({
     title: item,

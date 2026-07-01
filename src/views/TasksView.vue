@@ -34,16 +34,16 @@
   <option value="medium">Medium</option>
   <option value="high">High</option>
 </select>
-  <!-- DRAG -->
+ 
   <span class="drag">⋮⋮</span>
 
-  <!-- NUMBER -->
+ 
   <span class="number">{{ index + 1 }}.</span>
 
-  <!-- CHECKBOX -->
+  
   <input type="checkbox" v-model="task.done" />
 
-  <!-- TITLE INLINE -->
+ 
   <span v-if="!task.editing"
         class="title"
         @click="task.editing = true">
@@ -55,12 +55,10 @@
          @blur="saveTask(task)"
          @keyup.enter="saveTask(task)" />
 
-  <!-- PRIORITY BAR (minimalista) -->
-
-  <!-- EDIT (opcional si mantienes inline ya casi sobra) -->
+  
   <span class="edit-btn" @click="task.editing = true">✎</span>
 
-  <!-- DELETE -->
+  
   <span class="delete" @click="tasksStore.removeTask(task.id)">✖</span>
 
 </li>
@@ -206,18 +204,21 @@ function handleAI() {
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
-  font-size: 1rem;
+  font-size: 1.3rem;
+  border: 1px solid #e5e5eb;
 }
 
 .task-input input {
   flex: 1;
   padding: 4px;
+  border: none;
 }
 .btn-add {
   padding: 9px 11px;
   cursor: pointer;
+  font-size: 1.3rem;
   border: white solid 0.5px;
-  border-bottom: #181717 solid 2px;
+ 
 }
 .task-list {
   list-style: none;
@@ -229,93 +230,13 @@ function handleAI() {
   align-items: center;
   padding: 8px 0;
   border-bottom: 1px solid #d1d1d8;
+  font-size: 1.2rem;
 }
 
-
-
-
-.priority-bar {
-  width: 4px;
-  height: 18px;
-  border-radius: 4px;
-  display: inline-block;
-  margin-right: 20px;
-  vertical-align: middle;
-}
-
-.priority-bar.urgente {
-  background: #d30a0a;
-}
-
-.priority-bar.medio{
-  background: #f59e0b;
-}
-
-.priority-bar.normal {
-  background: #10b981;
-}
-.urgente{
-  background: #b31108;
-  color: white;
-  margin-left: 9px;
-}
-
-.importante {
-  background: #ff9500;
-  color: white;
-  margin-left: 9px;
-}
-
-.normal {
-  background: #34c759;
-  color: white;
-  margin-left: 9px;
-}
-
-li.medium {
-  border-left: 4px solid #ff9500;
-}
-
-li.low {
-  border-left: 4px solid #34c759;
-}
-.priority-bar {
-  width: 4px;
-  height: 18px;
-  border-radius: 2px;
-  display: inline-block;
-  margin-right: 8px;
-}
-
-
-.priority-bar.high {
-  background: #ef4444;
-}
-
-.priority-bar.medium {
-  background: #f59e0b;
-}
-
-.priority-bar.low {
-  background: #10b981;
-}
-
-
-.priority-bar.urgente {
-  background: #be0606;
-}
-
-.priority-bar.importante {
-  background: #f59e0b;
-}
-
-.priority-bar.normal {
-  background: #10b981;
-}
 .number {
   width: 24px;
   font-weight: 600;
-  color: #666;
+  color: #302d2d;
   padding: 20px;;
 }
 
@@ -338,7 +259,7 @@ li.low {
 
 
 .edit-btn {
-  margin-right: 40px;
+  margin-right: 30px;
   padding: 6px;
   display: inline-block;
   background: transparent;
@@ -346,171 +267,29 @@ li.low {
   font-weight: 600;
   border-bottom: 2px 2px #666;
 }
-.task-btn {
-   margin-right: 40px;
 
-  padding: 6px;
-  display: inline-block;
-  background: transparent;
-  cursor: pointer;
-  color: darkcyan;
-  border-bottom: 2px 2px #666;
-}
-.buttons-modal {
-  display: flex;
-  gap: 19px;
-  justify-content: center;
-  margin-top: 16px;
-}
-.buttons-modal button:hover {
-  transform: scale(1.05);}
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal {
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  width: 320px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-  animation: pop 0.2s ease;
-}
-.task-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-radius: 10px;
-  margin-bottom: 8px;
-  background: #fff;
-  transition: 0.2s;
-}
-
-.task-item:hover {
-  transform: scale(1.01);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-
-
-.priority-bar {
-  width: 4px;
-  height: 18px;
-  border-radius: 4px;
-  display: inline-block;
-  margin-right: 10px;
-  vertical-align: middle;
-}
-
-.priority-bar.urgente {
-  background: #9e0909;
-}
-
-.priority-bar.medio{
-  background: #f59e0b;
-}
-
-.priority-bar.normal {
-  background: #10b981;
-}
-.task-item.done {
-  margin-right: 100px;
+.drag {
+  cursor: grab;
   opacity: 0.4;
-  text-decoration: line-through;
-}
-.actions {
-  display: flex;
-  gap: 8px;
-  opacity: 0;
-  transition: 0.2s;
-}
-.task-item.done {
-  opacity: 0.5;
+  color: #666;
+  cursor: grab;
+  padding: 0 9px;
   
 }
-.task-item:hover .actions {
-  opacity: 1;
-}
-
-.done .title {
-  text-decoration: line-through;
-  opacity: 0.5;
-   color: #999;
-}
-.task-item.done .number {
-  color: #aaa;
-  opacity: 0.6;
-}
-.task-item.done .bar {
-  opacity: 0.4;
-  filter: grayscale(100%);
-}
-.done {
-  filter: blur(0.3px);
-  transition: 0.2s;
-}
-.task-list li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px;
-}
-
-.done {
-  opacity: 0.5;
-  text-decoration: line-through;
-}
-
-.bar {
-  width: 4px;
-  height: 18px;
-  border-radius: 2px;
-}
-
-.bar.urgente { background: #af0303; }
-.bar.medium { background: #cf8a12; }
-.bar.low { background: #10b981; }
-
-.drag {
-  cursor: grab;
-  opacity: 0.4;
-}
 
 
-.task-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 6px;
-  border-radius: 8px;
-}
-
-/* DRAG */
-.drag {
-  cursor: grab;
-  opacity: 0.4;
-}
-
-/* NUMBER */
 .number {
   width: 22px;
-  color: #999;
-  font-size: 12px;
+  color: #222121;
+  font-size: 14px;
 }
 
-/* TITLE */
+
 .title {
   flex: 1;
 }
 
-/* DONE */
+
 .task-item.done {
   opacity: 0.5;
 }
@@ -520,7 +299,7 @@ li.low {
   color: #999;
 }
 
-/* PRIORITY BAR (MUY LIMPIO) */
+
 .priority-bar {
   width: 4px;
   height: 18px;
@@ -531,7 +310,7 @@ li.low {
 .priority-bar.medium { background: #f59e0b; }
 .priority-bar.low { background: #10b981; }
 
-/* DELETE */
+
 .delete {
   opacity: 0.3;
   cursor: pointer;
@@ -554,7 +333,5 @@ li.low {
   border-left: 3px solid transparent;
 }
 
-.task-item.high { border-left-color: #ef4444; }
-.task-item.medium { border-left-color: #f59e0b; }
-.task-item.low { border-left-color: #10b981; }
+
 </style>

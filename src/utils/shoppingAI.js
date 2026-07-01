@@ -1,14 +1,14 @@
 export function shoppingAIv2(input) {
   const text = input.toLowerCase()
 
-  const menu = {
+  
+ const menu = {
     desayuno: [],
     comida: [],
     cena: [],
     merienda: []
   }
 
-  // 🧠 MENÚ BASE ESPAÑOL
   const recipes = {
     desayuno: [
       {
@@ -52,32 +52,194 @@ export function shoppingAIv2(input) {
         title: "Bocadillo de jamón",
         ingredients: ["pan", "jamón"]
       }
-    ]
-  }
+    ],
+    pizza: {
+      title: "Pizza",
+      ingredients: ["harina", "tomate", "queso", "aceite de oliva"]
+    },
+    paella: {
+      title: "Paella",
+      ingredients: ["arroz", "pollo", "caldo", "pimiento", "aceite de oliva"]
+  }, 
 
- 
-  if (text.includes("menú") || text.includes("semana") || text.includes("completo")) {
+  carbonara: {
+    title: "Pasta Carbonara",
+    ingredients: ["pasta", "huevo", "queso", "bacon"]
+  }
+  ,
+bolognese: {
+    title: "Pasta Bolognese",
+    ingredients: ["pasta", "carne picada", "tomate", "cebolla", "aceite de oliva"]
+  }
+  ,salmon: { 
+    title: "Salmón al horno",
+    ingredients: ["salmón", "limón", "aceite de oliva"]
+  }
+    ,
+  sopa: {
+    title: "Sopa de verduras",
+    ingredients: ["calabacín", "zanahoria", "patata", "cebolla", "aceite de oliva"]
+  }
+    ,
+  hamburguesa: {
+    title: "Hamburguesa",
+    ingredients: ["pan", "carne picada", "lechuga", "tomate", "queso"]
+  }
+  ,macarrones: {
+    title: "Macarrones con tomate",
+    ingredients: ["macarrones", "tomate", "aceite de oliva", "queso"],},
+
+    polloAsado: {
+    title: "Pollo asado",
+    ingredients: ["pollo", "limón", "aceite de oliva", "ajo"] 
+  },
+  ratatouille: {
+    title: "Ratatouille",
+    ingredients: ["calabacín", "berenjena", "pimiento", "tomate", "aceite de oliva"]
+  },
+  verdurasSalteadas: {
+    title: "Verduras salteadas",
+    ingredients: ["calabacín", "zanahoria", "pimiento", "aceite de oliva"]
+  },
+  pescadoAlHorno: {
+},
+
+}
+
+const intents = {
+  desayuno: /desayuno|breakfast/,
+  comida: /comida|lunch/,
+  cena: /cena|dinner/,
+  menu: /menú|semana|completo/
+}
+
+if (intents.menu.test(text)) {
+  // todo
+}
+ let usedAny = false
+
+
+  if (text.includes("menú") || text.includes("semana") || text.includes("completo" )) {
     menu.desayuno.push(...recipes.desayuno)
     menu.comida.push(...recipes.comida)
     menu.cena.push(...recipes.cena)
     menu.merienda.push(...recipes.merienda)
   }
+
+
 if (text.includes("carbonara")) {
   menu.comida.push(recipes.carbonara)
 }
+
+
 
 if (text.includes("pizza")) {
   menu.cena.push(recipes.pizza)
 }
 
+if (text.includes("bolognese")) {
+  menu.cena.push(recipes.bolognese)
+
+}
+if (text.includes("salmon")) {
+  menu.comida.push(recipes.salmon)
+}
+if (text.includes("sopa")) {
+  menu.comida.push(recipes.sopa)
+}
+if (text.includes("hamburguesa")) {
+  menu.cena.push(recipes.hamburguesa)
+}
+if (text.includes("macarrones")) {
+  menu.comida.push(recipes.macarrones)
+}
+if (text.includes("pollo asado")) {
+  menu.comida.push(recipes.polloAsado)
+}
+if (text.includes("ratatouille")) {
+  menu.comida.push(recipes.ratatouille)
+}
+if (text.includes("verduras salteadas")) {
+  menu.comida.push(recipes.verdurasSalteadas)
+}
+if (text.includes("pescado al horno")) {
+  menu.comida.push(recipes.pescadoAlHorno)
+}
+if (text.includes("ensalada")) {
+  menu.comida.push(recipes.ensaladaMixta)
+
+    if (text.includes("ensalada mixta")) {
+    menu.comida.push(recipes.ensaladaMixta)
+  }
+  if (text.includes("ensalada cesar")) {
+    menu.comida.push(recipes.ensaladaCesar)
+  }
+    if (text.includes("ensalada caprese")) {
+    menu.comida.push(recipes.ensaladaCaprese)
+  }
+  if (text.includes("ensalada griega")) {
+    menu.comida.push(recipes.ensaladaGriega)
+  }
+    if (text.includes("ensalada de pasta")) {
+
+    menu.comida.push(recipes.ensaladaDePasta)
+    if (text.includes("ensalada de quinoa")) {
+
+    menu.comida.push(recipes.ensaladaDeQuinoa)
+  } 
+}
+if (text.includes("ensalada de garbanzos")) {
+
+
+    menu.comida.push(recipes.ensaladaDeGarbanzos)
+  }
+
+
 if (text.includes("paella")) {
   menu.comida.push(recipes.paella)
 }
-
+if (text.includes("tortilla")) {
+  menu.cena.push(recipes.tortillaDePatatas)
+}
+if (text.includes("crema de verduras")) {
+  menu.cena.push(recipes.cremaDeVerduras)
+}
+if (text.includes("yogur con fruta")) {
+  menu.merienda.push(recipes.yogurConFruta)
+}
+if (text.includes("bocadillo de jamón")) {
+  menu.merienda.push(recipes.bocadilloDeJamon)
+}
+if (text.includes("tostadas con tomate")) {
+  menu.desayuno.push(recipes.tostadasConTomate)
+}
+if (text.includes("café con leche")) {
+  menu.desayuno.push(recipes.cafeConLeche)
+}
+if (text.includes("ensalada mixta")) {
+  menu.comida.push(recipes.ensaladaMixta)
+}
+if (text.includes("macarrones ")) {
+  menu.comida.push(recipes.macarrones )
+}
 if (text.includes("desayuno")) {
   menu.desayuno.push(...recipes.desayuno)
 }
-  // 🛒 LISTA DE COMPRA FINAL
+ if (text.includes("comida")) {
+  menu.comida.push(...recipes.comida)
+  usedAny = true
+}
+
+if (text.includes("cena")) {
+  menu.cena.push(...recipes.cena)
+  usedAny = true
+}
+
+if (text.includes("merienda")) {
+  menu.merienda.push(...recipes.merienda)
+  usedAny = true
+} 
+}
   const shoppingList = []
 
   Object.values(menu).forEach(meals => {
@@ -88,7 +250,7 @@ if (text.includes("desayuno")) {
     })
   })
 
-  // 🗂️ CATEGORIZACIÓN SUPERMERCADO
+ 
   const categories = {
     frutaVerdura: ["tomate", "lechuga", "zanahoria", "calabacín", "patata", "cebolla", "plátano", "pimiento"],
     carnePescado: ["pollo", "atún", "jamón"],
@@ -116,6 +278,16 @@ if (text.includes("desayuno")) {
       grouped.despensa.push(item)
     }
   })
+
+
+if (!usedAny) {
+  menu.desayuno.push(...recipes.desayuno)
+  menu.comida.push(...recipes.comida)
+  menu.cena.push(...recipes.cena)
+  menu.merienda.push(...recipes.merienda)
+}
+
+
 
   return {
     menu,
