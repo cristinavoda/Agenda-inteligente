@@ -61,38 +61,10 @@
   
   <span class="delete" @click="tasksStore.removeTask(task.id)">✖</span>
 
-</li>
+      </li>
 
     </ul>
-
- 
-    
-     <div v-if="isModalOpen" class="modal-backdrop"@click.self="isModalOpen = false">
-  <div class="modal">
-    
-    <h2>Edit {{ editType }}</h2>
-
-    <input v-model="selectedItem.title" />
-
-    <textarea v-if="editType === 'notes'" v-model="selectedItem.text"></textarea>
-<select v-model="selectedItem.priority">
-  <option value="urgente">urgente</option>
-  <option value="importante">importante </option>
-  <option value="normal">normal</option>
-</select>
-<div class="buttons-modal">
-    <button @click="saveEdit">Save</button>
-    <button @click="isModalOpen = false">Cancel</button>
-    </div>
-
-      </div>
-    </div>
-
-
-    
-  </div>
-
- 
+</div>
 
 </template>
 
@@ -105,7 +77,15 @@ import { subscribeTasks } from "../services/tasks";
 import { user } from "../stores/user";
 
 
+import { addTask as addTaskFirestore } from "../services/tasks"
 
+async function addTask() {
+  if (!newTask.value.trim()) return
+
+  await addTaskFirestore(user.value.uid, newTask.value.trim())
+
+  newTask.value = ""
+}
 onMounted(() => {
   const el = document.querySelector('.task-list')
 
@@ -116,15 +96,15 @@ onMounted(() => {
     onEnd(evt) {
       const moved = tasksStore.tasks.splice(evt.oldIndex, 1)[0]
       tasksStore.tasks.splice(evt.newIndex, 0, moved)
-      tasksStore.persist()
+      //tasksStore.persist()
     }
   })
 })
 
 const tasksStore = useTasksStore()
+
 const newTask = ref('')
-const tasks = ref([]);
-const isModalOpen = ref(false)
+
 const selectedItem = ref(null)
 const editType = ref('')
 const userText = ref('')
@@ -132,10 +112,10 @@ const userText = ref('')
 
 onMounted(() => {
   if (!user.value) return;
-
-  subscribeTasks(user.value.uid, (data) => {
-    tasks.value = data;
-  });
+subscribeTasks(user.value.uid, (data) => {
+  tasksStore.setTasks(data)
+})
+  
 });
 
 function openEdit(item, type) {
@@ -144,11 +124,6 @@ function openEdit(item, type) {
   isModalOpen.value = true
 }
 
-function addTask() {
-  if (!newTask.value.trim()) return
-  tasksStore.addTask(newTask.value.trim())
-  newTask.value = ''
-}
 
 function remove(id) {
   tasksStore.removeTask(id)
