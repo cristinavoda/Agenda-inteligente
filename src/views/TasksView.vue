@@ -22,7 +22,7 @@
     :class="{ done: task.done }"
     class="task-item">
 <span class="priority-bar"
-      :class="task.priority"
+      :class="task.priority || 'low'"
       @click="task.showPriority = !task.showPriority">
 </span>
 
@@ -59,7 +59,7 @@
   <span class="edit-btn" @click="task.editing = true">✎</span>
 
   
-  <span class="delete" @click="tasksStore.removeTask(task.id)">✖</span>
+  <span class="delete" @click="remove(task.id)">✖</span>
 
       </li>
 
@@ -73,11 +73,13 @@ import { ref,onMounted } from 'vue'
 import { useTasksStore } from '../stores/tasksStore'
 import Sortable from 'sortablejs'
 import { suggestTasks } from '../utils/tasksAI'
-import { subscribeTasks } from "../services/tasks";
+import { subscribeTasks,
+  addTask as addTaskFirestore,
+  deleteTask as deleteTaskFirestore,
+   updateTask as updateTaskFirestore
+ } from "../services/tasks";
 import { user } from "../stores/user";
 
-
-import { addTask as addTaskFirestore } from "../services/tasks"
 
 async function addTask() {
   if (!newTask.value.trim()) return
@@ -86,6 +88,7 @@ async function addTask() {
 
   newTask.value = ""
 }
+
 onMounted(() => {
   const el = document.querySelector('.task-list')
 
@@ -118,34 +121,28 @@ subscribeTasks(user.value.uid, (data) => {
   
 });
 
-function openEdit(item, type) {
-  selectedItem.value = { ...item }
-  editType.value = type
-  isModalOpen.value = true
+
+
+async function remove(id) {
+  await deleteTaskFirestore(id)
 }
-
-
-function remove(id) {
-  tasksStore.removeTask(id)
-}
-
 function formatDate(date) {
   return new Date(date).toLocaleString('es-ES', {
     dateStyle: 'short',
     timeStyle: 'short'
   })
 }
-
-function saveEdit(task) {
+async function saveEdit(task) {
+    console.log("EDITANDO:", task)
   task.editing = false
-  tasksStore.updateTask(task)
+  await updateTaskFirestore(task)
 }
 
-
-function saveTask(task) {
+async function saveTask(task) {
   task.editing = false
   task.showPriority = false
-  tasksStore.updateTask(task)
+
+  await updateTaskFirestore(task)
 }
 
 function updateTask(task) {
@@ -155,14 +152,12 @@ function updateTask(task) {
   }
 }
 
-function handleAI() {
+ async function handleAI() {
 
-  const suggestions = suggestTasks(userText.value)
-
-  suggestions.forEach(task => {
-    tasksStore.addTask(task.title)
-  })
-
+for (const task of suggestions) {
+  await addTaskFirestore(user.value.uid, task.title)
+}
+  
   userText.value = ''
 }
 </script>

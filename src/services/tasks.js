@@ -10,7 +10,7 @@ import {
   doc
 } from "firebase/firestore";
 
-const tasksRef = collection(db, "tasks");
+
 
 export const subscribeTasks = (uid, callback) => {
   const q = query(
@@ -31,6 +31,22 @@ export const addTask = (uid, title) => {
     uid,
     title,
     done: false,
+       priority: "low",
     createdAt: Date.now()
   });
 };
+
+export const deleteTask = (id) => {
+  return deleteDoc(doc(db, "tasks", id));
+};
+
+export const updateTask = (task) => {
+  const ref = doc(db, "tasks", task.id)
+
+  return updateDoc(ref, {
+    title: task.title,
+    done: task.done,
+    priority: task.priority ?? "low"
+  })
+}
+
