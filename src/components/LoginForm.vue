@@ -1,36 +1,59 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { login } from "../services/auth";
 
 const email = ref("");
 const password = ref("");
-const bgVideo = ref(null)
+
 const showPassword = ref(false)
 const handleLogin = async () => {
   console.log("CLICK")
   await login(email.value, password.value);
 };
 
+const bgVideo = ref(null)
+const videoSrc = ref('/videos/day.mp4')
+onMounted(() => {
+
+  bgVideo.value.playbackRate = 0.5
+
+  const hour = new Date().getHours()
+
+  if (hour >= 6 && hour < 11)
+    videoSrc.value = '/videos/morning.mp4'
+
+  else if (hour >= 11 && hour < 18)
+    videoSrc.value = '/videos/day.mp4'
+
+  else if (hour >= 18 && hour < 21)
+    videoSrc.value = '/videos/evening.mp4'
+
+  else
+    videoSrc.value = '/videos/night.mp4'
+})
+
+
+
 onMounted(() => {
   bgVideo.value.playbackRate = 0.3
-})
+}) 
 </script>
 
 <template>
    
   <div id="background-container">
-    
-    <video
-     ref="bgVideo"
-      autoplay
-      loop
-      muted
-      id="bg-video"
-     
-    >
-      <source src="/video-background.mp4" type="video/mp4" />
-    </video>
 
+
+   <video
+  ref="bgVideo"
+  autoplay
+  loop
+  muted
+  playsinline
+  id="bg-video"
+>
+  <source :src="videoSrc" type="video/mp4" />
+</video>
 
   <div class="login">
     <h2>Login</h2>
