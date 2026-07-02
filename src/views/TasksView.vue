@@ -101,6 +101,10 @@ import { ref,onMounted } from 'vue'
 import { useTasksStore } from '../stores/tasksStore'
 import Sortable from 'sortablejs'
 import { suggestTasks } from '../utils/tasksAI'
+import { subscribeTasks } from "../services/tasks";
+import { user } from "../stores/user";
+
+
 
 onMounted(() => {
   const el = document.querySelector('.task-list')
@@ -119,10 +123,20 @@ onMounted(() => {
 
 const tasksStore = useTasksStore()
 const newTask = ref('')
+const tasks = ref([]);
 const isModalOpen = ref(false)
 const selectedItem = ref(null)
 const editType = ref('')
 const userText = ref('')
+
+
+onMounted(() => {
+  if (!user.value) return;
+
+  subscribeTasks(user.value.uid, (data) => {
+    tasks.value = data;
+  });
+});
 
 function openEdit(item, type) {
   selectedItem.value = { ...item }

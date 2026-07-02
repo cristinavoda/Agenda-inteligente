@@ -16,8 +16,8 @@ export function shoppingAIv2(input) {
         ingredients: ["pan", "tomate", "aceite de oliva"]
       },
       {
-        title: "Café con leche",
-        ingredients: ["café", "leche"]
+        title: "Café con leche, Tostadas con tomate",
+        ingredients: ["café", "leche", "pan", "tomate", "aceite de oliva"]
       }
     ],
 
@@ -177,8 +177,8 @@ if (text.includes("ensalada")) {
     if (text.includes("ensalada caprese")) {
     menu.comida.push(recipes.ensaladaCaprese)
   }
-  if (text.includes("ensalada griega")) {
-    menu.comida.push(recipes.ensaladaGriega)
+  if (text.includes("desayuno")) {
+    menu.desayuno.push(...recipes.desayuno)
   }
     if (text.includes("ensalada de pasta")) {
 

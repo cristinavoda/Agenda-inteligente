@@ -1,5 +1,20 @@
 <template>
+
+ <div v-if="loading">
+    Cargando...
+  </div>
+
+  <div v-else>
+    <div v-if="!user">
+      
+      <LoginForm />
+    </div>
+
+    <div v-else>
+   
+  
    <div class="app">
+    
     <AppHeader />
      
     <AppTabs v-model="activeTab" />
@@ -9,6 +24,8 @@
     </main>
 <Footer />
 </div>
+    </div>  
+  </div>
 </template>
 
 <script setup>
@@ -21,6 +38,18 @@ import { ref } from 'vue'
 import AppHeader from './components/ui/AppHeader.vue'
 import AppTabs from './components/AppTabs.vue'
 import Footer from './components/Footer.vue'
+import { user } from "./stores/user";
+import { subscribeAuth } from "./services/auth";
+import LoginForm from "./components/LoginForm.vue";
+
+const loading = ref(true);
+
+onMounted(() => {
+  subscribeAuth((u) => {
+    user.value = u;
+      loading.value = false;
+  });
+});
 
 const activeTab = ref('Agenda')
 const scheduled = new Set()
