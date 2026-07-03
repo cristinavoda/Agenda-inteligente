@@ -29,7 +29,7 @@ function togglePA() {
   border-radius: 12px;
   background: rgba(255,255,255,0.9);
   font-size: 1.5rem;
-  color: rgb(44, 44, 233);
+  color: rgb(94, 94, 97);
   border: none;
   cursor: pointer;
   box-shadow: 0 10px 5px rgba(223, 224, 226, 0.952);
@@ -39,7 +39,7 @@ function togglePA() {
 
 .pa-float-btn:hover {
   transform: scale(1.1);
-   box-shadow: 0 15px 30px rgba(53, 65, 231, 0.938);
+   box-shadow: 0 15px 30px rgba(120, 127, 224, 0.938);
 }
 
 .pa-float-btn.active {
@@ -62,12 +62,12 @@ function togglePA() {
   }
   10% {
     box-shadow:
-      0 0 0 2px rgba(195, 212, 240, 0.959),
+      0 0 0 2px rgba(58, 59, 61, 0.959),
       0 10px 5px rgba(233, 233, 247, 0.945);
   }
   20% {
     box-shadow:
-      0 0 0 0 rgba(199, 214, 241, 0.863),
+      0 0 0 0 rgba(157, 166, 182, 0.863),
       0 10px 5px rgba(231, 233, 238, 0.884);
   }
 }

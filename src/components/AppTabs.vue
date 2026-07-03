@@ -57,13 +57,23 @@ const tabs = [
 }
 
 .tabs button:hover {
-  color: #2e0bcea8;
+  color: #0c0c0ca8;
+  transform: scale(1.3);
+  font-weight: 700;
 }
+
 .tabs button.active {
-  color: rgb(22, 22, 165) !important;
-   border-bottom: 3px solid transparent;
-  border-image: linear-gradient(90deg, #2563eb, #9333ea, #48ecd1) 1;
+   color: #f2f7f5; 
+   background: linear-gradient(45deg, #1c1d1c, #fcf8f8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.5s ease;
+  text-shadow: 1px solid black !important;
+  border-bottom: 3px solid transparent;
+  border-image: linear-gradient(90deg, #616772, #f7f6f8, #363636) 1;
   font-family: Roboto slab;
+  font-size: 1.2rem;
+   font-weight: 600;
 }
 
 @media (max-width: 750px) {
@@ -76,20 +86,22 @@ const tabs = [
   background: none;
   border: none;
   
-  font-weight: 500;
-  font-size: 17px;
+  font-weight: 6queda00;
+  font-size: 18px;
   color: #302e2e;
 }
 .tabs .active {
-  color: rgb(50, 22, 189);
-  border-bottom: 2px solid rgb(23, 11, 190);
+  color: rgb(181, 180, 185);
+  border-bottom: 2px solid rgb(139, 138, 148);
   font-family: Roboto slab;
+  font-size: 17px;
 }
 .tabs button:hover {
-  color: #3408d1;
-}
+  color: #48474b;
+   transform: scale(1.2);
+
 }
 
-
+}
 
 </style>

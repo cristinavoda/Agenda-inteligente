@@ -170,19 +170,23 @@ for (const task of suggestions) {
   padding: 1rem;
 }
 .h2 {
-  font-size: 14px;
-  text-align: center;
-  font-size: 1.5rem;
+ 
+   margin-top: 1px;
+   margin-bottom: 39px;
+  font-family: Roboto slab;
   font-weight: 600;
-  
-   background: linear-gradient(135deg, #2d0de4, #18067e);
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  background-clip: text;
-
-  margin: 10px auto 0;
+  font-size: 1.5rem;
+  text-align: center;
+   padding: 0.1rem 1.8rem;
+  color: #babdbd;
+  text-shadow:
+    0 1px 0 rgba(22, 22, 22, 0.8),
+    0 2px 4px rgba(0,0,0,.12);
+  transition: all 0.5s ease;
+  text-shadow: 1px solid black;
+  transform: translateY(20px);
+  animation: titleEnter 0.8s ease-out forwards;
+  font-family: Robo slab;
 }
 .task-input {
   display: flex;

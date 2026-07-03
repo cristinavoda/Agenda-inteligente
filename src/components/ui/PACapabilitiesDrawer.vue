@@ -119,7 +119,7 @@ const open = ref(false)
 }
 .importante {
   background: #f1f3f1;
-  color: darkblue;
+  color: rgb(36, 36, 37);
    font-weight: 800;
 }
 
@@ -211,7 +211,7 @@ const open = ref(false)
   background: transparent;
   margin-left: 2px;
   margin-top: 5px;
-  color: rgb(16, 16, 201);
+  color: rgb(55, 55, 63);
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 0.9rem;

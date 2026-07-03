@@ -15,7 +15,7 @@
   v-model="newItem.quantity"
   placeholder="Cantidad (ej: 1L, 200g)"
   @keyup.enter="addItem"
-  class="shop-input"
+  class="shop-input-qty"
 />
 
 
@@ -46,19 +46,13 @@
 
         <span class="number">{{ index + 1 }}.</span>
 
-
-        <span
-          class="title"
-          @click="toggle(item.id)"
-        >
-          {{ item.title }}
-
-        </span>
-
+<span class="title">
+  {{ item.title }}
 
   <span class="qty">
     {{ item.quantity }}
   </span>
+</span>
 
  <span class="edit-btn" @click="openEdit(item, 'shopping')">✎</span>
 
@@ -202,55 +196,56 @@ function clearShoppingList() {
   persist()
 }
 </script>
+
 <style scoped>
+
 .shopping-container {
-  max-width: 500px;
   margin: auto;
   padding: 1rem;
 }
-.shopping-container {
-  max-width: 500px;
-  margin: auto;
-}
+
 .shop-input {
   border:#e5e5ea;
 }
-.h2 {
-  text-align: center;
-  margin-bottom: 1rem;
-  
-   background: linear-gradient(135deg, #1d0799,  #48ecd6);
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: rgb(0, 17, 255);
 
 
-
-}
 .h2 {
   font-size: 14px;
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
-  
-   background: linear-gradient(135deg, #2d0de4, #18067e);
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  background-clip: text;
-
   margin: 10px auto 20px;
+  margin-top: 1px;
+  margin-bottom: 39px;
+  font-family: Roboto slab;
+  font-weight: 600;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 0.1rem 1.8rem;
+  color: #a3a5a5;
+  text-shadow:
+    0 1px 0 rgba(73, 71, 71, 0.8),
+    0 2px 4px rgba(0,0,0,.12);
+  transition: all 0.5s ease;
+  text-shadow: 1px solid black;
+  transform: translateY(20px);
+  animation: titleEnter 0.8s ease-out forwards;
+  font-family: Robo slab;
 }
-
-
+.shop-input-qty {
+  border:#e5e5ea;
+   width: 90%;
+   font-size: 1.2rem;
+   padding: 6px;
+}
 .shop-input input {
   flex: 1;
   padding: 6px;
-   display: flex;
-   width: 100%;
+  display: flex;
+  width: 90%;
   gap: 8px;
   margin-bottom: 12px;
+  font-size: 1.2rem;
 }
 
 .shop-list {
@@ -260,9 +255,13 @@ function clearShoppingList() {
 
 .shop-list li {
   display: flex;
-  align-items: center;
-  padding: 8px 0;
+  align-items: flex-start;
+  gap: 17px;
+  padding: 10px 10px;
   border-bottom: 1px solid #e5e5ea;
+  font-size: 1.2rem;
+  font-family: inter;
+ 
 }
 
 .number {
@@ -273,7 +272,27 @@ function clearShoppingList() {
 
 .title {
   flex: 1;
+  color: #070707;
   cursor: pointer;
+}
+
+
+.qty{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    min-width:22px;
+    height:22px;
+
+    margin-left:.5rem;
+
+    border-radius:11px;
+
+   
+    color:#070707;
+
+    font-size:.75rem;
 }
 .done .title,
 .done .qty {
@@ -287,15 +306,11 @@ function clearShoppingList() {
 }
 
 
-.qty {
- padding: 10px 90px ;
-}
 .priority-bar {
   width: 4px;
-  height: 18px;
+  height: 25px;
   border-radius: 4px;
   display: inline-block;
-  margin-right: 10px;
   vertical-align: middle;
 }
 
@@ -314,30 +329,22 @@ function clearShoppingList() {
 font-size: large;
 font-weight: 600;
  border: none;
- padding: 10px;
+ 
 }
 .btn-add:hover {
 transform: scale(1.05);background-color: #797878;
 color: white;
 
 }
-.btn-AI {
- font-size: large;
-color: #666;
- border: none; 
-}
-.btn-AI:hover {
-transform: scale(1.05);background-color: #797878;
-color: white;
-
-} 
+ 
 .remove {
   background: transparent;
  border: #d1d1d8;
   cursor: pointer;
-  opacity: 0.5;
-  border-bottom: 2px 2px #666;
-margin-bottom: 0;
+  color: #333131;
+  font-size: 1.3rem;
+  margin-right: 16px;
+
 }
 
 .remove:hover {
@@ -353,7 +360,7 @@ margin-bottom: 0;
   background: transparent;
   cursor: pointer;
   font-weight: 600;
-  border-bottom: 2px 2px #666;
+  
 }
 .item-btn {
    margin-right: 40px;
@@ -389,6 +396,8 @@ margin-bottom: 0;
   width: 320px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   animation: pop 0.2s ease;
+  background: linear-gradient(135deg, #ffffff, #909096);
+  color: white;
 }
 
 .item-btn.done {
@@ -430,5 +439,92 @@ margin-bottom: 0;
 .done {
   filter: blur(0.3px);
   transition: 0.2s;
+}
+.btn-AI{
+  all: unset;
+
+  cursor: pointer;
+
+  padding: 8px 16px;
+
+  border-bottom: 1px solid #232324;
+
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+}
+.btn-AI:hover{
+  color:#222;
+  border-bottom-color:#222;
+  font-weight:900;
+  font-size:1.3rem;
+}
+
+.btn-clear:hover{
+  color:#222;
+  border-bottom-color:#222;
+  font-weight:900;
+  font-size:1.3rem;
+}
+.btn-clear{
+  all: unset;
+
+  cursor: pointer;
+
+  padding: 8px 16px;
+
+  border-bottom: 1px solid #232324;
+
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+}
+@media (max-width: 768px) {
+
+  li{
+    display:flex;
+    align-items:center;
+    gap:.45rem;
+
+    padding:.55rem .45rem;
+    font-size:.92rem;
+  }
+
+  .priority-bar{
+    width:5px;
+    height:26px;
+    
+  }
+
+  .number{
+    display:none;
+   
+  }
+
+  .title{
+    flex:1;
+    
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .qty{
+    min-width:32px;
+    text-align:center;
+    font-size: 1rem;
+  }
+
+  .edit-btn,
+  .item-btn,
+  .remove{
+
+    width:32px;
+    height:32px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:1rem;
+  }
+
 }
 </style>

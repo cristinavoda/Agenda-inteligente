@@ -8,7 +8,7 @@
         @keyup.enter="search"
         placeholder="Explorar conocimiento..."
       />
-      <button @click="search">Buscar</button>
+      <button @click="search"><Search :size="20" /></button>
     </div>
 
     <div v-if="loading" class="status">Buscando...</div>
@@ -25,13 +25,15 @@
 
         <div class="actions">
           <button @click="readResult(item)">Leer</button>
-          <button @click="addToNotes(item)">Añadir a Notas</button>
           <a
             :href="wikiLink(item.pageid)"
             target="_blank"
+            class="external-link"
           >
             Ver completo
           </a>
+          <button @click="addToNotes(item)">Añadir a Notas</button>
+        
         </div>
       </div>
     </div>
@@ -46,6 +48,8 @@
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useNotesStore } from '../stores/notesStore'
+import { Pencil, Trash2, CalendarDays, Bot,Search } from '@lucide/vue'
+
 
 const route = useRoute()
 const notesStore = useNotesStore()
@@ -121,14 +125,29 @@ watch(
 <style scoped>
 .title {
   text-align: center;
-  font-weight: 500;
-  margin-bottom: 2rem;
+  margin-top: 1px;
+  margin-bottom: 39px;
+  font-family: Roboto slab;
+  font-weight: 600;
+  font-size: 1.5rem;
+  text-align: center;
+   padding: 0.1rem 1.8rem;
+  color: #babdbd;
+  text-shadow:
+    0 1px 0 rgba(73, 71, 71, 0.8),
+    0 2px 4px rgba(0,0,0,.12);
+  transition: all 0.5s ease;
+  text-shadow: 1px solid black;
+  transform: translateY(20px);
+  animation: titleEnter 0.8s ease-out forwards;
+  font-family: Robo slab;
 }
+
 .internet-wrapper {
   max-width: 800px;
   margin: auto;
   padding: 2rem;
-  color: rgb(29, 29, 204);
+  color: rgb(59, 59, 63);
 }
 
 .title {
@@ -146,20 +165,18 @@ watch(
 input {
   flex: 1;
   padding: 0.7rem;
-  border-radius: 12px;
-  border: 1px solid #ddd;
+  border: none;
 }
 
 button {
   padding: 0.6rem 1rem;
-  border-radius: 10px;
   border: none;
   background: transparent;
   color: rgb(34, 33, 33);
   cursor: pointer;
   transition: 0.2s;
   font-size: 1.1rem;
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid black;
 }
 
 button:hover {
@@ -186,12 +203,20 @@ button:hover {
 .actions {
   margin-top: 1rem;
   display: flex;
-  gap: 10px;
+  gap: 26px;
   align-items: center;
 }
 
 a {
+  color: #0056b3;
+  text-decoration: none;
   font-size: 0.9rem;
   text-decoration: underline;
 }
+  .external-link {
+    color: #292f36;
+    text-decoration: none;
+    font-size: 1.1rem;
+    
+  }
 </style>

@@ -142,17 +142,23 @@ function updateNote(note) {
 }
 
 .title {
-  text-align: center;
+  
+    margin-top: 1px;
+   margin-bottom: 39px;
+  font-family: Roboto slab;
+  font-weight: 600;
   font-size: 1.5rem;
-  margin-bottom: 16px;
-  font-size: 1.3rem;
-    
-   background: linear-gradient(135deg, #220aad, #5d5fbe);
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  background-clip: text;
+  text-align: center;
+   padding: 0.1rem 1.8rem;
+  color: #a3a5a5;
+  text-shadow:
+    0 1px 0 rgba(73, 71, 71, 0.8),
+    0 2px 4px rgba(0,0,0,.12);
+  transition: all 0.5s ease;
+  text-shadow: 1px solid black;
+  transform: translateY(20px);
+  animation: titleEnter 0.8s ease-out forwards;
+  font-family: Robo slab;
 }
 .note-input {
   width: 100%;
@@ -163,6 +169,7 @@ function updateNote(note) {
   color: #161515;
   border-radius: 4px;
   border: 1px solid #eeeaea;
+  font-family: inter;
 }
 .save-btn {
   display: block;
@@ -171,12 +178,6 @@ function updateNote(note) {
   font-size: 1rem;
   
    
-   background: linear-gradient(135deg, #2d0de4, #7a7cf7);
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  background-clip: text;
   border: none;
   border-radius: 4px;
   cursor: pointer;

@@ -5,8 +5,8 @@
  <PaButton />
 
     
- <!--
-<div class="ai-panel">
+ 
+<!--<div class="ai-panel">
   <input
     v-model="message"
     @keyup.enter="send"
@@ -21,8 +21,8 @@
 
 <div v-if="aiStore.lastResponse" class="ai-response">
   {{ aiStore.lastResponse }}
-</div>
--->
+</div>-->
+
   </header>
 </template>
 
@@ -59,15 +59,15 @@ h1 {
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
+  color:  #ededf1;
+  -webkit-text-stroke: 0.7px #4a4b4d;
+  padding: 0.1rem 1.8rem;
+  animation: titleEnter .8s ease-out forwards;
+  transition: all 0.5s ease;
+  transform: translateY(20px);
+  animation: titleEnter 0.8s ease-out forwards;
   
-   background: linear-gradient(135deg, #2d0de4, #7a7cf7);
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  background-clip: text;
-
-  margin: 10px auto 0;
+  margin: 1px auto 15px;
 }
 
 .pa-float-btn {
@@ -82,7 +82,7 @@ h1 {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  background: linear-gradient(135deg, #ffffff, #6c6eee);
+  background: linear-gradient(135deg, #ffffff, #74747a);
   color: white;
   cursor: pointer;
   box-shadow: 0 8px 25px rgba(59,130,246,0.4);
@@ -129,7 +129,7 @@ h1 {
 }
 @keyframes halo {
   0% {
-    box-shadow: 0 0 0 0 rgba(84, 69, 221, 0.7);
+    box-shadow: 0 0 0 0 rgba(124, 123, 134, 0.7);
   }
   70% {
     box-shadow: 0 0 0 20px rgba(200, 201, 206, 0);

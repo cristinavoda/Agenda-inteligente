@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="pa-button" @click="toggle">
-      ⚡ Capacidades del PA
+       Capacidades del PA
     </button>
 
     <div v-if="open" class="pa-panel">

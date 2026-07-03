@@ -62,14 +62,15 @@
 
     <div class="edit-buttons">
       <button @click="saveEdit">Guardar</button>
-      <button @click="cancelEdit">✖️</button>
+      <button @click="cancelEdit">✖</button>
     </div>
   </div>
 
   
   <div class="actions">
-    <button @click="startEdit(e)">🖋️</button>
-    <button class="close-button" @click="removeEvent(e.id)">✖️</button>
+    <button @click="startEdit(e)"><Pencil :size="18" />
+</button>
+    <button class="close-button" @click="removeEvent(e.id)">✖</button>
   </div>
 
 </li>
@@ -96,7 +97,7 @@ import { useCalendarStore } from '../stores/calendarStore'
 import { createReminderFromEvent, saveReminder } from '../reminders/reminderEngine'
 import { speak } from '../pa/speechOutput'
 import { scheduleReminder } from '../utils/reminders'
-
+import { Pencil, Trash2, CalendarDays, Bot } from '@lucide/vue'
 
 function addEventWithReminder(title, minutesLater) {
   const now = Date.now()
@@ -288,12 +289,7 @@ const updateEventColorLive = (eventId, color) => {
 
 
 
-  
-
-
-
-
-watch(
+  watch(
   () => calendarStore.events,
   async () => {
     await nextTick()
@@ -301,6 +297,8 @@ watch(
   },
   { deep: true }
 )
+
+
 watch(
   () => editedEvent.value.priority,
   (priority) => {
@@ -323,8 +321,6 @@ watch(
 
 
 <style >
-
-
 
 .agenda-container {
   display: flex;
@@ -361,7 +357,15 @@ watch(
   margin-bottom: 10px;
   font-weight: 600;
   font-size: 1.5rem;
-  color: #0b2494;
+  text-align: center;
+  transform: translateY(20px);
+  color: #babdbd;
+  text-shadow:
+    0 1px 0 rgba(22, 22, 22, 0.8),
+    0 2px 4px rgba(0,0,0,.12);
+  transition: all 0.5s ease;
+  text-shadow: 1px solid black;
+  animation: titleEnter 0.8s ease-out forwards;
   font-family: Robo slab;
 }
 
@@ -369,26 +373,20 @@ watch(
 .left-panel input{
   width: 90%;
   padding: 12px;
-
-  border-radius: 10px;
   border: 1px solid rgba(243, 236, 236, 0.3);
-
   background:#fcf9f9;
   color: #333;
-box-shadow: 1px 2px#a1a0a0;
+  box-shadow: 1px 1px#a1a0a0;
   outline: none;
   transition: all 0.2s ease;
 }
 .left-panel select {
   width: 90%;
   padding: 12px;
-
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.3);
-
   background: rgba(255,255,255,0.2);
   color: #333;
-
   outline: none;
   transition: all 0.2s ease;
 }
@@ -401,7 +399,7 @@ box-shadow: 1px 2px#a1a0a0;
 .section-divider {
   width: 100%;
   border: none;
-  box-shadow: 2px#0755d3;
+  box-shadow: 2px#5f6063;
   border-top: 1px solid rgba(44, 61, 218, 0.3);
   margin: 40px 0;
 }
@@ -416,39 +414,51 @@ box-shadow: 1px 2px#a1a0a0;
 
 .left-panel button {
   padding: 10px 18px;
-  border-radius: 10px;
+  border-radius: 0px;
   border: none;
   cursor: pointer;
-
   font-weight: 500;
   transition: all 0.2s ease;
-   border-bottom: 2px solid rgb(62, 100, 226);
+  border-bottom: 1px solid rgb(97, 100, 107);
 }
 
 
 .primary {
-  background: linear-gradient(135deg, #f4f4f5, #949dee);
-  color: rgb(118, 106, 230);
-  border-bottom: 2px solid rgb(62, 100, 226);
+ 
+  background:
+linear-gradient(
+180deg,
+#ffffff,
+#f2f3f5
+);
+
+border:
+1px solid #d7dbe0;
+
+box-shadow:
+
+0 2px 8px rgba(0,0,0,.05);
 }
 
 .primary:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   background: #f5f6f8;
-  color: #0755d3;
-  border-bottom: 2px  solid#0755d3;
+  color: #171718;
+  border: none;
+  border-bottom: 2px  solid#121213;
   
 }
 
 
 .secondary {
   background: rgba(255,255,255,0.4);
-  border-bottom: 2px solid rgb(62, 100, 226);
+  border-bottom: 2px solid rgb(75, 76, 78);
 }
 
 .secondary:hover {
-  background:  linear-gradient(135deg, #ebedf1, #8f91fc);
-  border-bottom: 2px solid rgb(62, 100, 226);
+  background:  linear-gradient(135deg, #ebedf1, #838388);
+  border-bottom: 2px solid rgb(38, 38, 39);
+  border: none;
 }
 
 
@@ -483,28 +493,30 @@ box-shadow: 1px 2px#a1a0a0;
 
 .event-date {
   color: #6b7280;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 
 .event-time {
-  color: #3b82f6;
-  font-weight: 500;
+  color: #4c5057;
+  font-weight: 400;
+  font-size: 1rem;
 }
 
 
 .event-title {
-  color: #073494;
-  font-weight: 00;
-  font-family: Robot slab;
+  color: #4a4b4d;
+  font-weight: 400;
+   font-family: 'Manrope', sans-serif;;
 }
 
 .close-button {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #0755d3;
-  font-size: 0.5rem;
+  color: #57585a;
+  font-size: 0.9rem;
+  font-weight: 600;
   transition: transform 0.2s;
   margin-right: 0.5rem;
 }
@@ -580,9 +592,9 @@ box-shadow: 1px 2px#a1a0a0;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 .fc-toolbar-title {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #1c1c1e;
+  color: #212122;
 }
 
 .fc-button {
@@ -599,7 +611,7 @@ box-shadow: 1px 2px#a1a0a0;
 }
 
 .fc-button-primary:not(:disabled).fc-button-active {
-  background:  #d4cbd4  !important;
+  background:  #6e6b6e  !important;
   color: white !important;
    border-bottom: 2px solid black;
   text-shadow: #1c1c1e 0.1px 0.1px 0.1px !important;
@@ -607,7 +619,7 @@ box-shadow: 1px 2px#a1a0a0;
 }
 .fc-daygrid-day-frame {
   padding: 6px;
-   font-size: 0.85rem;
+  font-size: 0.85rem;
   color: #3a3a3c;
   font-weight: 500;
   font-size: 1rem;
@@ -622,20 +634,22 @@ box-shadow: 1px 2px#a1a0a0;
 }
 
 .fc-day-today {
-  background: #e0dce0 !important;
+  background: #f0eef0 !important;
   border-radius: 12px;
-  color: rgb(49, 48, 48) !important;
+  color: rgb(37, 36, 36) !important;
   font-size: 0.5rem;
 }
 .fc-event {
+  display: flex;
+  flex-direction: column;
   background: transparent!important;
   border: none !important;
   border-radius: 8px !important;
   padding: 3px 6px !important;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #070707;
-   text-shadow: 1px 2px #1c1c1e;
+  
 }
 
 .fc-event-title {
