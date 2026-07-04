@@ -43,7 +43,7 @@ ABRIR: agenda, calendario, tareas, notas, lista
 LEER: agenda, tareas, notas, lista
 AÑADIR: evento, tarea, nota, artículo
 BORRAR: nota, tarea, artículo
-BUSCAR: información, receta, definición
+BUSCAR: información, receta, definición, el tiempo, noticias, etc.
   </pre>
 
 <hr />
@@ -73,6 +73,9 @@ BUSCAR: información, receta, definición
           <h3>Buscar</h3>
           <p>buscar receta hummus</p>
           <p>qué es React</p>
+          <p>¿cuál es el clima hoy?</p>
+          <p>buscar noticias de hoy</p>
+          <p>buscar información sobre inteligencia artificial</p>
         </div>
 
         <hr />

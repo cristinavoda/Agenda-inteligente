@@ -1,166 +1,137 @@
 <template>
-  <header class="header">
+
+<header class="app-header">
+
+    <button
+      class="icon-btn"
+      @click="emit('toggle-sidebar')"
+    >
+      <Menu :size="22" />
+    </button>
+
     <h1>Agenda Inteligente</h1>
 
- <PaButton />
+    <div class="header-actions">
 
-    
- 
-<!--<div class="ai-panel">
-  <input
-    v-model="message"
-    @keyup.enter="send"
-    placeholder="Pregúntame algo..."
-  />
-  <button @click="send">IA</button>
-</div>
+      <button
+        class="icon-btn"
+        @click="togglePA()"
+      >
+        <Bot :size="22" />
+      </button>
 
-<div v-if="aiStore.loading" class="ai-response loading">
-  Pensando...
-</div>
+      <button
+        class="icon-btn"
+        @click="emit('lock')"
+      >
+        <Lock :size="22" />
+      </button>
 
-<div v-if="aiStore.lastResponse" class="ai-response">
-  {{ aiStore.lastResponse }}
-</div>-->
+    </div>
 
-  </header>
+</header>
+
 </template>
 
-
 <script setup>
+import { Menu, Bot, Lock } from '@lucide/vue'
+import {
+  paActive,
+  activatePA,
+  deactivatePA
+} from '../../pa/paEngine'
 
-import PaButton from '../PaButton.vue'
-import { ref } from 'vue'
-import { useAIStore } from '../../stores/aiStore'  
-import PACapabilitiesDrawer from '../ui/PACapabilitiesDrawer.vue'
-const aiStore = useAIStore()
+function togglePA(){
+ console.log("Antes:", paActive.value)
+    paActive.value
+        ? deactivatePA()
+        : activatePA()
 
-const message = ref('')
+    if(navigator.vibrate){
+        navigator.vibrate(50)
+    }
 
-function send() {
-  if (!message.value.trim()) return
-  aiStore.sendMessage(message.value)
-  message.value = ''
 }
+const emit = defineEmits([
+  'toggle-sidebar',
+  'toggle-pa',
+  'lock'
+])
 </script>
+
 <style scoped>
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 21px 18px;
-  border-bottom: 1px solid #eaeaea;
-  background: white;
-  gap: 2rem;
+.app-header{
+
+    height:64px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 1rem;
+
+    background:#f7f8fa;
+
+    border-bottom:1px solid #e5e5ea;
+
 }
 
-h1 {
-  font-size: 20px;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color:  #ededf1;
-  -webkit-text-stroke: 0.7px #4a4b4d;
-  padding: 0.1rem 1.8rem;
-  animation: titleEnter .8s ease-out forwards;
-  transition: all 0.5s ease;
-  transform: translateY(20px);
-  animation: titleEnter 0.8s ease-out forwards;
-  
-  margin: 1px auto 15px;
+.app-header h1{
+
+    margin:0;
+
+    font-family:'Roboto Slab', serif;
+
+    font-size:1.35rem;
+
+    color:#70757d;
+
+    flex:1;
+
+    text-align:center;
+
 }
 
-.pa-float-btn {
-  position: fixed;
-  top: 50px;
-  right: 75px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  background: linear-gradient(135deg, #ffffff, #74747a);
-  color: white;
-  cursor: pointer;
-  box-shadow: 0 8px 25px rgba(59,130,246,0.4);
-  transition: all 0.25s ease;
+.header-actions{
+
+    display:flex;
+
+    gap:.5rem;
+
 }
 
+.icon-btn{
 
-.pa-float-btn:hover {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 2px 5px rgba(99,102,241,0.6);
-}
-.pa-float-btn:hover {
-  transform: scale(1.1);
-}
+    all:unset;
 
-.pa-float-btn.active {
-  animation: halo 1.5s infinite;
-}
-.pa-float-btn::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
+    width:38px;
 
-  background: rgba(99,102,241,0.4);
-  z-index: -1;
+    height:38px;
 
-  animation: pulse 2s infinite;
-}
+    display:flex;
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-  70% {
-    transform: scale(1.1);
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-@keyframes halo {
-  0% {
-    box-shadow: 0 0 0 0 rgba(124, 123, 134, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 20px rgba(200, 201, 206, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(249, 248, 250, 0.979);
-  }
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    border-radius:10px;
+
+    transition:.2s;
+    
+    animation:pulse 1.5s infinite;
+    
+    transform:scale(1.08);
+
 }
 
-.pa-status {
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
-  background: transparent;
-  color: rgb(105, 102, 102);
-  padding: 10px 15px;
-  border: none;
-  
-  font-weight: 200;
-  font-size: 1rem;
-  
+.icon-btn:hover{
+
+    background:#eceff2;
+
 }
 
-@media (max-width: 750px) {
- 
-.h1 {
-  font-size: 1rem;
-  font-weight: 500;
-}
-.pa-float-btn {
-  margin-right: -20px;
-}
-}
-</style>
+</style>  

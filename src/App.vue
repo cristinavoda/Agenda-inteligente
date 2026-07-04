@@ -1,31 +1,48 @@
 <template>
 
- <div v-if="loading">
+  <div v-if="loading">
     Cargando...
   </div>
 
-  <div v-else>
-    <div v-if="!user">
-      
-      <LoginForm />
-    </div>
+  <LoginForm v-else-if="!user" />
 
-    <div v-else>
+  <div v-else class="app">
+
+    <AppHeader
+      @toggle-sidebar="sidebarOpen = !sidebarOpen"
+      @toggle-pa="assistantOpen = !assistantOpen"
+      @lock="isLocked = true"
+    />
+
    
-  
-   <div class="app">
-    
-    <AppHeader />
-     
-    <AppTabs v-model="activeTab" />
+    <div
+      v-if="sidebarOpen"
+      class="overlay"
+      @click="sidebarOpen = false"
+    ></div>
 
-    <main class="content">
+    <AppSidebar
+      :open="sidebarOpen"
+      @close="sidebarOpen = false"
+    />
+
+    <LockScreen
+      v-if="isLocked"
+      @unlock="isLocked = false"
+      @logout="handleLogout"
+    />
+
+    <main
+      v-else
+      class="content"
+    >
       <router-view />
     </main>
-<Footer />
-</div>
-    </div>  
+
+    <Footer />
+
   </div>
+
 </template>
 
 <script setup>
@@ -34,15 +51,33 @@ import { onMounted } from 'vue'
 import { getPendingReminders, markAsFired } from './reminders/reminderEngine'
 import { speak } from './pa/speechOutput'
 import { ref } from 'vue'
-
 import AppHeader from './components/ui/AppHeader.vue'
 import AppTabs from './components/AppTabs.vue'
 import Footer from './components/Footer.vue'
 import { user } from "./stores/user";
 import { subscribeAuth } from "./services/auth";
 import LoginForm from "./components/LoginForm.vue";
+import { useRouter } from 'vue-router'
+import LockScreen from './components/LockScreen.vue'
+import { Lock } from '@lucide/vue'
+import AppSidebar from './components/AppSidebar.vue'
+const sidebarOpen = ref(false)
+const isLocked = ref(false);
+
+function handleLogout() {
+  isLocked.value = false
+
+  user.value = null;
+  localStorage.removeItem('user');
+  router.push('/login');
+}
+
+function lockApp() {
+  emit('lock')
+}
 
 const loading = ref(true);
+
 
 onMounted(() => {
   subscribeAuth((u) => {
@@ -121,6 +156,22 @@ onMounted(async () => {
   overflow-y: auto;
   padding: 16px;
   background: #fafafa;
+}
+.layout{
+
+    display:flex;
+
+}
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.12);
+
+    backdrop-filter:blur(2px);
+
 }
 @media (max-width: 750px) {
   .app {
