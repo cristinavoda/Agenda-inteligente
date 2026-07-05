@@ -67,6 +67,7 @@ onMounted(() => {
 
   <input
     v-model="password"
+    class="form-control"
     :type="showPassword ? 'text' : 'password'"
   />
 
@@ -144,7 +145,7 @@ onMounted(() => {
   font-size: 1rem;
   color: #0056b3;
   border: none;
-  border-radius: 4px;
+border-bottom: 1px solid rgba(83, 82, 82, 0.55);
   cursor: pointer;
   transition: background-color .3s ease;
 }
@@ -180,7 +181,7 @@ onMounted(() => {
 }
 
 .password-field input{
-    width:100%;
+    width:90%;
     padding-right:40px;
 }
 
@@ -195,6 +196,13 @@ top:50%;
     cursor:pointer;
 
     font-size:1.2rem;
+}
+.form-control{
+    width:80%;
+    padding:12px 10px;
+    border-radius:8px;
+    border:1px solid rgba(151,148,148,.55);
+    margin-bottom:1rem;
 }
 @media (max-width: 768px) {
   #bg-video {

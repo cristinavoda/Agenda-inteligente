@@ -97,7 +97,7 @@ const tabs = [
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 .sidebar.open {
-    left: 0;
+    left: 3px;
 }
 .nav-btn{
 

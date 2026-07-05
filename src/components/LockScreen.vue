@@ -31,6 +31,7 @@ function logout() {
             type="password"
             v-model="password"
             placeholder="Contraseña"
+            class="password-input"
         >
 
         <button  class="unlock" @click="unlock">
@@ -48,6 +49,17 @@ function logout() {
 </template>
 
 <style scoped>
+.lock-card{
+    width:360px;
+    padding:2rem;
+    border-radius:20px;
+    background:white;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
 .lock-screen{
 
     position:fixed;
@@ -63,30 +75,11 @@ function logout() {
     align-items:center;
 
 }
-.lock-card{
 
-    width:360px;
-
-    padding:2rem;
-
-    border-radius:20px;
-
-    background:white;
-
-    box-shadow:
-        0 10px 30px rgba(0,0,0,.08);
-
-}
 .lock-icon{
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
     margin-bottom:5rem;
-    margin-right: 3rem;
+    
 
 }
 .lock-card h1{
@@ -96,36 +89,43 @@ function logout() {
     color:#333;
     margin-bottom:1rem;
 }
-.unlock{
-    width:100%;
-    padding:12px;
-    background:transparent;
-    color:rgb(78, 77, 77);
-    border:none;
-    border-bottom:1px solid rgba(151, 148, 148, 0.55);
-    cursor:pointer;
-    font-size:1rem;
-    font-weight:600;
-    margin-top:1rem;
+
+
+*{
+    box-sizing:border-box;
 }
 .unlock:hover{
     border-bottom:2px solid rgba(168, 165, 165, 0.95);
     font-weight:800;
 }
-.logout{
-    width:100%;
-    padding:12px;
-    background:transparent;
-    color:rgb(78, 77, 77);
-    border:none;
-    border-bottom:1px solid rgba(151, 148, 148, 0.55);
-    cursor:pointer;
-    font-size:1rem;
-    font-weight:600;
-    margin-top:1rem;
-}
+
 .logout:hover{
     border-bottom:2px solid rgba(168, 165, 165, 0.95);
     font-weight:800;
+}
+.password-input{
+    width:80%;
+    padding:12px 10px;
+    margin :10px auto 0;
+    border: none;
+    border-bottom:1px solid rgba(151,148,148,.55);
+    margin-bottom:1rem;
+}
+ 
+.unlock{
+    width:80%;
+    padding:12px;
+    border:none;
+    border-bottom:1px solid rgba(151,148,148,.55);
+    background:transparent;
+}
+
+.logout{
+    width:80%;   
+    padding:12px;
+    border:none;
+    border-bottom:1px solid rgba(151,148,148,.55);
+    background:transparent;
+    margin-top:1rem;
 }
 </style>

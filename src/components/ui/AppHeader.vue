@@ -9,7 +9,7 @@
       <Menu :size="22" />
     </button>
 
-    <h1>Agenda Inteligente</h1>
+    <h1></h1>
 
     <div class="header-actions">
 
