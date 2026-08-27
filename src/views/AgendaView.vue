@@ -342,7 +342,7 @@ watch(
   margin: 40px auto;
   padding: 24px;
 
-  border-radius: 20px;
+  border-radius: 0px;
 
  
   background: rgba(255, 253, 253, 0.363);
@@ -383,7 +383,7 @@ watch(
 .left-panel select {
   width: 90%;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 0px;
   border: 1px solid rgba(255,255,255,0.3);
   background: rgba(255,255,255,0.2);
   color: #333;
@@ -478,7 +478,7 @@ box-shadow:
   padding: 10px 12px;
   margin-bottom: 8px;
 
-  border-radius: 10px;
+  border-radius: 0px;
   background: rgba(255,255,255,0.25);
 }
 
@@ -533,7 +533,7 @@ box-shadow:
 
 .edit-mode input {
   padding: 6px;
-  border-radius: 6px;
+  border-radius: 0px;
 }
 
 .actions {
@@ -579,7 +579,7 @@ box-shadow:
   width: 65%;
    margin: 40px auto;
    background: #f5f5f7;
-   border-radius: 12px;
+   border-radius: 0px!important;
   height: fit-content;
   overflow-y: auto;
 }
@@ -601,7 +601,7 @@ box-shadow:
   background: #f9f9fa !important;
   border: white !important;
   color: #1c1c1e !important;
-  border-radius: 10px !important;
+  border-radius: 0px !important;
   padding: 0.4rem 0.8rem !important;
   font-weight: 500;
 }
@@ -635,7 +635,7 @@ box-shadow:
 
 .fc-day-today {
   background: #f0eef0 !important;
-  border-radius: 12px;
+  border-radius: 0px;
   color: rgb(37, 36, 36) !important;
   font-size: 0.5rem;
 }
@@ -644,7 +644,7 @@ box-shadow:
   flex-direction: column;
   background: transparent!important;
   border: none !important;
-  border-radius: 8px !important;
+  border-radius: 0px !important;
   padding: 3px 6px !important;
   font-size: 1rem;
   font-weight: 600;
@@ -696,7 +696,7 @@ box-shadow:
   margin-left: 0;
   padding: 0.3rem 0.2rem;
   border: rgb(121, 119, 119) 1px solid;
-  border-width: 0.4px;
+  border-width: 0px;
   font-size: 1rem;
   font-weight: 500;
 }
@@ -711,7 +711,7 @@ button {
   border: rgb(243, 239, 239) 0.2px solid;
   border-bottom: 2px solid black;
   padding: 0.3rem 0.8rem;
-  border-radius: 6px;
+  border-radius: 0px;
   font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
@@ -745,7 +745,7 @@ button:hover {
 
   .fc {
     width: 100%;
-    border-radius: 12px;
+    border-radius: 0px;
     height: 700px; 
     padding: 4px;
   }
@@ -765,7 +765,7 @@ button:hover {
   .fc .fc-button {
     font-size: 1rem !important;
     padding: 0.25rem 0.55rem !important;
-    border-radius: 8px !important;
+    border-radius: 0px !important;
     color: #0b2494;
   }
 
@@ -777,7 +777,7 @@ button:hover {
   .fc .fc-col-header-cell-cushion {
     font-size: 1rem;
     padding: 3px 0;
-    color: rgb(47, 23, 184);
+    color: rgb(112, 96, 7);
     font-weight: 500;
   }
 
@@ -793,14 +793,14 @@ button:hover {
   }
 
   .fc-day-today {
-    border-radius: 10px;
-    color: #0b2494;
+    border-radius: 0px;
+    color: #94860b;
   }
 
   .fc-event {
     font-size: 0.1rem !important;
     padding: 2px 4px !important;
-    border-radius: 6px !important;
+    border-radius: 0px !important;
     color: #e2e2ec;
    
   }

@@ -24,15 +24,15 @@ const currentComponent = computed(() => {
 <div class="settings-menu">
 
   <button @click="current='pa'">
-    🤖 Personal Assistant
+     Personal Assistant
   </button>
 
   <button @click="current='privacy'">
-    🔒 Privacidad
+     Privacidad
   </button>
 
   <button @click="current='appearance'">
-    🎨 Apariencia
+     Apariencia
   </button>
 
 </div>
@@ -59,8 +59,18 @@ const currentComponent = computed(() => {
 
     flex-direction:column;
 
-    gap:1.5rem;
+    gap:2.5rem;
 
 }
 
+.settings-menu {
+   display:flex;
+
+    flex-direction:row;
+
+    gap:2.5rem;
+
+    padding:2rem ;
+
+}
 </style>

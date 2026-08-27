@@ -96,7 +96,7 @@ onMounted(() => {
   transform: translate(-50%, -50%);
   background-color: rgba(255, 255, 255, 0.8);
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 0px!important;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
  
   opacity: 0.0;
@@ -108,20 +108,19 @@ onMounted(() => {
   transform: translate(-50%, -50%);
   background-color: rgba(255, 255, 255, 0.8);
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   opacity: 0.9;
   z-index:10;
 }
 .login input {
   width: 100%;
-  padding: 12px 0;
+  padding: 12px 10px;
   margin-bottom: 24px;
-
   background: transparent;
   border: none;
   border-bottom: 1px solid rgba(151, 148, 148, 0.55);
-
+  border-radius: 0px!important;
   color: rgb(26, 25, 25);
   font-size: 1rem;
   outline: none;
@@ -134,7 +133,7 @@ onMounted(() => {
 .login h2 {
   margin-bottom: 1rem;
   text-align: center;
-  color: #0056b3;
+  color: #3e3f41;
   font-weight: 300;
   font-size: 2rem;
 }
@@ -143,7 +142,7 @@ onMounted(() => {
   padding: 12px;
   background-color: transparent;
   font-size: 1rem;
-  color: #0056b3;
+  color: #1d1e1f;
   border: none;
 border-bottom: 1px solid rgba(83, 82, 82, 0.55);
   cursor: pointer;
@@ -154,7 +153,7 @@ border-bottom: 1px solid rgba(83, 82, 82, 0.55);
 .btn:hover {
   
   transition: border-color .3s ease;
-  border-bottom: 2px solid  #0056b3;
+  border-bottom: 2px solid  #27292b;
 }
 
 #background-container {

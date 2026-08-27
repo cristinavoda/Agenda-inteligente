@@ -7,7 +7,7 @@
   <LoginForm v-else-if="!user" />
 
   <div v-else class="app">
-
+ 
     <AppHeader
       @toggle-sidebar="sidebarOpen = !sidebarOpen"
       @toggle-pa="assistantOpen = !assistantOpen"
@@ -17,9 +17,8 @@
    
     <div
       v-if="sidebarOpen"
-      class="overlay"
-      @click="sidebarOpen = false"
-    ></div>
+      class="overlay">
+    </div>
 
     <AppSidebar
       :open="sidebarOpen"

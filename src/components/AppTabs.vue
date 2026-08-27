@@ -10,6 +10,7 @@ const tabs = [
   { label: 'Compra', path: '/shopping' },
   { label: 'Notas', path: '/notes' }, 
   { label: '⌕', path: '/internet' },
+  { label: 'Ajustes', path: '/settings' },
    
 ]
 </script>
@@ -36,8 +37,10 @@ const tabs = [
 <style >
 .tabs {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   gap: 42px;
+  margin-right: 0;
   padding: 5px 16px;
   background: white;
   font-size: 1rem;
@@ -79,7 +82,7 @@ const tabs = [
 @media (max-width: 750px) {
  .tabs {
   gap: 1px;
-  margin-left: 19px;
+  margin-right: 19px;
  }
 .tabs button {
   

@@ -1,6 +1,6 @@
 <template>
   <div class="settings-card">
-    <h2>🤖 Personal Assistant</h2>
+    <h2> Personal Assistant</h2>
   </div>
 </template>
 

@@ -2,12 +2,6 @@
 
 <header class="app-header">
 
-    <button
-      class="icon-btn"
-      @click="emit('toggle-sidebar')"
-    >
-      <Menu :size="22" />
-    </button>
 
     <h1></h1>
 
@@ -26,6 +20,15 @@
       >
         <Lock :size="22" />
       </button>
+
+      
+    <button
+      class="icon-btn"
+      @click="emit('toggle-sidebar')"
+    >
+      <Menu :size="22" />
+    </button>
+
 
     </div>
 
