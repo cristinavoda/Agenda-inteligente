@@ -21,6 +21,8 @@
     :key="task.id"
     :class="{ done: task.done }"
     class="task-item">
+     <span class="number">{{ index + 1 }}.</span>
+
 <span class="priority-bar"
       :class="task.priority || 'low'"
       @click="task.showPriority = !task.showPriority">
@@ -35,15 +37,6 @@
   <option value="high">High</option>
 </select>
  
-  <span class="drag">⋮⋮</span>
-
- 
-  <span class="number">{{ index + 1 }}.</span>
-
-  
-  <input type="checkbox" v-model="task.done" />
-
- 
   <span v-if="!task.editing"
         class="title"
         @click="task.editing = true">
@@ -55,15 +48,69 @@
          @blur="saveTask(task)"
          @keyup.enter="saveTask(task)" />
 
+<div class="edit-actions">
+  <span class="drag">⋮⋮</span>
+
   
+<input
+  type="checkbox"
+  v-model="task.done"
+  class="task-checkbox"
+  @change="saveTask(task)"
+/>
+
+  
+ 
+
   <span class="edit-btn" @click="task.editing = true">✎</span>
 
   
   <span class="delete" @click="remove(task.id)">✖</span>
 
+  </div>
+
       </li>
 
     </ul>
+
+
+<div v-if="taskToDelete" class="modal-overlay">
+  <section
+    class="delete-dialog"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="delete-title"
+  >
+    <h2 id="delete-title" class="delete-title">Eliminar tarea</h2>
+
+    <p>
+      ¿Estás segura de que quieres eliminar esta tarea?
+      Esta acción no se puede deshacer.
+    </p>
+
+    <div class="delete-actions">
+      <button
+        type="button"
+        class="cancel-btn"
+        @click="taskToDelete = null"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="confirm-delete-btn"
+        @click="confirmDelete"
+      >
+        Eliminar
+      </button>
+    </div>
+    
+  </section>
+</div>
+
+
+
 </div>
 
 </template>
@@ -76,7 +123,8 @@ import { suggestTasks } from '../utils/tasksAI'
 import { subscribeTasks,
   addTask as addTaskFirestore,
   deleteTask as deleteTaskFirestore,
-   updateTask as updateTaskFirestore
+   updateTask as updateTaskFirestore,
+    updateTaskOrder as updateTaskOrderFirestore
  } from "../services/tasks";
 import { user } from "../stores/user";
 
@@ -96,11 +144,23 @@ onMounted(() => {
     animation: 150,
     handle: '.drag',
 
-    onEnd(evt) {
-      const moved = tasksStore.tasks.splice(evt.oldIndex, 1)[0]
-      tasksStore.tasks.splice(evt.newIndex, 0, moved)
-      //tasksStore.persist()
-    }
+onEnd: async (evt) => {
+  const moved = tasksStore.tasks.splice(evt.oldIndex, 1)[0];
+  tasksStore.tasks.splice(evt.newIndex, 0, moved);
+
+  try {
+    await Promise.all(
+      tasksStore.tasks.map((task, index) =>
+        updateTaskOrderFirestore(task.id, index)
+      )
+    );
+
+    console.log("Orden guardado en Firestore");
+  } catch (error) {
+    console.error("Error al guardar el orden:", error);
+  }
+}
+
   })
 })
 
@@ -111,7 +171,7 @@ const newTask = ref('')
 const selectedItem = ref(null)
 const editType = ref('')
 const userText = ref('')
-
+const taskToDelete = ref(null)
 
 onMounted(() => {
   if (!user.value) return;
@@ -123,9 +183,23 @@ subscribeTasks(user.value.uid, (data) => {
 
 
 
-async function remove(id) {
-  await deleteTaskFirestore(id)
+function remove(id) {
+  
+  taskToDelete.value = id
 }
+
+async function confirmDelete() {
+  if (!taskToDelete.value) return
+
+  try {
+    await deleteTaskFirestore(taskToDelete.value)
+    taskToDelete.value = null
+  } catch (error) {
+    console.error('Error al eliminar la tarea:', error)
+  }
+}
+
+
 function formatDate(date) {
   return new Date(date).toLocaleString('es-ES', {
     dateStyle: 'short',
@@ -160,6 +234,7 @@ for (const task of suggestions) {
   
   userText.value = ''
 }
+
 </script>
 
  <style scoped>
@@ -178,12 +253,12 @@ for (const task of suggestions) {
   font-size: 1.5rem;
   text-align: center;
    padding: 0.1rem 1.8rem;
-  color: #babdbd;
+  color: #858b8b;
   text-shadow:
-    0 1px 0 rgba(22, 22, 22, 0.8),
-    0 2px 4px rgba(0,0,0,.12);
+    0 1px 1px rgba(114, 113, 113, 0.8),
+    0 2px 1px rgba(0,0,0,.12);
   transition: all 0.5s ease;
-  text-shadow: 1px solid black;
+  text-shadow: 2px solid black;
   transform: translateY(20px);
   animation: titleEnter 0.8s ease-out forwards;
   font-family: Robo slab;
@@ -230,8 +305,20 @@ for (const task of suggestions) {
 
 .title {
   flex: 1;
-}
+  font-size: 1.3rem;
 
+}
+.edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  margin-right: 10px;
+}
+.edit-actions:hover {
+  opacity: 1;
+}
 .remove {
   background: transparent;
  border: #d1d1d8;
@@ -244,8 +331,61 @@ for (const task of suggestions) {
 .remove:hover {
   opacity: 1;
 }
-
-
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.685);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.4rem;
+  z-index: 1000;
+}
+.delete-dialog {
+  background-color: #fff;
+  color: #000;
+  padding: 2rem;
+  border-radius: 0px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+.delete-title {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+.delete-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.cancel-btn {
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: center;
+ 
+}
+.confirm-delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: center;
+}
 .edit-btn {
   margin-right: 30px;
   padding: 6px;
@@ -258,11 +398,12 @@ for (const task of suggestions) {
 
 .drag {
   cursor: grab;
-  opacity: 0.4;
-  color: #666;
+
+  color: black;
   cursor: grab;
-  padding: 0 9px;
-  
+  padding: 25px;
+ 
+  font-size: 1.4rem;
 }
 
 
@@ -270,14 +411,32 @@ for (const task of suggestions) {
   width: 22px;
   color: #222121;
   font-size: 14px;
+  margin-right: -8px;
+  margin-left: -7px;
 }
 
+.task-checkbox {
+color: #070707;
+  justify-self: center;
+  cursor: pointer;
+  width: 19px;
+  height: 19px;
+  margin-left: 10px;
+  margin-right: 10px;
+ 
+  
+}
 
 .title {
   flex: 1;
+  font-size: 1.3rem;
 }
 
-
+.task-done {
+  text-decoration: line-through;
+  color: #020202;
+  
+}
 .task-item.done {
   opacity: 0.5;
 }
@@ -290,8 +449,9 @@ for (const task of suggestions) {
 
 .priority-bar {
   width: 4px;
-  height: 18px;
+  height: 25px;
   border-radius: 2px;
+  margin-right: 8px;
 }
 
 .priority-bar.high { background: #ef4444; }
@@ -306,10 +466,11 @@ for (const task of suggestions) {
 
 .delete:hover {
   opacity: 1;
+  transform: scale(1.3);
 }
 .task-item .delete,
 .task-item .edit-btn {
-  opacity: 0;
+  opacity: 1;
   transition: 0.2s;
 }
 
@@ -320,6 +481,33 @@ for (const task of suggestions) {
 .task-item {
   border-left: 3px solid transparent;
 }
-
-
+@media (max-width: 760px) {
+  .h2 {
+    font-size: 1.5rem;
+  }
+  .tasks-container {
+    padding: 0rem;
+  }
+  .title {
+  flex: 1;
+  font-size: 1.3rem;
+}
+.priority-bar {
+  width: 12px;
+  height: 20px;
+  border-radius: 2px;
+  margin-right: 6px;
+}
+.task-checkbox{
+  cursor: pointer;
+  color: black;
+  font-size: 1.2rem;
+  font-weight: 700;
+  width: 14px;
+  height: 15px;
+  margin-left: 0px;
+  margin-right: 15px;
+  margin-top: 7px;
+}
+}
 </style>
