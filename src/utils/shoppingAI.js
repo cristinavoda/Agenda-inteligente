@@ -16,9 +16,13 @@ export function shoppingAIv2(input) {
         ingredients: ["pan", "tomate", "aceite de oliva"]
       },
       {
-        title: "Café con leche, Tostadas con tomate",
-        ingredients: ["café", "leche", "pan", "tomate", "aceite de oliva"]
-      }
+        title: "Café con leche, Tostadas con queso",
+        ingredients: ["café", "leche", "pan", "queso"]
+      },
+      {
+        title: "Yogur con fruta",
+        ingredients: ["yogur", "plátano"]
+      },
     ],
 
     comida: [
@@ -71,7 +75,8 @@ bolognese: {
     title: "Pasta Bolognese",
     ingredients: ["pasta", "carne picada", "tomate", "cebolla", "aceite de oliva"]
   }
-  ,salmon: { 
+  ,
+  salmon: { 
     title: "Salmón al horno",
     ingredients: ["salmón", "limón", "aceite de oliva"]
   }
@@ -119,13 +124,15 @@ if (intents.menu.test(text)) {
  let usedAny = false
 
 
-  if (text.includes("menú") || text.includes("semana") || text.includes("completo" )) {
+  if (text.includes("menú") || text.includes("semana") || text.includes("menu semanal" )) {
     menu.desayuno.push(...recipes.desayuno)
     menu.comida.push(...recipes.comida)
     menu.cena.push(...recipes.cena)
     menu.merienda.push(...recipes.merienda)
   }
 
+  if (text.includes("desayuno") || text.includes("merienda") || text.includes("diario" )) {
+    menu.desayuno.push(...recipes.desayuno)}
 
 if (text.includes("carbonara")) {
   menu.comida.push(recipes.carbonara)

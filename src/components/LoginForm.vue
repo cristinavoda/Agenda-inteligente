@@ -1,15 +1,26 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { login } from "../services/auth";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const email = ref("");
 const password = ref("");
 
 const showPassword = ref(false)
+
 const handleLogin = async () => {
-  console.log("CLICK")
-  await login(email.value, password.value);
+  console.log("CLICK");
+
+  try {
+    await login(email.value, password.value);
+    await router.push("/agenda");
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+  }
 };
+
 
 const bgVideo = ref(null)
 const videoSrc = ref('/videos/day.mp4')
@@ -78,11 +89,16 @@ onMounted(() => {
   >
     {{ showPassword ? "👁️‍🗨️" : "👁️" }}
   </button>
+
+<button
+type="button" @click="handleLogin"
+class="handleLogin-btn">
+  Iniciar sesión
+</button>
+  
+       
 </div>
 
-    <button @click="handleLogin" class="btn ">
-      Entrar
-    </button>
   </div>
   </div>
 </template>
@@ -155,6 +171,17 @@ border-bottom: 1px solid rgba(83, 82, 82, 0.55);
   transition: border-color .3s ease;
   border-bottom: 2px solid  #27292b;
 }
+.handleLogin-btn{
+  width: 100%;
+  padding: 12px;
+  margin: 10px auto 0;
+  background-color: transparent;
+  font-size: 1rem;
+  color: #1d1e1f;
+  border: none;
+border-bottom: 1px solid rgba(83, 82, 82, 0.55);
+  cursor: pointer;}
+
 
 #background-container {
   position: fixed;
@@ -189,7 +216,7 @@ border-bottom: 1px solid rgba(83, 82, 82, 0.55);
     right:0;
     
 top:50%;
-    transform:translateY(-50%);
+    transform:translateY(-190%);
     background:none;
     border:none;
     cursor:pointer;

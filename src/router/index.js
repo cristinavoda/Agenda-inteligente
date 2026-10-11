@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import LoginForm from '../components/LoginForm.vue'
+
 import AgendaView from '../views/AgendaView.vue'
 import InternetView from '../views/InternetView.vue'
 import TasksView from '../views/TasksView.vue'
@@ -7,16 +9,20 @@ import ShoppingListView from '../views/ShoppingListView.vue'
 import SettingsView from '../views/settings/SettingsView.vue'
 const routes = [
    {
-      path: '/',
-      redirect: '/agenda'
-    },
-    {
-      path: '/agenda',
-      name: 'agenda',
-      component: AgendaView
-    },
-    { path: '/internet', component: InternetView },
-
+    path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginForm
+  },
+  {
+    path: '/agenda',
+    name: 'agenda',
+    component: AgendaView
+  },
+  { path: '/internet', component: InternetView },
   { path: '/tasks', component: TasksView },
   { path: '/notes', component: NotesView },
   { path: '/shopping', component: ShoppingListView },

@@ -21,7 +21,7 @@
 
       <button @click="addItem" class="btn-add">+</button>
     
-<input v-model="userText" placeholder="Menu semanal:...."  class="shop-input" />
+<input v-model="userText" placeholder="Menu :  ......"  class="shop-input" />
 
 <button @click="handleAI" class="btn-AI">
    Generar lista
