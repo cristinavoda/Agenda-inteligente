@@ -85,8 +85,12 @@
   </div>
 </template>
 <script setup>
-import { ref, watch, nextTick } from 'vue'
-
+import {
+  ref,
+  watch,
+  nextTick,
+ 
+} from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -98,6 +102,18 @@ import { createReminderFromEvent, saveReminder } from '../reminders/reminderEngi
 import { speak } from '../pa/speechOutput'
 import { scheduleReminder } from '../utils/reminders'
 import { Pencil, Trash2, CalendarDays, Bot } from '@lucide/vue'
+
+import { onMounted, onUnmounted } from 'vue'
+import { user } from '../stores/user'
+
+import {
+  subscribeAgendaEvents,
+  addAgendaEvent as addAgendaEventFirestore,
+  updateAgendaEvent as updateAgendaEventFirestore,
+  deleteAgendaEvent as deleteAgendaEventFirestore
+} from '../services/agenda'
+
+
 
 function addEventWithReminder(title, minutesLater) {
   const now = Date.now()
@@ -114,6 +130,29 @@ function addEventWithReminder(title, minutesLater) {
 
 const calendarStore = useCalendarStore()
 const calendar = ref(null)
+let unsubscribeAgenda = null
+
+onMounted(() => {
+  if (!user.value?.uid) {
+    console.warn('No hay usuario autenticado para cargar la agenda')
+    return
+  }
+
+  unsubscribeAgenda = subscribeAgendaEvents(
+    user.value.uid,
+    (events) => {
+      calendarStore.setEvents(events)
+    },
+    (error) => {
+      console.error('No se pudo cargar la agenda:', error)
+    }
+  )
+})
+
+onUnmounted(() => {
+  unsubscribeAgenda?.()
+})
+
 
 const title = ref('')
 const newEventDateTime = ref('')
@@ -169,15 +208,20 @@ eventDidMount: (info) => {
 })
 
 
-function addEvent() {
-  if (!title.value || !newEventDateTime.value) return
+
+async function addEvent() {
+  if (!title.value.trim() || !newEventDateTime.value) return
+
+  if (!user.value?.uid) {
+    console.error('No hay un usuario autenticado')
+    return
+  }
 
   const start = new Date(newEventDateTime.value)
-  const end = new Date(start.getTime() + 60 * 60 * 1000) // +1h
+  const end = new Date(start.getTime() + 60 * 60 * 1000)
 
   const event = {
-    id: Date.now(),
-    title: title.value,
+    title: title.value.trim(),
     start: start.toISOString(),
     end: end.toISOString(),
     reminder: Number(newEventReminder.value || 0),
@@ -185,25 +229,45 @@ function addEvent() {
     priority: newEventPriority.value
   }
 
-  calendarStore.addEvent(event)
+  try {
+    const result = await addAgendaEventFirestore(user.value.uid, event)
 
- const reminder = createReminderFromEvent(event)
-
-if (reminder) {
-  saveReminder(reminder)
+    
 
 
+    const savedEvent = {
+      id: result.id,
+      ...event,
+      uid: user.value.uid
+    }
+
+    calendarStore.addEvent(savedEvent)
+
+    const reminder = createReminderFromEvent(savedEvent)
+
+    if (reminder) {
+      saveReminder(reminder)
+    }
+
+    title.value = ''
+    newEventDateTime.value = ''
+    newEventReminder.value = ''
+  } catch (error) {
+    console.error('Error al añadir evento:', error)
+  }
 }
 
 
-  title.value = ''
-  newEventDateTime.value = ''
-  newEventReminder.value = ''
+async function removeEvent(id) {
+  try {
+    await deleteAgendaEventFirestore(id)
+    calendarStore.removeEvent(id)
+  } catch (error) {
+    console.error('Error al eliminar evento:', error)
+  }
 }
 
-function removeEvent(id) {
-  calendarStore.removeEvent(id)
-}
+
 
 function leerAgenda() {
   const text = calendarStore.events
@@ -220,6 +284,8 @@ function leerAgenda() {
     new SpeechSynthesisUtterance(text || 'No hay eventos')
   )
 }
+
+
 const handleEventChange = (eventApi) => {
   const updated = {
     id: Number(eventApi.id),
@@ -252,13 +318,22 @@ const startEdit = (event) => {
 const newEventColor = ref('#3b82f6')
 const newEventPriority = ref('medium') 
 
-const saveEdit = () => {
-  calendarStore.updateEvent({
+
+const saveEdit = async () => {
+  if (!editedEvent.value.title.trim() || !editedEvent.value.start) return
+
+  const updatedEvent = {
     ...editedEvent.value,
     start: new Date(editedEvent.value.start).toISOString()
-  })
+  }
 
-  editingId.value = null
+  try {
+    await updateAgendaEventFirestore(updatedEvent)
+    calendarStore.updateEvent(updatedEvent)
+    editingId.value = null
+  } catch (error) {
+    console.error('Error al guardar la edición:', error)
+  }
 }
 
 
