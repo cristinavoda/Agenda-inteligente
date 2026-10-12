@@ -7,7 +7,7 @@
 
    
     <transition name="fade">
-      <div v-if="open" class="overlay" @click="open = false"></div>
+      <div v-if="open" class="overlay" @click="closeDrawer"></div>
     </transition>
 
     
@@ -15,7 +15,7 @@
       <aside v-if="open" class="drawer">
         <div class="drawer-header">
           <h2>Capacidades del Asistente Inteligente</h2>
-          <button class="close" @click="open = false">✕</button>
+          <button class="close" @click="closeDrawer">✕</button>
         </div>
 <div class="section">
        <hr />
@@ -99,13 +99,20 @@ BUSCAR: información, receta, definición, el tiempo, noticias, etc.
 
 <script setup>
 import { ref } from 'vue'
-const open = ref(false)
-</script>
 
+const open = ref(true)
+
+const emit = defineEmits(['close'])
+
+function closeDrawer() {
+  open.value = false
+  emit('close')
+}
+</script>
 <style >
 .pa-trigger {
   background: transparent;
-  margin-left: 140px;
+  width: 100%;
   padding: 16px 72px;
   border: none;
   color: #1e2cc1;
@@ -138,7 +145,7 @@ const open = ref(false)
   position: fixed;
   top: 0px;
   right: 0;
-  width: 360px;
+  width: 100%;
   height: 100%;
   background: white;
   padding: 24px;

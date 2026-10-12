@@ -3,7 +3,7 @@
     class="sidebar"
     :class="{ open: props.open }"
   >
-    <!-- Cabecera -->
+  
     <div class="sidebar-header">
       <div class="sidebar-brand">
         <span class="brand-mark">A</span>

@@ -4,7 +4,10 @@
 import PASettings from '../../components/settings/PASettings.vue'
 import PrivacySettings from '../../components/settings/PrivacySettings.vue'
 import AppearanceSettings from '../../components/settings/AppearanceSettings.vue'
+import PACapabilitiesDrawer from '../../components/ui/PACapabilitiesDrawer.vue'
 
+
+const showPACapabilities = ref(false)
 const current = ref('pa')
 
 const currentComponent = computed(() => {
@@ -22,11 +25,13 @@ const currentComponent = computed(() => {
 <template>
 
 <div class="settings-menu">
-
-  <button @click="current='pa'">
-     Personal Assistant
-  </button>
-
+  <button @click="showPACapabilities = true">
+  Personal Assistant
+</button>
+<PACapabilitiesDrawer
+  v-if="showPACapabilities"
+  @close="showPACapabilities = false"
+/>
   <button @click="current='privacy'">
      Privacidad
   </button>
