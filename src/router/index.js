@@ -7,6 +7,7 @@ import TasksView from '../views/TasksView.vue'
 import NotesView from '../views/NotesView.vue'
 import ShoppingListView from '../views/ShoppingListView.vue'
 import SettingsView from '../views/settings/SettingsView.vue'
+import PlanificacionDiaria from '../views/PlanificacionDiaria.vue'
 const routes = [
    {
     path: '/',
@@ -27,6 +28,7 @@ const routes = [
   { path: '/notes', component: NotesView },
   { path: '/shopping', component: ShoppingListView },
   { path: '/settings', component: SettingsView },
+  { path: '/planificacion-diaria', component: PlanificacionDiaria }
 ]
 
 export const router = createRouter({

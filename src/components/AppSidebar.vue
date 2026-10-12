@@ -60,6 +60,7 @@ import { useRouter, useRoute } from 'vue-router'
 
 import {
   CalendarDays,
+  ListTodo,
   SquareCheckBig,
   ShoppingCart,
   NotebookPen,
@@ -90,6 +91,11 @@ const tabs = [
     label: 'Agenda',
     icon: CalendarDays,
     path: '/agenda'
+  },
+  {
+    label: 'Planificación Diaria',
+    icon: ListTodo,
+    path: '/planificacion-diaria'
   },
   {
     label: 'Tareas',
