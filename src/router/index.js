@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginForm from '../components/LoginForm.vue'
 
+import { auth } from '../firebase'
+import { subscribeAuth } from '../services/auth'
+
+import LoginForm from '../components/LoginForm.vue'
 import AgendaView from '../views/AgendaView.vue'
 import InternetView from '../views/InternetView.vue'
 import TasksView from '../views/TasksView.vue'
@@ -32,6 +35,55 @@ const routes = [
 ]
 
 export const router = createRouter({
+  
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach((to) => {
+  const user = auth.currentUser
+
+  
+  if (to.name !== 'login' && !user) {
+    return { name: 'login' }
+  }
+
+  
+  if (to.name === 'login' && user) {
+    return { name: 'agenda' }
+  }
+})
+
+let authReady = false
+
+let resolveAuthReady
+
+const authReadyPromise = new Promise((resolve) => {
+  resolveAuthReady = resolve
+})
+
+subscribeAuth(() => {
+  if (!authReady) {
+    authReady = true
+    resolveAuthReady()
+  }
+})
+
+router.beforeEach(async (to) => {
+  
+  if (!authReady) {
+    await authReadyPromise
+  }
+
+  const isAuthenticated = !!auth.currentUser
+
+ 
+  if (to.name !== 'login' && !isAuthenticated) {
+    return { name: 'login' }
+  }
+
+  // Con sesión activa, no es necesario mostrar el login
+  if (to.name === 'login' && isAuthenticated) {
+    return { name: 'agenda' }
+  }
 })

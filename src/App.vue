@@ -45,30 +45,39 @@
 </template>
 
 <script setup>
-
-import { onMounted } from 'vue'
+import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { saveDeviceToken } from './services/deviceTokens'
+import { registerPushNotifications } from './services/pushNotifications'
 import { getPendingReminders, markAsFired } from './reminders/reminderEngine'
 import { speak } from './pa/speechOutput'
-import { ref } from 'vue'
 import AppHeader from './components/ui/AppHeader.vue'
-import AppTabs from './components/AppTabs.vue'
 import Footer from './components/Footer.vue'
 import { user } from "./stores/user";
 import { subscribeAuth } from "./services/auth";
 import LoginForm from "./components/LoginForm.vue";
 import { useRouter } from 'vue-router'
 import LockScreen from './components/LockScreen.vue'
+
 import { Lock } from '@lucide/vue'
 import AppSidebar from './components/AppSidebar.vue'
+import { logout } from './services/auth'
+
+const router = useRouter()
 const sidebarOpen = ref(false)
 const isLocked = ref(false);
 
-function handleLogout() {
-  isLocked.value = false
+async function handleLogout() {
+  try {
+    await logout()
 
-  user.value = null;
-  localStorage.removeItem('user');
-  router.push('/login');
+    isLocked.value = false
+    user.value = null
+    localStorage.removeItem('user')
+
+    await router.push('/login')
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error)
+  }
 }
 
 function lockApp() {
@@ -108,36 +117,41 @@ function scheduleReminder(reminder) {
     markAsFired(reminder.id)
   }, timeout)
 }
-onMounted(async () => {
-  if ('Notification' in window) {
-    const permission = await Notification.requestPermission()
-    console.log('Permiso de notificaciones:', permission)
-  }
 
- 
-  getPendingReminders().forEach(scheduleReminder)
 
- 
-  window.addEventListener('reminder-added', (e) => {
-    scheduleReminder(e.detail)
+let unsubscribeAuth
+
+onMounted(() => {
+  unsubscribeAuth = subscribeAuth(async (u) => {
+    user.value = u
+    loading.value = false
+
+    if (!u) {
+      console.log('No hay usuario autenticado')
+      return
+    }
+
+    console.log('Usuario autenticado:', u.uid)
+
+    const token = await registerPushNotifications()
+
+    if (!token) {
+      console.warn('No se ha obtenido el token FCM')
+      return
+    }
+
+    try {
+      await saveDeviceToken(u.uid, token)
+      console.log('Dispositivo registrado para FCM')
+    } catch (error) {
+      console.error('Error al guardar el token:', error)
+    }
   })
 })
 
-
-
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log(' Service Worker registrado'))
-        .catch(err => console.error(' SW error', err))
-    })
-  }
-  
-
-
-
-
+onBeforeUnmount(() => {
+  unsubscribeAuth?.()
+})
 
 </script>
 

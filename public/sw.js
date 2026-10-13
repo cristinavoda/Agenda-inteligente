@@ -1,3 +1,32 @@
+importScripts(
+  'https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js'
+)
+
+importScripts(
+  'https://www.gstatic.com/firebasejs/12.15.0/firebase-messaging-compat.js'
+)
+
+firebase.initializeApp({
+  apiKey: 'BNnhW__bNQri71ufD5-JUxylQgisDSiVff2x6UQoBMguer_6EBynvcj0ErzaMbjYACYlArbQbemPDwGcWyDsQjU',
+  authDomain: 'agenda-inteligente-cdb91.firebaseapp.com',
+  projectId: 'agenda-inteligente-cdb91',
+  storageBucket: 'agenda-inteligente-cdb91.firebasestorage.app',
+  messagingSenderId: '475077910072',
+  appId: '1:475077910072:web:3295ceba1750c8316d90cd'
+})
+
+const messaging = firebase.messaging()
+
+messaging.onBackgroundMessage((payload) => {
+  const title = payload.notification?.title || 'Agenda Inteligente'
+
+  const options = {
+    body: payload.notification?.body || 'Tienes un recordatorio pendiente',
+    icon: '/icon.png'
+  }
+
+  self.registration.showNotification(title, options)
+})
 
 self.addEventListener('install', () => {
   console.log(' SW instalado')
@@ -8,7 +37,7 @@ self.addEventListener('activate', () => {
   console.log(' SW activo')
 })
 
-// Escucha mensajes de la app para programar reminders
+
 self.addEventListener('message', event => {
   if (event.data.type === 'SCHEDULE_REMINDER') {
     const reminder = event.data.reminder
@@ -27,13 +56,13 @@ self.addEventListener('message', event => {
   }
 })
 
-// Click en notificación
+
 self.addEventListener('notificationclick', event => {
   const reminder = event.notification
   event.notification.close()
 
   if (event.action === 'snooze') {
-    // postMessage de snooze a la app
+    
     event.waitUntil(
       clients.matchAll({ type: 'window' }).then(clientList => {
         clientList.forEach(client => {
@@ -42,7 +71,7 @@ self.addEventListener('notificationclick', event => {
       })
     )
   } else {
-    // Abrir la app/Agenda
+    
     event.waitUntil(
       clients.matchAll({ type: 'window' }).then(clientList => {
         const client = clientList.find(c => !c.focused)

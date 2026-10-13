@@ -1,0 +1,16 @@
+[35msrc/App.vue[m[36m:[m[32m49[m[36m:[mimport { saveDeviceToken } from './services/[1;31mdeviceTokens[m'
+[35msrc/App.vue[m[36m:[m[32m75[m[36m:[m    [1;31mlocalStorage[m.removeItem('user')
+[35msrc/pa/paActions.js[m[36m:[m[32m274[m[36m:[m  [1;31mlocalStorage[m.setItem('shopping', JSON.stringify(store.items))
+[35msrc/pa/paActions.js[m[36m:[m[32m290[m[36m:[m  [1;31mlocalStorage[m.setItem('shopping', JSON.stringify([]))
+[35msrc/reminders/reminderEngine.js[m[36m:[m[32m8[m[36m:[m  return JSON.parse([1;31mlocalStorage[m.getItem(STORAGE_KEY) || '[]')
+[35msrc/reminders/reminderEngine.js[m[36m:[m[32m13[m[36m:[m  [1;31mlocalStorage[m.setItem(STORAGE_KEY, JSON.stringify(reminders))
+[35msrc/services/agenda.js[m[36m:[m[32m5[m[36m:[m  [1;31maddDoc[m,
+[35msrc/services/agenda.js[m[36m:[m[32m40[m[36m:[m  return [1;31maddDoc[m(collection(db, 'events'), {
+[35msrc/services/dailyPlanning.js[m[36m:[m[32m6[m[36m:[m  [1;31maddDoc[m,
+[35msrc/services/dailyPlanning.js[m[36m:[m[32m38[m[36m:[m  return [1;31maddDoc[m(collection(db, "dailyActivities"), {
+[35msrc/services/tasks.js[m[36m:[m[32m6[m[36m:[m  [1;31maddDoc[m,
+[35msrc/services/tasks.js[m[36m:[m[32m39[m[36m:[m  return [1;31maddDoc[m(collection(db, "tasks"), {
+[35msrc/stores/notesStore.js[m[36m:[m[32m5[m[36m:[m    notes: JSON.parse([1;31mlocalStorage[m.getItem('notes') || '[]')
+[35msrc/stores/notesStore.js[m[36m:[m[32m30[m[36m:[m      [1;31mlocalStorage[m.setItem('notes', JSON.stringify(this.notes))
+[35msrc/stores/shoppingStore.js[m[36m:[m[32m7[m[36m:[m    JSON.parse([1;31mlocalStorage[m.getItem('shopping') || '[]')
+[35msrc/stores/shoppingStore.js[m[36m:[m[32m11[m[36m:[m    [1;31mlocalStorage[m.setItem('shopping', JSON.stringify(items.value))
