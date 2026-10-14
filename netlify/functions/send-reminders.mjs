@@ -89,7 +89,7 @@ export default async function sendReminders() {
           error.code || error.name || 'UNKNOWN_ERROR'
         )
 
-        // Retirar tokens que Firebase confirma que ya no son válidos.
+       
         if (
           [
             'messaging/registration-token-not-registered',

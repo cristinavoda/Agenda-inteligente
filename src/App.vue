@@ -100,7 +100,7 @@ function scheduleReminder(reminder) {
     speak(`Recordatorio: ${reminder.title}`)
 
     if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('⏰ Recordatorio', {
+      new Notification('✧ Recordatorio', {
         body: reminder.title,
         icon: '/icon.png'
       })
