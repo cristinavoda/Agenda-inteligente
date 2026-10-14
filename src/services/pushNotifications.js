@@ -24,12 +24,15 @@ if (permission !== 'granted') {
 }
 
 try {
-  const registration =
-    await navigator.serviceWorker.register('/sw.js')
-
+ const registration =
   await navigator.serviceWorker.ready
     
   const messaging = await messagingPromise
+  if (!messaging) {
+  console.warn('Firebase Messaging no está disponible')
+  return null
+}
+
   const token = await getToken(messaging, {
     vapidKey: VAPID_KEY,
     serviceWorkerRegistration: registration

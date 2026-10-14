@@ -709,7 +709,8 @@ box-shadow:
 }
 
 .fc-day-today {
-  background: #f0eef0 !important;
+  background: transparent !important;
+  width: fit-content;
   border-radius: 0px;
   color: rgb(37, 36, 36) !important;
   font-size: 0.5rem;
@@ -717,13 +718,14 @@ box-shadow:
 .fc-event {
   display: flex;
   flex-direction: column;
-  background: transparent!important;
+  
+  width: 100%;
   border: none !important;
   border-radius: 0px !important;
   padding: 3px 6px !important;
   font-size: 1rem;
   font-weight: 600;
-  color: #070707;
+  color: #070707!important;
   
 }
 
@@ -731,6 +733,11 @@ box-shadow:
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #3a3a3c!important;
+  font-size: 0.85rem;
+}
+.fc-event-time {
+  color: #3a3a3c!important;
 }
 .fc-scrollgrid,
 .fc-scrollgrid-section,

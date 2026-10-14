@@ -1,3 +1,4 @@
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
@@ -10,8 +11,9 @@ app.use(router)
 
 app.mount('#app')
 
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
   navigator.serviceWorker.register('/sw.js')
     .then(() => console.log('✅ Service Worker registrado'))
     .catch(err => console.error('❌ SW error', err))
 }
+

@@ -5,11 +5,16 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
  plugins: [
     vue(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico'],
-      manifest: false
-    })
+    
+VitePWA({
+  strategies: 'injectManifest',
+  srcDir: 'src',
+  filename: 'sw.js',
+  registerType: 'autoUpdate',
+  includeAssets: ['favicon.ico'],
+  manifest: false
+})
+
   ],
 
   server: {

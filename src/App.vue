@@ -1,8 +1,6 @@
 <template>
 
-  <div v-if="loading">
-    Cargando...
-  </div>
+  <LoadingScreen v-if="loading" />
 
   <LoginForm v-else-if="!user" />
 
@@ -57,7 +55,7 @@ import { subscribeAuth } from "./services/auth";
 import LoginForm from "./components/LoginForm.vue";
 import { useRouter } from 'vue-router'
 import LockScreen from './components/LockScreen.vue'
-
+import LoadingScreen from './components/LoadingScreen.vue'
 import { Lock } from '@lucide/vue'
 import AppSidebar from './components/AppSidebar.vue'
 import { logout } from './services/auth'
@@ -87,12 +85,6 @@ function lockApp() {
 const loading = ref(true);
 
 
-onMounted(() => {
-  subscribeAuth((u) => {
-    user.value = u;
-      loading.value = false;
-  });
-});
 
 const activeTab = ref('Agenda')
 const scheduled = new Set()
@@ -149,8 +141,23 @@ onMounted(() => {
   })
 })
 
+
+function handleReminderAdded(event) {
+  scheduleReminder(event.detail)
+}
+
+onMounted(() => {
+  // 1. Recuperar y programar los recordatorios pendientes
+  getPendingReminders().forEach(scheduleReminder)
+
+  // 2. Escuchar los nuevos recordatorios que se guarden
+  window.addEventListener('reminder-added', handleReminderAdded)
+})
+
+
 onBeforeUnmount(() => {
   unsubscribeAuth?.()
+   window.removeEventListener('reminder-added', handleReminderAdded)
 })
 
 </script>

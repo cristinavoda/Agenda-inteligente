@@ -66,14 +66,14 @@
 }
 
 .calendar-icon {
-  width: 92px;
-  height: 92px;
+  width: 920px;
+  height: 920px;
   display: grid;
   place-items: center;
   margin-bottom: 24px;
   border-radius: 26px;
   background: #e2e7f5;
-  box-shadow: 0 12px 30px #6676b81a;
+  box-shadow: 0 12px 30px #19191a1a;
   animation: float 3s ease-in-out infinite;
 }
 
@@ -81,7 +81,7 @@
   width: 78px;
   height: 78px;
   fill: white;
-  stroke: #6676b8;
+  stroke: #3e3f42;
   stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
