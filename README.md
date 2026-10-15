@@ -132,6 +132,3 @@ Agenda Inteligente es un proyecto en desarrollo continuo. Entre las líneas de e
 
 Agenda Inteligente es un proyecto propio que reúne desarrollo frontend, servicios cloud, notificaciones push y una arquitectura extensible para un asistente personal.
 
-## Licencia
-
-No se especifica una licencia en este README. Añade una licencia al repositorio si deseas definir cómo terceros pueden utilizar, modificar o distribuir el proyecto.
