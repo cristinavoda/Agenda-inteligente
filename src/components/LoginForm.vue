@@ -287,8 +287,6 @@ border-bottom: 1px solid rgba(83, 82, 82, 0.55);
 .toggle-password{
     position:absolute;
     right:0;
-    
-top:50%;
     transform:translateY(-190%);
     background:none;
     border:none;
