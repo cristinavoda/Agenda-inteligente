@@ -1,25 +1,64 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { login } from "../services/auth";
+import { login, register } from "../services/auth";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
 const email = ref("");
 const password = ref("");
+const isRegistering = ref(false);
+const errorMessage = ref("");
+const isLoading = ref(false);
 
 const showPassword = ref(false)
+async function handleAuth() {
+  errorMessage.value = "";
 
-const handleLogin = async () => {
-  console.log("CLICK");
+  const userEmail = email.value.trim();
+
+  if (!userEmail || !password.value) {
+    errorMessage.value = "Introduce tu correo y contraseña.";
+    return;
+  }
+
+  if (isLoading.value) return;
+
+  isLoading.value = true;
 
   try {
-    await login(email.value, password.value);
+    if (isRegistering.value) {
+      await register(userEmail, password.value);
+    } else {
+      await login(userEmail, password.value);
+    }
+
+    // Firebase inicia la sesión al crear una cuenta correctamente.
     await router.push("/agenda");
   } catch (error) {
-    console.error("Error al iniciar sesión:", error);
+    console.error("Error de autenticación:", error.code);
+
+    const messages = {
+      "auth/email-already-in-use":
+        "Este correo ya tiene una cuenta. Prueba a iniciar sesión.",
+      "auth/invalid-email":
+        "El correo electrónico no tiene un formato válido.",
+      "auth/weak-password":
+        "La contraseña no cumple los requisitos de seguridad.",
+      "auth/invalid-credential":
+        "El correo o la contraseña no son correctos.",
+      "auth/operation-not-allowed":
+        "El registro por correo y contraseña no está habilitado en Firebase.",
+      "auth/network-request-failed":
+        "No se ha podido conectar. Comprueba tu conexión a Internet."
+    };
+
+    errorMessage.value =
+      messages[error.code] || "No se ha podido completar la operación.";
+  } finally {
+    isLoading.value = false;
   }
-};
+}
 
 
 const bgVideo = ref(null)
@@ -67,20 +106,30 @@ onMounted(() => {
 </video>
 
   <div class="login">
-    <h2>Login</h2>
+  <h2>{{ isRegistering ? 'Crear cuenta' : 'Iniciar sesión' }}</h2>
 <label>Correo electrónico</label>
 
 
-    <input v-model="email" class="form-control" placeholder="email" />
+   <input
+  v-model="email"
+  type="email"
+  class="form-control"
+  placeholder="Correo electrónico"
+  autocomplete="email"
+  required
+/>
     
     <div class="password-field">
   <label>Contraseña</label>
 
-  <input
-    v-model="password"
-    class="form-control"
-    :type="showPassword ? 'text' : 'password'"
-  />
+ <input
+  v-model="password"
+  class="form-control"
+  :type="showPassword ? 'text' : 'password'"
+  :autocomplete="isRegistering ? 'new-password' : 'current-password'"
+  minlength="6"
+  required
+/>
 
   <button
     type="button"
@@ -91,11 +140,35 @@ onMounted(() => {
   </button>
 
 <button
-type="button" @click="handleLogin"
-class="handleLogin-btn">
-  Iniciar sesión
+  type="button"
+  @click="handleAuth"
+  class="handleLogin-btn"
+  :disabled="isLoading"
+>
+  {{
+    isLoading
+      ? 'Procesando...'
+      : isRegistering
+        ? 'Crear cuenta'
+        : 'Iniciar sesión'
+  }}
 </button>
-  
+
+<p v-if="errorMessage" role="alert" class="auth-error">
+  {{ errorMessage }}
+</p>
+
+<button
+  type="button"
+  class="auth-switch"
+  @click="isRegistering = !isRegistering; errorMessage = ''"
+>
+  {{
+    isRegistering
+      ? 'Ya tengo una cuenta · Iniciar sesión'
+      : '¿Nuevo usuario? Crear cuenta'
+  }}
+</button>
        
 </div>
 
@@ -229,6 +302,22 @@ top:50%;
     border-radius:8px;
     border:1px solid rgba(151,148,148,.55);
     margin-bottom:1rem;
+}
+.auth-error {
+  color: #b42318;
+  font-size: 0.9rem;
+  margin-top: 12px;
+}
+
+.auth-switch {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: #555;
+  cursor: pointer;
 }
 @media (max-width: 768px) {
   #bg-video {
