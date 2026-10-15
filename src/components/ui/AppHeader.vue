@@ -8,11 +8,15 @@
     <div class="header-actions">
 
       <button
-        class="icon-btn"
-        @click="togglePA()"
-      >
-        <Bot :size="22" />
-      </button>
+  class="icon-btn"
+  :class="{ 'pa-active': paActive }"
+  :aria-pressed="paActive"
+  :aria-label="paActive ? 'Desactivar asistente PA' : 'Activar asistente PA'"
+  @click="togglePA()"
+>
+  <Bot :size="22" />
+</button>
+
 
       <button
         class="icon-btn"
@@ -130,7 +134,13 @@ const emit = defineEmits([
     transform:scale(1.08);
 
 }
+.icon-btn {
+  transition: color 180ms ease;
+}
 
+.icon-btn.pa-active {
+  color: darkcyan;
+}
 .icon-btn:hover{
 
     background:#eceff2;

@@ -1,54 +1,50 @@
+
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
+import {
+  createFirestoreUserCollection,
+  toMillis
+} from '../services/firestoreUserCollection'
 
 export const useShoppingStore = defineStore('shopping', () => {
+  const cloud = createFirestoreUserCollection({
+    collectionName: 'shoppingItems',
+    storageKey: 'shopping',
 
-  const items = ref(
-    JSON.parse(localStorage.getItem('shopping') || '[]')
-  )
-
-  function persist() {
-    localStorage.setItem('shopping', JSON.stringify(items.value))
-  }
+    normalize(item = {}) {
+      return {
+        title: String(item.title ?? ''),
+        quantity: String(item.quantity ?? ''),
+        priority: String(item.priority ?? ''),
+        done: Boolean(item.done),
+        createdAt: toMillis(item.createdAt)
+      }
+    }
+  })
 
   function addItem(item) {
-    items.value.unshift({
-      id: item.id || Date.now(),
-      title: item.title,
-      quantity: item.quantity || '',
-      priority: item.priority || '',
-      done: item.done ?? false
+    return cloud.addItem({
+      ...item,
+      createdAt: item.createdAt ?? Date.now()
     })
-
-    persist()
   }
 
-  function updateShopping(item) {
-    const index = items.value.findIndex(i => i.id === item.id)
+  async function toggleItem(id) {
+    const item = cloud.items.value.find((entry) => entry.id === id)
+    if (!item) return false
 
-    if (index === -1) return
-
-    items.value[index] = {
-      ...items.value[index],
-      ...item
-    }
-
-    persist()
-  }
- function clearShoppingList() {
-    items.value = []
-    persist()
-  }
-  function removeItem(id) {
-    items.value = items.value.filter(i => i.id !== id)
-    persist()
+    return cloud.updateItem({
+      ...item,
+      done: !item.done
+    })
   }
 
   return {
-    items,
+    items: cloud.items,
+    ready: cloud.ready,
     addItem,
-    updateShopping,
-    removeItem,
-    clearShoppingList 
+    updateShopping: cloud.updateItem,
+    toggleItem,
+    removeItem: cloud.removeItem,
+    clearShoppingList: cloud.clearItems
   }
 })

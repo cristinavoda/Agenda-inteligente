@@ -29,10 +29,10 @@
    
     </div>
  <h2 class="h2">Lista de la compra</h2>
-   <button class="btn-clear" @click="shoppingStore.clearShoppingList()">
-     Borrar lista
-  </button>
-
+  
+<button class="btn-clear" @click="clearShoppingList">
+  Borrar lista
+</button>
     <ul class="shop-list">
    
       <li
@@ -120,20 +120,6 @@ const editType = ref('')
  
 
 
-function handleAI() {
-  const result = shoppingAIv2(userText.value)
-console.log(result)
- if (!result || !result.shoppingList) return
-  result.shoppingList.forEach(item => {
-  shoppingStore.addItem({
-    title: item,
-    quantity: '',
-    priority: '',
-    done: false
-  })
-})
-  userText.value = ''
-}
 
 
 
@@ -143,27 +129,7 @@ function openEdit(item, type) {
   isModalOpen.value = true
 }
 
-function saveEdit() {
-  if (editType.value === 'shopping') {
-    shoppingStore.updateShopping({ ...selectedItem.value })
-  }
 
-  isModalOpen.value = false
-}
-
-function addItem() {
-  if (!newItem.value.title.trim()) return
-
-  shoppingStore.addItem({
-    title: newItem.value.title,
-    quantity: newItem.value.quantity,
-    priority: '',
-    done: false
-  })
-
-  newItem.value.title = ''
-  newItem.value.quantity = ''
-}
 
 function toggle(id) {
   shoppingStore.toggleItem(id)
@@ -172,10 +138,7 @@ function toggle(id) {
 function remove(id) {
   shoppingStore.removeItem(id)
 }
-function toggleDone(item) {
-  item.done = !item.done
-  shoppingStore.persist()
-}
+
 
 function updateShopping(item) {
   const index = shoppingStore.items.findIndex(i => i.id === item.id)
@@ -188,13 +151,64 @@ function updateShopping(item) {
 
   shoppingStore.persist()
 }
+async function handleAI() {
+  const result = shoppingAIv2(userText.value)
 
-function clearShoppingList() {
+  if (!result?.shoppingList) return
+
+  for (const item of result.shoppingList) {
+    const saved = await shoppingStore.addItem({
+      title: item,
+      quantity: '',
+      priority: '',
+      done: false
+    })
+
+    if (!saved) return
+  }
+
+  userText.value = ''
+}
+
+async function addItem() {
+  if (!newItem.value.title.trim()) return
+
+  const saved = await shoppingStore.addItem({
+    title: newItem.value.title.trim(),
+    quantity: newItem.value.quantity,
+    priority: '',
+    done: false
+  })
+
+  if (saved) {
+    newItem.value.title = ''
+    newItem.value.quantity = ''
+  }
+}
+
+async function saveEdit() {
+  const saved = await shoppingStore.updateShopping({
+    ...selectedItem.value
+  })
+
+  if (saved) {
+    isModalOpen.value = false
+  }
+}
+
+function toggleDone(item) {
+  return shoppingStore.updateShopping({
+    ...item,
+    done: !item.done
+  })
+}
+
+async function clearShoppingList() {
   if (!confirm('¿Seguro que quieres borrar toda la lista?')) return
 
-  items.value = []
-  persist()
+  await shoppingStore.clearShoppingList()
 }
+
 </script>
 
 <style scoped>

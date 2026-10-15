@@ -1,0 +1,76 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Tareas generales
+    match /tasks/{taskId} {
+      allow create: if request.auth != null &&
+                    request.resource.data.uid == request.auth.uid;
+
+      allow read, update, delete: if request.auth != null &&
+                                  resource.data.uid == request.auth.uid;
+    }
+
+    // Planificación diaria
+    match /dailyActivities/{activityId} {
+      allow create: if request.auth != null &&
+                    request.resource.data.uid == request.auth.uid;
+
+      allow read, delete: if request.auth != null &&
+                          resource.data.uid == request.auth.uid;
+
+      allow update: if request.auth != null &&
+                    resource.data.uid == request.auth.uid &&
+                    request.resource.data.uid == resource.data.uid;
+    }
+
+    // Eventos
+    match /events/{eventId} {
+      allow create: if request.auth != null &&
+                    request.resource.data.uid == request.auth.uid;
+
+      allow read, delete: if request.auth != null &&
+                          resource.data.uid == request.auth.uid;
+
+      allow update: if request.auth != null &&
+                    resource.data.uid == request.auth.uid &&
+                    request.resource.data.uid == resource.data.uid;
+    }
+
+    // Tokens de notificaciones push por usuario
+    match /users/{userId}/fcmTokens/{tokenId} {
+      allow create, read, update, delete:
+        if request.auth != null &&
+           request.auth.uid == userId;
+    }
+
+        // Notas personales
+    match /notes/{noteId} {
+      allow create: if request.auth != null
+                    && request.resource.data.uid == request.auth.uid;
+
+      allow read, delete: if request.auth != null
+                          && resource.data.uid == request.auth.uid;
+
+      allow update: if request.auth != null
+                    && resource.data.uid == request.auth.uid
+                    && request.resource.data.uid == resource.data.uid;
+    }
+
+
+    match /shoppingItems/{itemId} {
+  allow create: if request.auth != null
+                && request.resource.data.uid == request.auth.uid;
+
+  allow read, delete: if request.auth != null
+                      && resource.data.uid == request.auth.uid;
+
+  allow update: if request.auth != null
+                && resource.data.uid == request.auth.uid
+                && request.resource.data.uid == resource.data.uid;
+}
+
+  }
+}

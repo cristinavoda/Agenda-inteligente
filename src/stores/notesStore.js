@@ -1,33 +1,43 @@
+
 import { defineStore } from 'pinia'
+import {
+  createFirestoreUserCollection,
+  toMillis
+} from '../services/firestoreUserCollection'
 
-export const useNotesStore = defineStore('notes', {
-  state: () => ({
-    notes: JSON.parse(localStorage.getItem('notes') || '[]')
-  }),
+export const useNotesStore = defineStore('notes', () => {
+  const cloud = createFirestoreUserCollection({
+    collectionName: 'notes',
+    storageKey: 'notes',
 
-  actions: {
-   addNote(content) {
-  this.notes.unshift({
-    id: Date.now(),
-    content,
-    createdAt: Date.now()
-  })
-  this.persist()
-},
-
-
-    removeNote(id) {
-      this.$patch(state => { state.notes = state.notes.filter(n => n.id !== id) })
-      this.persist()
-    },
-
-    removeAllNotes() {
-      this.$patch(state => { state.notes = [] })
-      this.persist()
-    },
-
-    persist() {
-      localStorage.setItem('notes', JSON.stringify(this.notes))
+    normalize(note = {}) {
+      return {
+        title: String(note.title ?? ''),
+        content: String(note.content ?? ''),
+        priority: note.priority || 'normal',
+        done: Boolean(note.done),
+        createdAt: toMillis(note.createdAt)
+      }
     }
+  })
+
+  function addNote(content) {
+    return cloud.addItem({
+      title: '',
+      content: String(content ?? '').trim(),
+      priority: 'normal',
+      done: false,
+      createdAt: Date.now()
+    })
+  }
+
+  return {
+    notes: cloud.items,
+    ready: cloud.ready,
+    addNote,
+    updateNote: cloud.updateItem,
+    removeNote: cloud.removeItem,
+    removeAllNotes: cloud.clearItems
   }
 })
+

@@ -32,10 +32,9 @@
 
     <span class="edit-btn" @click="openEdit(note, 'notes')">✎</span>
 
-  <span class="note-btn" @click="note.done = !note.done">
+ <span class="note-btn" @click="toggleDone(note)">
   ✔
-</span>   
-   
+</span> 
 
   <div class="note-footer">
     <small>{{ formatDate(note.createdAt) }}</small>
@@ -87,15 +86,7 @@ function openEdit(item, type) {
   isModalOpen.value = true
 }
 
-function addNote() {
-  if (!newNote.value.trim()) return
-  notesStore.addNote(newNote.value.trim())
-  newNote.value = ''
-}
 
-function remove(id) {
-  notesStore.removeNote(id)
-}
 
 function formatDate(date) {
   if (!date) return ''
@@ -104,28 +95,37 @@ function formatDate(date) {
     timeStyle: 'short'
   })
 }
+async function addNote() {
+  if (!newNote.value.trim()) return
 
-function saveEdit() {
+  const saved = await notesStore.addNote(newNote.value.trim())
+
+  if (saved) {
+    newNote.value = ''
+  }
+}
+
+async function remove(id) {
+  await notesStore.removeNote(id)
+}
+
+async function toggleDone(note) {
+  await notesStore.updateNote({
+    ...note,
+    done: !note.done
+  })
+}
+
+async function saveEdit() {
   if (editType.value === 'notes') {
-    updateNote(selectedItem.value)
+    const saved = await notesStore.updateNote(selectedItem.value)
+
+    if (!saved) return
   }
 
-  if (editType.value === 'shopping') {
-    updateShopping(selectedItem.value)
-  }
-
-  if (editType.value === 'notes') {
-    updateNote(selectedItem.value)
-  }
-console.log('closing modal')
   isModalOpen.value = false
 }
-function updateNote(note) {
-  const index = notesStore.notes.findIndex(n => n.id === note.id)
-  if (index !== -1) {
-    notesStore.notes[index] = note
-  }
-}
+
 </script>
 
 
